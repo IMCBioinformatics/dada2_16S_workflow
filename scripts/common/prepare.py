@@ -15,7 +15,7 @@ def get_sample_files(path,outfile='samples.tsv'):
                 sample_id = fname.split(".fastq")[0].split(".fq")[0]
 
                 sample_id = sample_id.replace("_R1", "").replace("_r1", "").replace("_R2", "").replace("_r2", "")
-                sample_id = sample_id.replace("_", "-").replace(" ", "-")
+                sample_id = sample_id.replace("_", "_").replace(" ", "_")
 
                 fq_path = os.path.join(dir_name, fname)
 

@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-#configfile: "config.yaml"
+configfile: "config.yaml"
 SampleTable = pd.read_table(config['sampletable'],index_col=0)
 SAMPLES = list(SampleTable.index)
 
@@ -13,33 +13,33 @@ if PAIRED_END: FRACTIONS+= ['R2']
 
 rule all:
     input:
-        "stats/Nreads_filtered.txt",
-        "model/ErrorRates_R1.rds",
+        "output/stats/Nreads_filtered.txt",
+        "output/model/ErrorRates_R1.rds",
          "output/seqtab.tsv",
-         "figures/Lengths/Sequence_Length_distribution_abundance.pdf",
-         #expand("taxonomy/{ref}.tsv",ref= config['idtaxa_dbs'].keys()),
-         "taxonomy/rep_seq.fasta",
-         'stats/Nreads.tsv',
-         "taxonomy/otu_tree.nwk"
+         "output/figures/Lengths/Sequence_Length_distribution_abundance.pdf",
+         expand("output/taxonomy/{ref}.tsv",ref= config['idtaxa_dbs'].keys()),
+         "output/taxonomy/rep_seq.fasta",
+         'output/stats/Nreads.tsv',
+         "output/taxonomy/otu_tree.nwk"
 
 
 rule all_profile:
-    input: expand("figures/Quality_profiles/{direction}/{sample}_{direction}.pdf",sample=SAMPLES,direction=['R1','R2'])
-        #"quality_control/readlength.tsv"
+    input: expand("output/figures/Quality_profiles/{direction}/{sample}_{direction}.pdf",sample=SAMPLES,direction=['R1','R2']),
+        "output/quality_control/readlength.tsv"
 
 rule all_filtered:
-    input: "stats/Nreads_filtered.txt",
+    input: "output/stats/Nreads_filtered.txt",
 
 
 
 rule combine_read_counts:
     input:
-        'stats/Nreads_filtered.txt',
-        'stats/Nreads_dereplicated.txt',
-        'stats/Nreads_chimera_removed.txt'
+        'output/stats/Nreads_filtered.txt',
+        'output/stats/Nreads_dereplicated.txt',
+        'output/stats/Nreads_chimera_removed.txt'
     output:
-        'stats/Nreads.tsv',
-        plot= 'stats/Nreads.pdf'
+        'output/stats/Nreads.tsv',
+        plot= 'output/stats/Nreads.pdf'
     run:
         import pandas as pd
         import matplotlib
@@ -59,24 +59,20 @@ rule combine_read_counts:
 
 
 
-
-
-
-
 rule bbmap_qc:
     input:
         unpack( lambda wc: dict(SampleTable.loc[wc.sample]))
     output:
-        expand("quality_control/{{sample}}/{file}",
+        expand("output/quality_control/{{sample}}/{file}",
                file=['base_hist.txt','quality_by_pos.txt','readlength.txt','gc_hist.txt','boxplot_quality.txt'])
     params:
         inputs = lambda wc,input: f"in={input.R1} in2={input.R2}" if PAIRED_END else f"in={input.R1}",
         verifypaired = "t" if PAIRED_END else "f",
         subfolder = lambda wc,output: os.path.dirname(output[0])
     log:
-        "logs/QC/{sample}.log"
+        "output/logs/QC/{sample}.log"
     conda:
-        "%s/required_packages.yaml" % CONDAENV
+        "envs/bbmap.yaml"
     threads:
         config["threads"]
     resources:
@@ -105,14 +101,22 @@ rule bbmap_qc:
 
 rule combine_read_length:
     input:
-        expand("quality_control/{sample}/readlength.txt",sample=SAMPLES)
+        expand("output/quality_control/{sample}/readlength.txt",sample=SAMPLES)
     output:
-        "quality_control/readlength.tsv"
+        "output/quality_control/readlength.tsv"
     run:
         RL = pd.DataFrame()
         for i,s in enumerate(SAMPLES):
             RL[s]= pd.read_table(input[i],index_col=0,squeeze=True)
         RL.T.to_csv(output[0],sep='\t')
 
+
+
+
+
 include: "rules/dada2.smk"
 include: "rules/taxonomy.smk"
+
+
+
+
