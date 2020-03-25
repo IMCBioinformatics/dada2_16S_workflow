@@ -16,7 +16,18 @@ maxEE:
   - 2
   - 2
 truncQ: 2
+
 learn_nbases: 100e6
+
+primers:
+# Illumina V3-V4 protocol primers
+fwd_primer: "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGCCTACGGGNGGCWGCAG"
+rev_primer: "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGGACTACHVGGGTATCTAATCC"
+fwd_primer_rc: "CTGCWGCCNCCCGTAGGCTGTCTCTTATACACATCTGACGCTGCCGACGA"
+rev_primer_rc: "GGATTAGATACCCBDGTAGTCCTGTCTCTTATACACATCTCCGAGCCCACGAGAC"
+
+
+
 chimera_method: "consensus"
 max_length_variation: 7
 idtaxa_dbs:

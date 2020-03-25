@@ -89,6 +89,10 @@ rule removeChimeras:
         "../scripts/dada2/removeChimeras.R"
 
 
+
+# Use this rul if you automatically want to subset the ASVs based on their distribution.
+# This rule is commented out at the moment
+
 rule filterLength:
     input:
         seqtab= rules.removeChimeras.output.rds
