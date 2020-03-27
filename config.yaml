@@ -9,6 +9,24 @@ sampletable: "samples.tsv"
 java_mem: 30
 threads: 20
 
+
+# fastqc and multiqc only
+qc_only: TRUE
+
+
+## Cutadapt
+primers:
+# Illumina V3-V4 protocol primers
+fwd_primer: "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGCCTACGGGNGGCWGCAG"
+rev_primer: "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGGACTACHVGGGTATCTAATCC"
+fwd_primer_rc: "CTGCWGCCNCCCGTAGGCTGTCTCTTATACACATCTGACGCTGCCGACGA"
+rev_primer_rc: "GGATTAGATACCCBDGTAGTCCTGTCTCTTATACACATCTCCGAGCCCACGAGAC"
+
+R1: "_R1_001"
+R2: "_R2_001"
+
+
+## DADA2 
 truncLen:
   - 180
   - 100
@@ -19,18 +37,18 @@ truncQ: 2
 
 learn_nbases: 100e6
 
-primers:
-# Illumina V3-V4 protocol primers
-fwd_primer: "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGCCTACGGGNGGCWGCAG"
-rev_primer: "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGGACTACHVGGGTATCTAATCC"
-fwd_primer_rc: "CTGCWGCCNCCCGTAGGCTGTCTCTTATACACATCTGACGCTGCCGACGA"
-rev_primer_rc: "GGATTAGATACCCBDGTAGTCCTGTCTCTTATACACATCTCCGAGCCCACGAGAC"
-
-
-
 chimera_method: "consensus"
 max_length_variation: 7
+
+
+## Taxonomy 
 idtaxa_dbs:
   RDP: "/gpfs/home/hramay/projects/databases/RDP_v16-mod_March2018.RData"
   Silva: "/gpfs/home/hramay/projects/databases/SILVA_SSU_r132_March2018.RData"
   GTDB: "/gpfs/home/hramay/projects/databases/GTDB_r89-mod_June2019.RData"
+
+idtaxa_species:
+  RDP: "/gpfs/home/hramay/projects/databases/rdp_species_assignment_16.fa.gz"
+  Silva: "/gpfs/home/hramay/projects/databases/silva_species_assignment_v132.fa.gz"
+  GTDB: "/gpfs/home/hramay/projects/databases/GTDB_dada2_assignment_species.fa.gz"
+  

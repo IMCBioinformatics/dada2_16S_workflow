@@ -3,9 +3,13 @@
 
 rule plotQualityProfile:
     input:
-        lambda wc: SampleTable[wc.direction].values
+        R1= expand("output/cutadapt/{sample}_R1.fastq.gz",sample=SAMPLES),
+        R2= expand("output/cutadapt/{sample}_R2.fastq.gz",sample=SAMPLES)
+#        R1= rules.cutadapt.output.R1,
+#        R2= rules.cutadapt.output.R2,
     output:
-        expand("output/figures/Quality_profiles/{{direction}}/{sample}_{{direction}}.pdf",sample=SAMPLES)
+        R1="output/dada2/quality/qualityPlots_R1.pdf",
+        R2="output/dada2/quality/qualityPlots_R2.pdf"
     conda:
         "../envs/dada2.yaml"
     script:
@@ -14,30 +18,30 @@ rule plotQualityProfile:
 
 
 
-rule filter:
+rule dada2_filter:
     input:
-        R1= SampleTable.R1.values,
-        R2= SampleTable.R2.values
+        R1= expand("output/cutadapt/{sample}_R1.fastq.gz",sample=SAMPLES),
+        R2= expand("output/cutadapt/{sample}_R2.fastq.gz",sample=SAMPLES)
     output:
-        R1= expand("output/filtered/{sample}_R1.fastq.gz",sample=SAMPLES),
-        R2 = expand("output/filtered/{sample}_R2.fastq.gz",sample=SAMPLES),
-        nreads= temp("output/stats/Nreads_filtered.txt")
+        R1= expand("output/dada2/dada2_filter/{sample}_R1.fastq.gz",sample=SAMPLES),
+        R2 =expand( "output/dada2/dada2_filter/{sample}_R2.fastq.gz",sample=SAMPLES),
+#        nreads= "output/dada2/{sample}/stats/Nreads_filtered.txt"
     params:
-        samples=SAMPLES
+       	 samples=SAMPLES,
+       	 nread="output/dada2/Nreads_filtered.txt"
     threads:
-        config['threads']
+         config['threads']
     conda:
-        "../envs/dada2.yaml"
+         "../envs/dada2.yaml"
     log:
-        "output/logs/dada2/filter.txt"
+        "output/logs/dada2/dada2_filter.txt"
     script:
-        "../scripts/dada2/filter.R"
-
+       	"../scripts/dada2/dada2_filter.R"
 
 rule learnErrorRates:
     input:
-        R1= rules.filter.output.R1,
-        R2= rules.filter.output.R2
+        R1= rules.dada2_filter.output.R1,
+        R2= rules.dada2_filter.output.R2
     output:
         errR1= "output/model/ErrorRates_R1.rds",
         errR2 = "output/model/ErrorRates_R2.rds",
@@ -55,13 +59,13 @@ rule learnErrorRates:
 
 rule dereplicate:
     input:
-        R1= rules.filter.output.R1,
-        R2= rules.filter.output.R2,
+        R1= rules.dada2_filter.output.R1,
+        R2= rules.dada2_filter.output.R2,
         errR1= rules.learnErrorRates.output.errR1,
         errR2= rules.learnErrorRates.output.errR2
     output:
         seqtab= temp("output/seqtab_with_chimeras.rds"),
-        nreads= temp("output/stats/Nreads_dereplicated.txt")
+        nreads= temp("output/dada2/Nreads_dereplicated.txt")
     params:
         samples=SAMPLES
     threads:
@@ -78,7 +82,7 @@ rule removeChimeras:
         seqtab= rules.dereplicate.output.seqtab
     output:
         rds= "output/seqtab_nochimeras.rds",
-        nreads=temp("output/stats/Nreads_chimera_removed.txt")
+        nreads=temp("output/dada2/Nreads_chimera_removed.txt")
     threads:
         config['threads']
     conda:
@@ -90,7 +94,7 @@ rule removeChimeras:
 
 
 
-# Use this rul if you automatically want to subset the ASVs based on their distribution.
+# Use this rule if you automatically want to subset the ASVs based on their distribution.
 # This rule is commented out at the moment
 
 rule filterLength:
@@ -114,7 +118,8 @@ rule filterLength:
 rule IDtaxa:
     input:
         seqtab= "output/seqtab.rds",
-        ref= lambda wc: config['idtaxa_dbs'][wc.ref]
+        ref= lambda wc: config['idtaxa_dbs'][wc.ref],
+        species= lambda wc: config['idtaxa_species'][wc.ref]
     output:
         taxonomy= "output/taxonomy/{ref}.tsv",
     threads:
@@ -125,11 +130,11 @@ rule IDtaxa:
         "../scripts/dada2/IDtaxa.R"
 
 
-rule get_rep_seq:
+rule get_ASV_seq:
     input:
         "output/seqtab.tsv",
     output:
-        "output/taxonomy/rep_seq.fasta"
+        "output/taxonomy/ASV_seq.fasta"
     run:
         with open(input[0]) as infile:
             seqs = infile.readline().strip().replace('"','').split()
