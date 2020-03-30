@@ -11,7 +11,7 @@ threads: 20
 
 
 # fastqc and multiqc only
-qc_only: TRUE
+qc_only: FALSE
 
 
 ## Cutadapt
@@ -28,8 +28,8 @@ R2: "_R2_001"
 
 ## DADA2 
 truncLen:
-  - 180
-  - 100
+  - 260
+  - 220
 maxEE:
   - 2
   - 2

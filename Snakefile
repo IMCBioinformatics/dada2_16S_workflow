@@ -1,3 +1,4 @@
+
 import os
 import pandas as pd
 
@@ -5,118 +6,67 @@ configfile: "config.yaml"
 SampleTable = pd.read_table(config['sampletable'],index_col=0)
 SAMPLES = list(SampleTable.index)
 
-JAVA_MEM_FRACTION=0.85
-CONDAENV ='envs'
+#CONDAENV ='envs'
 PAIRED_END= ('R2' in SampleTable.columns)
 FRACTIONS= ['R1']
 if PAIRED_END: FRACTIONS+= ['R2']
 
+
+
+qc = config["qc_only"]
+
+def all_input_reads(qc):
+    if config["qc_only"]:
+        return expand("output/fastqc/{sample}" + config["R1"] + "_fastqc.html", sample=SAMPLES)
+    else:
+#                return expand("output/cutadapt/{sample}_R1.fastq.gz",sample=SAMPLES)
+                return expand("output/fastqc/{sample}" + config["R1"] + "_fastqc.html", sample=SAMPLES)
+
+
+
+
+
 rule all:
     input:
-        "output/stats/Nreads_filtered.txt",
-        "output/model/ErrorRates_R1.rds",
-         "output/seqtab.tsv",
-         "output/figures/Lengths/Sequence_Length_distribution_abundance.pdf",
+#        expand("output/dada2/dada2_filter/{sample}_{direction}.fastq.gz",sample=SAMPLES,direction=['R1','R2']),
+#        "output/model/ErrorRates_R1.rds",
+#        "output/seqtab.tsv",
+        "output/figures/Lengths/Sequence_Length_distribution_abundance.pdf",
          expand("output/taxonomy/{ref}.tsv",ref= config['idtaxa_dbs'].keys()),
-         "output/taxonomy/rep_seq.fasta",
-         'output/stats/Nreads.tsv',
-         "output/taxonomy/otu_tree.nwk"
+#        "output/taxonomy/ASV_seq.fasta",
+#	"output/taxonomy/ASV_aligned.fasta",
+        "output/taxonomy/ASV_tree.nwk",         
+        'output/dada2/Nreads.tsv',
+        "output/multiqc_unfilt/multiqc_report_unfiltered.html" if config["qc_only"] else "output/multiqc_filt/multiqc_report_filtered.html",
+        "output/multiqc_unfilt/multiqc_report_unfiltered.html",
+         all_input_reads
 
 
 rule all_profile:
-    input: expand("output/figures/Quality_profiles/{direction}/{sample}_{direction}.pdf",sample=SAMPLES,direction=['R1','R2']),
-        "output/quality_control/readlength.tsv"
-
-rule all_filtered:
-    input: "output/stats/Nreads_filtered.txt",
+    input: expand("output/dada2/quality/qualityPlots_{direction}.pdf",direction=['R1','R2'])
 
 
 
+#Used to combine read counts from each step of dada2
 rule combine_read_counts:
     input:
-        'output/stats/Nreads_filtered.txt',
-        'output/stats/Nreads_dereplicated.txt',
-        'output/stats/Nreads_chimera_removed.txt'
+        'output/dada2/Nreads_filtered.txt',
+        'output/dada2/Nreads_dereplicated.txt',
+        'output/dada2/Nreads_chimera_removed.txt'
     output:
-        'output/stats/Nreads.tsv',
-        plot= 'output/stats/Nreads.pdf'
+        'output/dada2/Nreads.tsv',
     run:
         import pandas as pd
-        import matplotlib
-        import matplotlib.pylab as plt
-
         D= pd.read_table(input[0],index_col=0)
-
-
         D= D.join(pd.read_table(input[1],index_col=0))
         D= D.join(pd.read_table(input[2],squeeze=True,index_col=0))
-
         D.to_csv(output[0],sep='\t')
-        matplotlib.rcParams['pdf.fonttype']=42
-        D.plot.bar(width=0.7,figsize=(D.shape[0]*0.3,5))
-        plt.ylabel('N reads')
-        plt.savefig(output.plot)
 
 
 
-rule bbmap_qc:
-    input:
-        unpack( lambda wc: dict(SampleTable.loc[wc.sample]))
-    output:
-        expand("output/quality_control/{{sample}}/{file}",
-               file=['base_hist.txt','quality_by_pos.txt','readlength.txt','gc_hist.txt','boxplot_quality.txt'])
-    params:
-        inputs = lambda wc,input: f"in={input.R1} in2={input.R2}" if PAIRED_END else f"in={input.R1}",
-        verifypaired = "t" if PAIRED_END else "f",
-        subfolder = lambda wc,output: os.path.dirname(output[0])
-    log:
-        "output/logs/QC/{sample}.log"
-    conda:
-        "envs/bbmap.yaml"
-    threads:
-        config["threads"]
-    resources:
-        mem = config["java_mem"],
-        java_mem = int(config["java_mem"] * JAVA_MEM_FRACTION)
-    shell:
-        """
-        mkdir -p {params.subfolder}
-        reformat.sh {params.inputs} \
-            iupacToN=t \
-            touppercase=t \
-            qout=33 \
-            overwrite=true \
-            verifypaired={params.verifypaired} \
-            \
-            bhist={params.subfolder}/base_hist.txt \
-            qhist={params.subfolder}/quality_by_pos.txt \
-            lhist={params.subfolder}/readlength.txt \
-            gchist={params.subfolder}/gc_hist.txt \
-            gcbins=auto \
-            bqhist={params.subfolder}/boxplot_quality.txt \
-            \
-            threads={threads} \
-            -Xmx{resources.java_mem}G 2> {log}
-        """
-
-rule combine_read_length:
-    input:
-        expand("output/quality_control/{sample}/readlength.txt",sample=SAMPLES)
-    output:
-        "output/quality_control/readlength.tsv"
-    run:
-        RL = pd.DataFrame()
-        for i,s in enumerate(SAMPLES):
-            RL[s]= pd.read_table(input[i],index_col=0,squeeze=True)
-        RL.T.to_csv(output[0],sep='\t')
-
-
-
-
-
-include: "rules/dada2.smk"
-include: "rules/taxonomy.smk"
-
+include: "utils/rules/qc_cutadapt.smk"
+include: "utils/rules/dada2.smk"
+include: "utils/rules/phylo_tree.smk"
 
 
 
