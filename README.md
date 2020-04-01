@@ -1,16 +1,14 @@
 
-Amplicon sequencing DADA2 snakemake workflow
+# Amplicon sequencing DADA2 snakemake workflow
 
 [![Snakemake](https://img.shields.io/badge/snakemake-v5.12.3-blue)](https://snakemake.bitbucket.io)
 [![DADA2](https://img.shields.io/badge/DADA2-v1.14-orange)](https://benjjneb.github.io/dada2/index.html)
 [![Conda](https://img.shields.io/badge/conda-v4.8.3-lightgrey)](https://docs.conda.io/en/latest/)
 
 
-This is a snakemake workflow for profiling composition of microbial communities from amplicon sequencing
-data (16s, with slight modifications for 18s and ITS)  using dada2. The initial code was cloned from https://github.com/SilasK/amplicon-seq-dada2 
+This is a snakemake workflow for profiling microbial communities from amplicon sequencing
+data using dada2. The initial code was cloned from https://github.com/SilasK/amplicon-seq-dada2 
 and modified to make a workflow suitable for my needs.
-
-
 
 ## Overview
 
@@ -21,14 +19,6 @@ Input:
 Output:
 
 * Taxonomic assignment tables for specified databases (GTDB, RDP, SILVA).
-* ASV abundance table (seqtab_nochimera.rds, seqtab_fitlerLength.rds)
-* ASV sequences in a fasta file from seqtab_nochimera.rds
-* Summary of reads filtered at each step (Nreads.tsv)
-
-
-Output:
-
-* Taxonomic assignment tables for specified databases (GTDB,RDP,SILVA).
 * ASV abundance table (seqtab_nochimera.rds, seqtab_fitlerLength.rds)
 * ASV sequences in a fasta file from seqtab_nochimera.rds
 * Summary of reads filtered at each step (Nreads.tsv)
@@ -58,20 +48,20 @@ Config file
 
 6. Once confident with all the parameters you can run
  ``` snakemake --use-conda --cores THREADS ```
-  
-If you plan to run it the cluster, 
 
 
-Output files and logs
 
+## Output files and logs
+
+### Log files
 All logs are placed in output/logs
 
-Important result files:
- output/dada2
-      seqtab_nochimeras.rds
-      seqtab_filterLength.rds
-      Nreads.tsv
- output/taxonomy
-    <DATABASE>.tsv
-    ASV_seq.fasta
-    ASV_tree.nwk
+### Important result files:
+#### output/dada2
+      1. seqtab_nochimeras.rds
+      2. seqtab_filterLength.rds
+      3. Nreads.tsv
+#### output/taxonomy
+    1. <DATABASE>.tsv
+    2. ASV_seq.fasta
+    3. ASV_tree.nwk
