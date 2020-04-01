@@ -13,7 +13,17 @@ data (16s, with slight modifications for 18s and ITS)  using dada2.
 
 ## Overview
 
-Input: Raw paired-end fastq files
+Input: 
+* Raw paired-end fastq files
+* samples.tsv [example](samples.tsv)
+
+Output:
+
+* Taxonomic assignment tables for specified databases (GTDB, RDP, SILVA).
+* ASV abundance table (seqtab_nochimera.rds, seqtab_fitlerLength.rds)
+* ASV sequences in a fasta file from seqtab_nochimera.rds
+* Summary of reads filtered at each step (Nreads.tsv)
+
 
 Output:
 
