@@ -7,7 +7,8 @@ Amplicon sequencing DADA2 snakemake workflow
 
 
 This is a snakemake workflow for profiling composition of microbial communities from amplicon sequencing
-data (16s, with slight modifications for 18s and ITS)  using dada2.
+data (16s, with slight modifications for 18s and ITS)  using dada2. The initial code was cloned from https://github.com/SilasK/amplicon-seq-dada2 
+and modified to make a workflow suitable for my needs.
 
 
 
