@@ -37,3 +37,40 @@ Output:
 
 <img src="utils/rulegraph.png" width="450">
 
+
+## How to Use
+
+1. Please make sure you have installed conda (miniconda) before running this workflow.
+
+
+2. Use prepare.py to generate samples.tsv. 
+ ``` prepare.py <DIR> ```
+<DIR> is the location of the raw fastq files.
+
+Config file
+
+3. Include the correct primer sequences in config.yaml 
+
+4. Make sure you modify TRUNC and Trim parameters for DADA2's filter function in config.yaml
+
+5. Download the taxonomy databases from http://www2.decipher.codes/Downloads.html  that you plan to use in utils/databases/.
+
+6. Once confident with all the parameters you can run
+ ``` snakemake --use-conda --cores THREADS ```
+  
+If you plan to run it the cluster, 
+
+
+Output files and logs
+
+All logs are placed in output/logs
+
+Important result files:
+ output/dada2
+      seqtab_nochimeras.rds
+      seqtab_filterLength.rds
+      Nreads.tsv
+ output/taxonomy
+    <DATABASE>.tsv
+    ASV_seq.fasta
+    ASV_tree.nwk
