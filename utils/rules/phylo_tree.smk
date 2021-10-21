@@ -8,7 +8,7 @@ rule multiple_align:
     threads:
         config['threads']
     conda:
-        "../envs/dada2.yaml"
+        "../envs/dada2_arc.yaml"
     log:
         "output/logs/taxonomy/multiple_align.log"
     script:

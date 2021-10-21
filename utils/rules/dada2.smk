@@ -9,7 +9,7 @@ rule plotQualityProfile:
         R1="output/dada2/quality/qualityPlots_R1.pdf",
         R2="output/dada2/quality/qualityPlots_R2.pdf"
     conda:
-        "../envs/dada2.yaml"
+        "../envs/dada2_arc.yaml"
     log:
 	"output/logs/dada2/plotQualityProfile.log"
     script:
@@ -31,7 +31,7 @@ rule dada2_filter:
     threads:
          config['threads']
     conda:
-         "../envs/dada2.yaml"
+         "../envs/dada2_arc.yaml"
     log:
         "output/logs/dada2/dada2_filter.log"
     script:
@@ -49,7 +49,7 @@ rule learnErrorRates:
     threads:
         config['threads']
     conda:
-        "../envs/dada2.yaml"
+        "../envs/dada2_arc.yaml"
     log:
         "output/logs/dada2/learnErrorRates.log"
     script:
@@ -70,7 +70,7 @@ rule dereplicate:
     threads:
         config['threads']
     conda:
-        "../envs/dada2.yaml"
+        "../envs/dada2_arc.yaml"
     log:
         "output/logs/dada2/dereplicate.log"
     script:
@@ -85,7 +85,7 @@ rule removeChimeras:
     threads:
         config['threads']
     conda:
-        "../envs/dada2.yaml"
+        "../envs/dada2_arc.yaml"
     log:
         "output/logs/dada2/removeChimeras.log"
     script:
@@ -106,7 +106,7 @@ rule filterLength:
     threads:
         1
     conda:
-        "../envs/dada2.yaml"
+        "../envs/dada2_arc.yaml"
     log:
         "output/logs/dada2/filterLength.log"
     script:
@@ -124,5 +124,45 @@ rule IDtaxa:
         config['threads']
     log:
         "output/logs/dada2/IDtaxa_{ref}.log"
+    conda:
+        "../envs/dada2_arc.yaml"
     script:
         "../scripts/dada2/IDtaxa.R"
+
+rule combine_taxa:
+     input:
+        RDP="output/taxonomy/RDP.tsv",
+        SILVA="output/taxonomy/Silva.tsv",
+        GTDB="output/taxonomy/GTDB.tsv"
+     output:
+         taxonomy="output/taxonomy/consensus_taxa.tsv"
+     script:
+         "../scripts/dada2/consensus_taxa.py"
+
+
+rule RDPtaxa:
+    input:
+        seqtab=rules.removeChimeras.output.rds,
+        ref= lambda wc: config['RDP_dbs'][wc.ref],
+        species= lambda wc: config['RDP_species'][wc.ref]
+    output:
+        taxonomy= "output/taxonomy/{ref}_RDP.tsv",
+    threads:
+        config['threads']
+    log:
+        "output/logs/dada2/RDPtaxa_{ref}.log"
+    conda:
+        "../envs/dada2_arc.yaml"
+    script:
+        "../scripts/dada2/RDPtaxa.R"
+
+rule combine_RDPtaxa:
+     input:
+        RDP="output/taxonomy/RDP_RDP.tsv",
+        SILVA="output/taxonomy/Silva_RDP.tsv",
+        GTDB="output/taxonomy/GTDB_RDP.tsv"
+     output:
+         taxonomy="output/taxonomy/consensus_RDPtaxa.tsv"
+     script:
+         "../scripts/dada2/consensus_taxa.py"
+   

@@ -4,7 +4,7 @@ sink(snakemake@log[[1]])
 
 track.filt <- filterAndTrim(snakemake@input[['R1']],snakemake@output[['R1']], 
                             snakemake@input[['R2']],snakemake@output[['R2']], 
-                            truncLen= snakemake@config[["truncLen"]],
+#                            truncLen= snakemake@config[["truncLen"]],
                             maxN=0,
                             maxEE=snakemake@config[["maxEE"]], 
                             truncQ=snakemake@config[["truncQ"]],

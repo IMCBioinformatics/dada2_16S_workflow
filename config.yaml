@@ -6,7 +6,6 @@
 
 sampletable: "samples.tsv"
 
-java_mem: 30
 threads: 20
 
 
@@ -16,20 +15,27 @@ qc_only: FALSE
 
 ## Cutadapt
 primers:
+# Illumina V4 protocol primers
+fwd_primer: ""
+rev_primer: ""
+fwd_primer_rc: ""
+rev_primer_rc: ""
+
+
 # Illumina V3-V4 protocol primers
-fwd_primer: "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGCCTACGGGNGGCWGCAG"
-rev_primer: "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGGACTACHVGGGTATCTAATCC"
-fwd_primer_rc: "CTGCWGCCNCCCGTAGGCTGTCTCTTATACACATCTGACGCTGCCGACGA"
-rev_primer_rc: "GGATTAGATACCCBDGTAGTCCTGTCTCTTATACACATCTCCGAGCCCACGAGAC"
+#fwd_primer: "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGCCTACGGGNGGCWGCAG"
+#rev_primer: "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGGACTACHVGGGTATCTAATCC"
+#fwd_primer_rc: "CTGCWGCCNCCCGTAGGCTGTCTCTTATACACATCTGACGCTGCCGACGA"
+#rev_primer_rc: "GGATTAGATACCCBDGTAGTCCTGTCTCTTATACACATCTCCGAGCCCACGAGAC"
 
 R1: "_R1_001"
 R2: "_R2_001"
 
 
 ## DADA2 
-truncLen:
-  - 260
-  - 220
+#truncLen:
+#  - 260
+#  - 220
 maxEE:
   - 2
   - 2
@@ -43,12 +49,23 @@ max_length_variation: 7
 
 ## Taxonomy 
 idtaxa_dbs:
-  RDP: "/gpfs/home/hramay/projects/databases/RDP_v16-mod_March2018.RData"
-  Silva: "/gpfs/home/hramay/projects/databases/SILVA_SSU_r132_March2018.RData"
-  GTDB: "/gpfs/home/hramay/projects/databases/GTDB_r89-mod_June2019.RData"
+ RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/RDP_v18-mod_July2020.RData"
+ Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/SILVA_SSU_r138_2019.RData"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_r202-mod_April2021.RData"
 
 idtaxa_species:
-  RDP: "/gpfs/home/hramay/projects/databases/rdp_species_assignment_16.fa.gz"
-  Silva: "/gpfs/home/hramay/projects/databases/silva_species_assignment_v132.fa.gz"
-  GTDB: "/gpfs/home/hramay/projects/databases/GTDB_dada2_assignment_species.fa.gz"
-  
+ RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_species_assignment_18.fa.gz"
+ Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_species_assignment_v138.1.fa.gz"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc122_ssu_r202_Species.fa.gz"
+
+
+## Taxonomy 
+RDP_dbs:
+ RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_train_set_18.fa.gz"
+ Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_nr99_v138.1_train_set.fa.gz"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc122_ssu_r202_Genus.fa.gz"
+
+RDP_species:
+ RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_species_assignment_18.fa.gz"
+ Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_species_assignment_v138.1.fa.gz"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc122_ssu_r202_Species.fa.gz"  

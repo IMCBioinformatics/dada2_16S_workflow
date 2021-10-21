@@ -37,6 +37,9 @@ rule all:
 #	"output/taxonomy/ASV_aligned.fasta",
         "output/taxonomy/ASV_tree.nwk",         
         'output/dada2/Nreads.tsv',
+        'output/taxonomy/consensus_taxa.tsv',
+        "output/taxonomy/consensus_RDPtaxa.tsv",
+#        'output/taxonomy/consensus_RDPtaxa.tsv',
         "output/multiqc_unfilt/multiqc_report_unfiltered.html" if config["qc_only"] else "output/multiqc_filt/multiqc_report_filtered.html",
         "output/multiqc_unfilt/multiqc_report_unfiltered.html",
          all_input_reads
