@@ -156,13 +156,13 @@ rule RDPtaxa:
     script:
         "../scripts/dada2/RDPtaxa.R"
 
-rule combine_RDPtaxa:
-     input:
-        RDP="output/taxonomy/RDP_RDP.tsv",
-        SILVA="output/taxonomy/Silva_RDP.tsv",
-        GTDB="output/taxonomy/GTDB_RDP.tsv"
-     output:
-         taxonomy="output/taxonomy/consensus_RDPtaxa.tsv"
-     script:
-         "../scripts/dada2/consensus_taxa.py"
+#rule combine_RDPtaxa:
+#     input:
+#        RDP="output/taxonomy/RDP_RDP.tsv",
+#        SILVA="output/taxonomy/Silva_RDP.tsv",
+#        GTDB="output/taxonomy/GTDB_RDP.tsv"
+#     output:
+#         taxonomy="output/taxonomy/consensus_RDPtaxa.tsv"
+#     script:
+#         "../scripts/dada2/consensus_taxa.py"
    

@@ -38,7 +38,9 @@ rule all:
         "output/taxonomy/ASV_tree.nwk",         
         'output/dada2/Nreads.tsv',
         'output/taxonomy/consensus_taxa.tsv',
-        "output/taxonomy/consensus_RDPtaxa.tsv",
+        'output/taxonomy/Silva_RDP.tsv'
+        'output/taxonomy/GTDB_RDP.tsv'
+        'output/taxonomy/RDP_RDP.tsv'
 #        'output/taxonomy/consensus_RDPtaxa.tsv',
         "output/multiqc_unfilt/multiqc_report_unfiltered.html" if config["qc_only"] else "output/multiqc_filt/multiqc_report_filtered.html",
         "output/multiqc_unfilt/multiqc_report_unfiltered.html",
