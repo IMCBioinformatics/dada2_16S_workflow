@@ -1,9 +1,9 @@
 
 # Amplicon sequencing DADA2 snakemake workflow
 
-[![Snakemake](https://img.shields.io/badge/snakemake-v5.12.3-blue)](https://snakemake.bitbucket.io)
+[![Snakemake](https://img.shields.io/badge/snakemake-v6.13.1-blue)](https://snakemake.bitbucket.io)
 [![DADA2](https://img.shields.io/badge/DADA2-v1.14-orange)](https://benjjneb.github.io/dada2/index.html)
-[![Conda](https://img.shields.io/badge/conda-v4.8.3-lightgrey)](https://docs.conda.io/en/latest/)
+[![Conda](https://img.shields.io/badge/conda-v4.11.0-lightgrey)](https://docs.conda.io/en/latest/)
 
 
 This is a snakemake workflow for profiling microbial communities from amplicon sequencing
