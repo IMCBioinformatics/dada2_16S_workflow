@@ -1,0 +1,106 @@
+---
+title: "Run Quality Report"
+author:
+    - "IMC Bioinformatics"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+params:
+   rmd: "qc_report.Rmd"
+output:
+  html_document:
+  highlight: tango
+  number_sections: no
+  theme: default
+  toc: yes
+  toc_depth: 3
+  toc_float:
+    collapsed: no
+    smooth_scroll: yes
+---
+
+
+## Overall read quality plots {.tabset .tabset-fade}
+
+<br>
+
+### Read quality raw 
+
+<br>
+
+<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/rawFilterQualityPlots_R1.png" width="450">
+<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/rawFilterQualityPlots_R2.png" width="450">
+
+
+
+
+
+### Read Quality after read trimming
+
+<br>
+
+<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/predada2FilterQualityPlots_R1.png" width="400">
+
+
+<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/predada2FilterQualityPlots_R2.png" width="400">
+
+
+
+### Read Quality after read filtering
+
+<br>
+
+<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/postdada2FilterQualityPlots_R1.png" width="400"> 
+
+<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/postdada2FilterQualityPlots_R2.png" width="400">  
+
+
+## Read length distribution for 5 random samples in the run {.tabset .tabset-fade}
+
+<br>
+
+### Sample 1
+
+<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/ReadsLength/S1_qc.png" width="800">
+
+### Sample 2
+
+<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/ReadsLength/S2_qc.png" width="800">
+
+
+### Sample 3
+
+<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/ReadsLength/S3_qc.png" width="800">
+
+### Sample 4
+
+<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/ReadsLength/S4_qc.png" width="800">
+
+### Sample 5
+
+<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/ReadsLength/S5_qc.png" width="800">
+
+
+<br>
+
+
+## Table of Reads at each step per sample
+
+<br>
+
+```{r,echo=F,messages=FALSE, warnings=FALSE}
+
+suppressMessages(library(knitr))
+suppressMessages(library(DT))
+suppressMessages(library(tidyr))
+suppressMessages(library(dplyr))
+
+reads<-read.csv("output/dada2/Nreads.tsv",sep="\t")
+
+datatable(reads,caption="Read processing")
+
+```
+
+
+
+## Source
+<a download="qc_report.Rmd" href="`r base64enc::dataURI(file = params$rmd, mime = 'text/rmd', encoding = 'base64')`">R Markdown source file (to produce this document)</a>
+
