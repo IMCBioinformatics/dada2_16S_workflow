@@ -2,28 +2,13 @@
 #Snakemake file for dada2 related rules
 
 
-rule plotQualityProfileRaw:
-    input:
-        R1= expand("output/cutadapt/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand("output/cutadapt/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
-    output:
-        R1="output/figures/quality/rawFilterQualityPlots_R1.png",
-        R2="output/figures/quality/rawFilterQualityPlots_R2.png"
-    conda:
-        "../envs/dada2_arc.yaml"
-    log:
-	"output/logs/dada2/rawplotQualityProfile.log"
-    script:
-        "../scripts/dada2/plotQualityProfile.R"
-
-
 rule plotQualityProfile:
     input:
-        R1= expand("output/cutadapt_qc/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand("output/cutadapt_qc/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
+        R1= expand("output/cutadapt_qc/{sample}_R1.fastq.gz",sample=SAMPLES),
+        R2= expand("output/cutadapt_qc/{sample}_R2.fastq.gz",sample=SAMPLES)
     output:
-        R1="output/figures/quality/predada2FilterQualityPlots_R1.png",
-        R2="output/figures/quality/predada2FilterQualityPlots_R2.png"
+        R1="output/figures/quality/predada2FilterQualityPlots_R1.pdf",
+        R2="output/figures/quality/predada2FilterQualityPlots_R2.pdf"
     conda:
         "../envs/dada2_arc.yaml"
     log:
@@ -35,17 +20,17 @@ rule plotQualityProfile:
 
 rule dada2_filter:
     input:
-        R1= expand("output/cutadapt_qc/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand("output/cutadapt_qc/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
+        R1= expand("output/cutadapt_qc/{sample}_R1.fastq.gz",sample=SAMPLES),
+        R2= expand("output/cutadapt_qc/{sample}_R2.fastq.gz",sample=SAMPLES)
     output:
-        R1= expand("output/dada2/dada2_filter/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand("output/dada2/dada2_filter/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES),
+        R1= expand("output/dada2/dada2_filter/{sample}_R1.fastq.gz",sample=SAMPLES),
+        R2= expand("output/dada2/dada2_filter/{sample}_R2.fastq.gz",sample=SAMPLES),
         nreads= "output/dada2/Nreads_filtered.txt",
         percent_phix= "output/dada2/percent_phix.txt"
     params:
         samples=SAMPLES,
         nread="output/dada2/Nreads_filtered.txt",
-        percent_phix= "output/dada2/percent_phix.txt"
+       percent_phix= "output/dada2/percent_phix.txt"
     threads:
          config['threads']
     conda:
@@ -58,11 +43,11 @@ rule dada2_filter:
 
 rule plotQualityProfilePostFilter:
     input:
-        R1= rules.dada2_filter.output.R1, 
-        R2= rules.dada2_filter.output.R2
+        R1= expand("output/dada2/dada2_filter/{sample}_R1.fastq.gz",sample=SAMPLES),
+        R2= expand("output/dada2/dada2_filter/{sample}_R2.fastq.gz",sample=SAMPLES)
     output:
-        R1="output/figures/quality/postdada2FilterQualityPlots_R1.png",
-        R2="output/figures/quality/postdada2FilterQualityPlots_R2.png"
+        R1="output/figures/quality/postdada2FilterQualityPlots_R1.pdf",
+        R2="output/figures/quality/postdada2FilterQualityPlots_R2.pdf"
     conda:
         "../envs/dada2_arc.yaml"
     log:
@@ -135,8 +120,8 @@ rule filterLength:
     input:
         seqtab= rules.removeChimeras.output.rds
     output:
-        plot_seqlength= "output/figures/ASVsLength/Sequence_Length_distribution.png",
-        plot_seqabundance= "output/figures/ASVsLength/Sequence_Length_distribution_abundance.png",
+        plot_seqlength= "output/figures/ASVsLength/Sequence_Length_distribution.pdf",
+        plot_seqabundance= "output/figures/ASVsLength/Sequence_Length_distribution_abundance.pdf",
         rds= "output/dada2/seqtab_filterLength.rds",
     threads:
         1

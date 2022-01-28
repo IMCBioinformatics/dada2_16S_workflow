@@ -12,10 +12,10 @@ save(errR,file=snakemake@output[['errR2']])
 
 
 ## ---- plot-rates ----
-plotErrors(errF,nominalQ=TRUE)
-ggsave(snakemake@output[['plotErr1']])
-plotErrors(errR,nominalQ=TRUE)
-ggsave(snakemake@output[['plotErr2']])
+p<-plotErrors(errF,nominalQ=TRUE)
+ggsave(snakemake@output[['plotErr1']],plot=p)
+p<-plotErrors(errR,nominalQ=TRUE)
+ggsave(snakemake@output[['plotErr2']],plot=p)
 
 
 

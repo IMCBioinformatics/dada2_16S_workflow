@@ -2,12 +2,12 @@ library(dada2)
 library(DECIPHER)
 
 sink(snakemake@log[[1]])
+
 seqtab = readRDS(snakemake@input[['seqtab']])
 
 seqs <- colnames(seqtab)
 
-
-names(seqs) <- paste0(paste0(">ASV",1:length(seqs),":"),seqs) # This propagates to the tip labels of the tree
+names(seqs) <- seqs # This propagates to the tip labels of the tree
 
 seq_stringset<-DNAStringSet(seqs)
 
