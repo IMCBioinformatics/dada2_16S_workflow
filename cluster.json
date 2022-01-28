@@ -1,0 +1,15 @@
+{
+  "__default__" :
+  {
+    "name": "snakemake.{rule}.{wildcards}",
+    "partition": "cpu2019", 
+    "nodes": 1, 
+    "ntasks": 1, 
+    "cpus-per-task": 10, 
+    "time": "10:00:00",
+    "mem": "100G",
+    "output" : "logs/{rule}.{wildcards}.out",
+    "error" : "logs/{rule}.{wildcards}.err", 
+  }
+}
+
