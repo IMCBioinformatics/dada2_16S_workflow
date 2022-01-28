@@ -13,20 +13,23 @@ threads: 20
 qc_only: FALSE
 
 
+
+
 ## Cutadapt
+## IMPORTANT ****** If you want to remove primers uncomment line 51  in utils/rules/qc_cutadapt.smk which will allow for primers to be removed
 primers:
+# Illumina V3V4 protocol primers
+#fwd_primer: "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGCCTACGGGNGGCWGCAG"
+#rev_primer: "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGGACTACHVGGGTATCTAATCC"
+#fwd_primer_rc: "CTGCWGCCNCCCGTAGGCTGTCTCTTATACACATCTGACGCTGCCGACGA"
+#rev_primer_rc: "GGATTAGATACCCBDGTAGTCCTGTCTCTTATACACATCTCCGAGCCCACGAGAC"
+
+
 # Illumina V4 protocol primers
 fwd_primer: ""
 rev_primer: ""
 fwd_primer_rc: ""
 rev_primer_rc: ""
-
-
-# Illumina V3-V4 protocol primers
-#fwd_primer: "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGCCTACGGGNGGCWGCAG"
-#rev_primer: "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGGACTACHVGGGTATCTAATCC"
-#fwd_primer_rc: "CTGCWGCCNCCCGTAGGCTGTCTCTTATACACATCTGACGCTGCCGACGA"
-#rev_primer_rc: "GGATTAGATACCCBDGTAGTCCTGTCTCTTATACACATCTCCGAGCCCACGAGAC"
 
 R1: "_R1_001"
 R2: "_R2_001"
