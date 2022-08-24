@@ -18,6 +18,8 @@ output:
 ---
 
 
+Sys.setenv(RSTUDIO_PANDOC="~/softwares/miniconda/envs/snakemake/bin/pandoc")
+
 ## Overall read quality plots {.tabset .tabset-fade}
 
 <br>
@@ -26,31 +28,46 @@ output:
 
 <br>
 
-<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/rawFilterQualityPlots_R1.png" width="450">
-<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/rawFilterQualityPlots_R2.png" width="450">
+```{r,results='asis', echo=F}
+path=snakemake@config[["path"]]
 
 
+files <- list.files(path = paste(path,"output/figures/quality/",sep=""), pattern = "raw", full.names = 
+TRUE)
 
+for (f in files) {
+   cat(paste0("![image_label](", f, "){width=50%}"))
+}
+
+```
 
 
 ### Read Quality after read trimming
 
 <br>
 
-<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/predada2FilterQualityPlots_R1.png" width="400">
+```{r, results='asis',echo=F}
 
-
-<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/predada2FilterQualityPlots_R2.png" width="400">
-
+files <- list.files(path = paste(path,"output/figures/quality/",sep=""), pattern = "predada2", full.names =
+TRUE)
+for (f in files) {
+   cat(paste0("![image_label](", f, "){width=50%}"))
+  }
+```
 
 
 ### Read Quality after read filtering
 
 <br>
 
-<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/postdada2FilterQualityPlots_R1.png" width="400"> 
+```{r, results='asis', echo=F}
 
-<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/quality/postdada2FilterQualityPlots_R2.png" width="400">  
+files <- list.files(path = paste(path,"output/figures/quality/",sep=""), pattern = "postdada2", full.names =
+TRUE)
+for (f in files) {
+   cat(paste0("![image_label](", f, "){width=50%}"))
+  }
+```
 
 
 ## Read length distribution for 5 random samples in the run {.tabset .tabset-fade}
@@ -59,24 +76,67 @@ output:
 
 ### Sample 1
 
-<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/ReadsLength/S1_qc.png" width="800">
+```{r, results='asis', echo=F}
+
+files <- list.files(path = paste(path,"output/figures/ReadsLength/",sep=""), pattern = "S1", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![image_label](", f, ")\n"))
+  }
+```
+
+
 
 ### Sample 2
 
-<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/ReadsLength/S2_qc.png" width="800">
+```{r, results='asis', echo=F}
+
+files <- list.files(path = paste(path,"output/figures/ReadsLength/",sep=""), pattern = "S2", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![image_label](", f, ")\n"))
+  }
+```
+
 
 
 ### Sample 3
 
-<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/ReadsLength/S3_qc.png" width="800">
+```{r, results='asis', echo=F}
+
+files <- list.files(path = paste(path,"output/figures/ReadsLength/",sep=""), pattern = "S3", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![image_label](", f, ")\n"))
+  }
+```
+
+
 
 ### Sample 4
 
-<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/ReadsLength/S4_qc.png" width="800">
+```{r, results='asis', echo=F}
+
+files <- list.files(path = paste(path,"output/figures/ReadsLength/",sep=""), pattern = "S4", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![image_label](", f, ")\n"))
+  }
+```
+
+
 
 ### Sample 5
 
-<img src="/bulk/IMCshared_bulk/hramay/snakemake/output/figures/ReadsLength/S5_qc.png" width="800">
+```{r, results='asis', echo=F}
+
+files <- list.files(path = paste(path,"output/figures/ReadsLength/",sep=""), pattern = "S5", full.names =TRUE)
+
+for (f in files) {
+  cat(paste0("![image_label](", f, ")\n"))
+  }
+```
+
 
 
 <br>
@@ -93,7 +153,8 @@ suppressMessages(library(DT))
 suppressMessages(library(tidyr))
 suppressMessages(library(dplyr))
 
-reads<-read.csv("output/dada2/Nreads.tsv",sep="\t")
+
+reads<-read.csv(paste(path,"output/dada2/Nreads.tsv",sep=""),sep="\t")
 
 datatable(reads,caption="Read processing")
 
@@ -103,4 +164,3 @@ datatable(reads,caption="Read processing")
 
 ## Source
 <a download="qc_report.Rmd" href="`r base64enc::dataURI(file = params$rmd, mime = 'text/rmd', encoding = 'base64')`">R Markdown source file (to produce this document)</a>
-
