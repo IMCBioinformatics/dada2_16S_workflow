@@ -9,10 +9,17 @@ sampletable: "samples.tsv"
 threads: 20
 
 
+##Path to where snakemake main directories are. So we can read files from to generate the html report
+path: "/work/IMC_binf/sbagheri/IMC_QC_runs/220712_M01716_0007_KH54F/"
+
+
 # fastqc and multiqc only
 qc_only: FALSE
 
+#Removing these samples when randomly choosing samples to make the reads length distribution
+#Example "Water|DNA|Undetermined
 
+sample_removal: "Undetermined"
 
 
 ## Cutadapt
