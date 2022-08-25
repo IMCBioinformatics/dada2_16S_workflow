@@ -61,21 +61,21 @@ max_length_variation: 7
 idtaxa_dbs:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/RDP_v18-mod_July2020.RData"
  Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/SILVA_SSU_r138_2019.RData"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_r202-mod_April2021.RData"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_r207-mod_April2022.RData"
 
 idtaxa_species:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_species_assignment_18.fa.gz"
  Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_species_assignment_v138.1.fa.gz"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc122_ssu_r202_Species.fa.gz"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Species.fa.gz"
 
 
 ## Taxonomy 
 RDP_dbs:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_train_set_18.fa.gz"
  Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_nr99_v138.1_train_set.fa.gz"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc122_ssu_r202_Genus.fa.gz"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Genus.fa.gz"
 
 RDP_species:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_species_assignment_18.fa.gz"
  Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_species_assignment_v138.1.fa.gz"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc122_ssu_r202_Species.fa.gz"  
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Species.fa.gz"  
