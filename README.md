@@ -14,7 +14,7 @@ and modified to make a workflow suitable for our needs.
 
 Input: 
 * Raw paired-end fastq files
-* samples.tsv [example](samples.tsv)
+* samples.tsv [example](example_files/samples.tsv)
 
 Output:
 
