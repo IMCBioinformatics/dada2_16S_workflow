@@ -34,9 +34,10 @@ Output:
 1. Please make sure you have installed conda (miniconda) before running this workflow.
 
 
-2. Use prepare.py to generate samples.tsv. 
- ``` prepare.py <DIR> ```
-<DIR> is the location of the raw fastq files.
+2. Use prepare.py script to generate the samples.tsv file. 
+
+
+```<DIR>``` is the location of the raw fastq files.
 
 ```bash
 python utils/scripts/common/prepare.py <DIR>
