@@ -56,9 +56,10 @@ learn_nbases: 100e6
 chimera_method: "consensus"
 max_length_variation: 7
 
-#Initialize random number generator for reproducibility of taxonomy 
-assignment
+
+#Initialize random number generator for reproducibility of taxonomy assignment
 seed: 100 
+
 
 ## Taxonomy 
 idtaxa_dbs:
