@@ -15,6 +15,10 @@ dna <- DNAStringSet(getSequences(seqtab)) # Create a DNAStringSet from the ASVs
 print(snakemake@input[['species']])
 print(snakemake@input[['ref']])
 
+
+set.seed(snakemake@config[['seed']]) # Initialize random 
+number generator for reproducibility
+
 taxtab <- assignTaxonomy(seqtab, refFasta = snakemake@input[['ref']],tryRC=TRUE,multithread=20)
 #colnames(taxtab)<-c("domain", "phylum", "class", "order", "family", "genus")
 
