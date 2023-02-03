@@ -38,6 +38,10 @@ Output:
  ``` prepare.py <DIR> ```
 <DIR> is the location of the raw fastq files.
 
+```bash
+python utils/scripts/common/prepare.py <DIR>
+```
+
 Config file
 
 3. Include the correct primer sequences in config.yaml 
