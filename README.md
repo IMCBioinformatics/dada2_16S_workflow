@@ -8,7 +8,7 @@
 
 This is a snakemake workflow for profiling microbial communities from amplicon sequencing
 data using dada2. The initial code was cloned from https://github.com/SilasK/amplicon-seq-dada2 
-and modified to make a workflow suitable for my needs.
+and modified to make a workflow suitable for our needs.
 
 ## Overview
 
@@ -32,11 +32,15 @@ Output:
 
 ## How to Use
 
-1. Please make sure you have installed conda (miniconda) before running this workflow.
+1. Please make sure you have installed conda (miniconda) and snakemake before running this workflow.
 
+2. Navigate to your project directory and clone this repository into that directory using the following command:
 
-2. Use prepare.py script to generate the samples.tsv file. 
+```bash
+git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
+```
 
+3. Use prepare.py script to generate the samples.tsv file as an input for this pipeline using the following command:. 
 
 ```<DIR>``` is the location of the raw fastq files.
 
@@ -44,16 +48,19 @@ Output:
 python utils/scripts/common/prepare.py <DIR>
 ```
 
-Config file
+## Config file
 
-3. Include the correct primer sequences in config.yaml 
+3. Include the correct primer sequences in config.yaml for primer removal
 
 4. Make sure you modify TRUNC and Trim parameters for DADA2's filter function in config.yaml
 
 5. Download the taxonomy databases from http://www2.decipher.codes/Downloads.html  that you plan to use in utils/databases/.
 
 6. Once confident with all the parameters you can run
- ``` snakemake --use-conda --cores THREADS ```
+ 
+ ```bash
+ snakemake --use-conda --cores THREADS
+ ```
 
 
 
