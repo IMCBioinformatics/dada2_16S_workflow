@@ -22,6 +22,7 @@ Output:
 * ASV abundance table (seqtab_nochimera.rds, seqtab_fitlerLength.rds)
 * ASV sequences in a fasta file from seqtab_nochimera.rds
 * Summary of reads filtered at each step (Nreads.tsv)
+* A phylogenetic tree
 
 
 ## Pipeline summary
