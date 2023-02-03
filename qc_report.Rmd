@@ -1,5 +1,5 @@
 ---
-title: "Run Quality Report"
+title: "Run Quality Control Report"
 author:
     - "IMC Bioinformatics"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -36,7 +36,7 @@ files <- list.files(path = paste(path,"output/figures/quality/",sep=""), pattern
 TRUE)
 
 for (f in files) {
-   cat(paste0("![image_label](", f, "){width=50%}"))
+   cat(paste0("![](", f, "){width=50%}"))
 }
 
 ```
@@ -51,7 +51,7 @@ for (f in files) {
 files <- list.files(path = paste(path,"output/figures/quality/",sep=""), pattern = "predada2", full.names =
 TRUE)
 for (f in files) {
-   cat(paste0("![image_label](", f, "){width=50%}"))
+   cat(paste0("![](", f, "){width=50%}"))
   }
 ```
 
@@ -65,7 +65,7 @@ for (f in files) {
 files <- list.files(path = paste(path,"output/figures/quality/",sep=""), pattern = "postdada2", full.names =
 TRUE)
 for (f in files) {
-   cat(paste0("![image_label](", f, "){width=50%}"))
+   cat(paste0("![](", f, "){width=50%}"))
   }
 ```
 
@@ -81,7 +81,7 @@ for (f in files) {
 files <- list.files(path = paste(path,"output/figures/ReadsLength/",sep=""), pattern = "S1", full.names =TRUE)
 
 for (f in files) {
-  cat(paste0("![image_label](", f, ")\n"))
+  cat(paste0("![](", f, ")\n"))
   }
 ```
 
@@ -94,7 +94,7 @@ for (f in files) {
 files <- list.files(path = paste(path,"output/figures/ReadsLength/",sep=""), pattern = "S2", full.names =TRUE)
 
 for (f in files) {
-  cat(paste0("![image_label](", f, ")\n"))
+  cat(paste0("![](", f, ")\n"))
   }
 ```
 
@@ -107,7 +107,7 @@ for (f in files) {
 files <- list.files(path = paste(path,"output/figures/ReadsLength/",sep=""), pattern = "S3", full.names =TRUE)
 
 for (f in files) {
-  cat(paste0("![image_label](", f, ")\n"))
+  cat(paste0("![](", f, ")\n"))
   }
 ```
 
@@ -120,7 +120,7 @@ for (f in files) {
 files <- list.files(path = paste(path,"output/figures/ReadsLength/",sep=""), pattern = "S4", full.names =TRUE)
 
 for (f in files) {
-  cat(paste0("![image_label](", f, ")\n"))
+  cat(paste0("![](", f, ")\n"))
   }
 ```
 
@@ -133,7 +133,7 @@ for (f in files) {
 files <- list.files(path = paste(path,"output/figures/ReadsLength/",sep=""), pattern = "S5", full.names =TRUE)
 
 for (f in files) {
-  cat(paste0("![image_label](", f, ")\n"))
+  cat(paste0("![](", f, ")\n"))
   }
 ```
 
@@ -152,6 +152,7 @@ suppressMessages(library(knitr))
 suppressMessages(library(DT))
 suppressMessages(library(tidyr))
 suppressMessages(library(dplyr))
+suppressMessages(library(ggplot2))
 
 
 reads<-read.csv(paste(path,"output/dada2/Nreads.tsv",sep=""),sep="\t")
@@ -160,6 +161,41 @@ datatable(reads,caption="Read processing")
 
 ```
 
+
+<br>
+<br>
+
+## Percentage distribution of clean reads in samples
+
+<br>
+
+```{r boxplot,echo=F,messages=FALSE, warning=FALSE,include=T,fig.width=7,fig.height=5}
+
+reads[,8]<-data.frame(reads$nonchim/reads$num_seqs)*100
+colnames(reads)[8]<-"Clean_Reads_Percent"
+
+reads<-reads %>% filter(Clean_Reads_Percent>40)  #Check for the percentage threshold for excluding negative controls and undetermined rows, so far 40% has worked
+
+reads1<-data.frame(rep("Current run",times=nrow(reads)),reads$Clean_Reads_Percent)
+colnames(reads1)<-c("Var","value")
+
+
+
+ggplot(reads1,aes(x=Var,y = value,fill=Var))+geom_boxplot()+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, size = 12, colour = "black",  hjust = 1, face= "bold"),
+        axis.title.y = element_text(size = 12, face = "bold"), legend.title = element_text(size = 16, face = "bold"),
+        axis.title.x = element_text(size = 12, face = "bold"),
+        legend.text = element_text(size = 12, face = "bold", colour = "black"),
+        axis.text.y = element_text(colour = "black", size = 12, face = "bold"),
+        plot.title = element_text(size=14,face="bold"),
+        plot.caption = element_text(hjust = 0.3,vjust=1.5,size = 12, face = "bold", colour = "red"),
+        legend.position = "None")+ylim(c(50,100))+xlab(NULL)+ylab("Clean reads")+
+  ggtitle("Remained Clean reads percentage after dada2 in the current run")+theme(panel.background = element_blank(),panel.border =element_rect(fill = NA, color = "black"), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
+
+
+
+```
 
 
 ## Source
