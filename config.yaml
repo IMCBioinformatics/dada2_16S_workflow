@@ -4,7 +4,7 @@
 
 # List of files
 
-sampletable: "samples.tsv"
+sampletable: "example_files/samples.tsv"
 
 threads: 20
 
