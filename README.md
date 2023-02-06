@@ -50,13 +50,23 @@ python utils/scripts/common/prepare.py <DIR>
 
 ## Config file
 
-3. Include the correct primer sequences in config.yaml for primer removal
+4. Make sure to change the paths to sample.tsv file and the main dada2 pipeline folder.
 
-4. Make sure you modify TRUNC and Trim parameters for DADA2's filter function in config.yaml
+5. Include the correct primer sequences in config.yaml for primer removal.
 
-5. Download the taxonomy databases from http://www2.decipher.codes/Downloads.html  that you plan to use in utils/databases/.
+6. Make sure you modify TRUNC and Trim parameters for DADA2's filter function in config file.
 
-6. Once confident with all the parameters you can run
+7. Download the taxonomy databases from http://www2.decipher.codes/Downloads.html  that you plan to use in utils/databases/ and consequently set the path for them in the config file.
+
+8. Once confident with all the parameters first run the snakemake dry run command to make sure that pipeline is working.
+ 
+ 
+ ```bash
+ snakemake -np
+ 
+ ```
+ if the pipeline is working then we can run the following command:
+ 
  
  ```bash
  snakemake --use-conda --cores THREADS
