@@ -2,58 +2,87 @@
 # In case of sample based data, it should be complemented by a samples.tsv file that contains
 # one row per sample. It can be parsed easily via pandas.
 
+**************
+*** inputs ***
+**************
+
 # List of files
-
 sampletable: "example_files/samples.tsv"
-
-threads: 20
 
 
 ##Path to where snakemake main directories are. So we can read files from to generate the html report
-path: "/work/IMC_binf/sbagheri/IMC_QC_runs/220712_M01716_0007_KH54F/"
+path: "/home/username/dada2_snakemake_workflow/"
 
 
-# fastqc and multiqc only
+**************
+***** QC *****
+**************
+
+#fastqc and multiqc only
 qc_only: FALSE
 
-#Removing these samples when randomly choosing samples to make the reads length distribution
+
+#For QC reports, we randomly choose samples to check their reads length distribution, here we exclude controls and undetermined samples
 #Example "Water|DNA|Undetermined
 
 sample_removal: "Undetermined"
 
 
 ## Cutadapt
-## IMPORTANT ****** If you want to remove primers uncomment line 51  in utils/rules/qc_cutadapt.smk which will allow for primers to be removed
-primers:
-# Illumina V3V4 protocol primers
+## IMPORTANT ****** If you want to remove primers uncomment line 51  in utils/rules/qc_cutadapt.smk******
+
+# Example: Illumina V3V4 protocol primers
 #fwd_primer: "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGCCTACGGGNGGCWGCAG"
 #rev_primer: "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGGACTACHVGGGTATCTAATCC"
-#fwd_primer_rc: "CTGCWGCCNCCCGTAGGCTGTCTCTTATACACATCTGACGCTGCCGACGA"
+#fwd_primer_rc: "CTGCWGCCNCCCGTAGGCTGTCTCTTATACACATCTGACGCTGCCGACGA"  
 #rev_primer_rc: "GGATTAGATACCCBDGTAGTCCTGTCTCTTATACACATCTCCGAGCCCACGAGAC"
 
-
+primers:
 # Illumina V4 protocol primers
 fwd_primer: ""
 rev_primer: ""
 fwd_primer_rc: ""
 rev_primer_rc: ""
 
+#Reads format
+
 R1: "_R1_001"
 R2: "_R2_001"
 
 
-## DADA2 
+***************
+**** DADA2 ****
+***************
+
+##Parameters 
+
+#Default is FALSE. If TRUE, multithreading is enabled and the number of available threads is automatically determined.
+#If an integer is provided, the number of threads to use is set
+threads: 20
+
+#Truncation length (Make sure your reads still overlap after truncation in order to merge them later!)
 #truncLen:
 #  - 260
 #  - 220
+
+#Maximum error rate (maximum number of “expected errors” allowed in a read)
 maxEE:
   - 2
   - 2
+
+#Truncate reads at the first instance of a quality score less than or equal to truncQ.
 truncQ: 2
 
+
+#Default 1e8. The minimum number of total bases to use for error rate learning.
 learn_nbases: 100e6
 
+
+#If "consensus": The samples in a sequence table are independently checked for bimeras, and a consensus decision on each sequence variant is made.
 chimera_method: "consensus"
+
+
+#Filtering merged reads that are shorter or longer than the most common length by 7  value of difference
 max_length_variation: 7
 
 
@@ -61,25 +90,25 @@ max_length_variation: 7
 seed: 100 
 
 
-## Taxonomy 
+## Taxonomy using idtaxa classifer 
 idtaxa_dbs:
- RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/RDP_v18-mod_July2020.RData"
- Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/SILVA_SSU_r138_2019.RData"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_r207-mod_April2022.RData"
+ RDP: "/home/username/dada2_snakemake_workflow/utils/databases/RDP_v18-mod_July2020.RData"
+ Silva: "/home/username/dada2_snakemake_workflow/utils/databases/SILVA_SSU_r138_2019.RData"
+ GTDB: "/home/username/dada2_snakemake_workflow/utils/databases/GTDB_r207-mod_April2022.RData"
 
 idtaxa_species:
- RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_species_assignment_18.fa.gz"
- Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_species_assignment_v138.1.fa.gz"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Species.fa.gz"
+ RDP: "/home/username/dada2_snakemake_workflow/utils/databases/rdp_species_assignment_18.fa.gz"
+ Silva: "/home/username/dada2_snakemake_workflow/utils/databases/silva_species_assignment_v138.1.fa.gz"
+ GTDB: "/home/username/dada2_snakemake_workflow/utils/databases/GTDB_bac120_arc53_ssu_r207_Species.fa.gz"
 
 
-## Taxonomy 
+## Taxonomy using RDP classifier
 RDP_dbs:
- RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_train_set_18.fa.gz"
- Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_nr99_v138.1_train_set.fa.gz"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Genus.fa.gz"
+ RDP: "/home/username/dada2_snakemake_workflow/utils/databases/rdp_train_set_18.fa.gz"
+ Silva: "/home/username/dada2_snakemake_workflow/utils/databases/silva_nr99_v138.1_train_set.fa.gz"
+ GTDB: "/home/username/dada2_snakemake_workflow/utils/databases/GTDB_bac120_arc53_ssu_r207_Genus.fa.gz"
 
 RDP_species:
- RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_species_assignment_18.fa.gz"
- Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_species_assignment_v138.1.fa.gz"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Species.fa.gz"  
+ RDP: "/home/username/dada2_snakemake_workflow/utils/databases/rdp_species_assignment_18.fa.gz"
+ Silva: "/home/username/dada2_snakemake_workflow/utils/databases/silva_species_assignment_v138.1.fa.gz"
+ GTDB: "/home/username/dada2_snakemake_workflow/utils/databases/GTDB_bac120_arc53_ssu_r207_Species.fa.gz"  
