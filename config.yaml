@@ -2,9 +2,9 @@
 # In case of sample based data, it should be complemented by a samples.tsv file that contains
 # one row per sample. It can be parsed easily via pandas.
 
-**************
-*** inputs ***
-**************
+#**************
+#*** inputs ***
+#**************
 
 # List of files
 sampletable: "example_files/samples.tsv"
@@ -14,9 +14,9 @@ sampletable: "example_files/samples.tsv"
 path: "/home/username/dada2_snakemake_workflow/"
 
 
-**************
-***** QC *****
-**************
+#**************
+#***** QC *****
+#**************
 
 #fastqc and multiqc only
 qc_only: FALSE
@@ -50,9 +50,9 @@ R1: "_R1_001"
 R2: "_R2_001"
 
 
-***************
-**** DADA2 ****
-***************
+#***************
+#**** DADA2 ****
+#***************
 
 ##Parameters 
 
