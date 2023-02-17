@@ -44,7 +44,7 @@ snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installati
 
 2.1. dada2 environment
 
-To create the dada2 environment and install r and dada2:
+To install r and dada2:
 
 ```bash
 conda create -n dada2 -c conda-forge -c bioconda -c defaults --override-channels bioconductor-dada2
@@ -63,7 +63,8 @@ BiocManager::install("DECIPHER")
 ```
 
 2.2. QC environment
-We need to install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a new environment.
+
+To install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a new environment:
 
 ```bash
 conda create --name QC
@@ -77,7 +78,8 @@ conda deactivate
 ```
 
 2.3 fastree_mafft environment 
-This environment is needed to make a phylogenetic tree a fasta file of ASVs.
+
+To create an environment for generating a phylogenetic tree and a fasta file of ASVs:
 
 ```bash
 conda create -n fastree_mafft
