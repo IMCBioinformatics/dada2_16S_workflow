@@ -102,7 +102,6 @@ git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
 ```<DIR>``` is the location of the raw fastq files.
 
 ```bash
-conda activate snakemake
 python utils/scripts/common/prepare.py <DIR>
 ```
 
