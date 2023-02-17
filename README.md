@@ -27,8 +27,7 @@ Output:
 
 ## Pipeline summary
 
-<img src="dag.pdf" width="600">
-
+<embed src="dag.pdf" width="600px" height="400px" />
 
 ## How to Use
 
