@@ -1,6 +1,6 @@
 suppressMessages(library(dada2))
 suppressMessages(library(DECIPHER))
-sink(snakemake@log[[1]])
+
 
 packageVersion("DECIPHER")
 
@@ -26,12 +26,11 @@ taxid <- t(sapply(ids, function(x) {
   taxa
 }))
 colnames(taxid) <- ranks; rownames(taxid) <- getSequences(seqtab)
-
 print( "Ranks are added")
 
 #print(taxid)
 
-taxid<-addSpecies(taxtab=taxid,refFasta=snakemake@input[['species']],allowMultiple=T, tryRC=TRUE)
+taxid<-assignSpecies(seqs=taxid,refFasta=snakemake@input[['species']],allowMultiple=T, tryRC=TRUE,verbose=T)
 
 
 print( "Species are added")

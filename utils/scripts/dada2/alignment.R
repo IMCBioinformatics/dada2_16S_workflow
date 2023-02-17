@@ -1,8 +1,6 @@
 library(dada2)
 library(DECIPHER)
 
-sink(snakemake@log[[1]])
-
 seqtab = readRDS(snakemake@input[['seqtab']])
 
 seqs <- colnames(seqtab)

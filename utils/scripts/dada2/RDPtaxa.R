@@ -1,8 +1,9 @@
 suppressMessages(library(dada2))
-suppressMessages(library(DECIPHER))
-sink(snakemake@log[[1]])
+suppressMessages(library(Biostrings))
+#suppressMessages(library(DECIPHER))
 
-packageVersion("DECIPHER")
+
+#packageVersion("DECIPHER")
 
 seqtab= readRDS(snakemake@input[['seqtab']]) # seqtab
 
@@ -18,20 +19,11 @@ print(snakemake@input[['ref']])
 
 set.seed(snakemake@config[['seed']]) # Initialize random number generator for reproducibility
 
-taxtab <- assignTaxonomy(seqtab, refFasta = snakemake@input[['ref']],tryRC=TRUE,multithread=20)
-#colnames(taxtab)<-c("domain", "phylum", "class", "order", "family", "genus")
+taxtab <- assignTaxonomy(seqtab, refFasta = snakemake@input[['ref']],tryRC=TRUE,multithread=snakemake@threads,outputBootstraps = T)
 
-
-print(colnames(taxtab))
-
-taxid<-addSpecies(taxtab=taxtab,refFasta=snakemake@input[['species']],allowMultiple=T, tryRC=TRUE)
-#colnames(taxid)<-c("domain", "phylum", "class", "order", "family", "genus","species")
-
-print( colnames(taxid))
-
-write.table(taxid,snakemake@output[['taxonomy']],sep='\t')
-
-
+print( colnames(taxtab$tax))
+write.table(taxtab$tax,snakemake@output[['taxonomy']],sep='\t')
+saveRDS(taxtab,file=snakemake@output[['rds_bootstrap']])
 
 
 

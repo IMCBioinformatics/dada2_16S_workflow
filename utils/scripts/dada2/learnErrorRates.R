@@ -1,6 +1,5 @@
 suppressMessages(library(dada2))
 suppressMessages(library(ggplot2))
-sink(snakemake@log[[1]])
 
 
 errF <- learnErrors(snakemake@input[['R1']], nbases=snakemake@config[["learn_nbases"]], multithread=snakemake@threads,randomize = TRUE)

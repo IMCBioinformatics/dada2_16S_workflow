@@ -1,7 +1,5 @@
 suppressMessages(library(dada2))
 
-sink(snakemake@log[[1]])
-
 
 track.filt_keep_phix <- filterAndTrim(snakemake@input[['R1']],snakemake@output[['R1']], 
                             snakemake@input[['R2']],snakemake@output[['R2']], 

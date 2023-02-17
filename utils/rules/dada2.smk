@@ -1,72 +1,62 @@
-
 #Snakemake file for dada2 related rules
-
 
 rule plotQualityProfileRaw:
     input:
-        R1= expand("output/cutadapt/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand("output/cutadapt/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
+        R1= expand(config["output_dir"]+"/cutadapt/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/cutadapt/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
     output:
-        R1="output/figures/quality/rawFilterQualityPlots_R1.png",
-        R2="output/figures/quality/rawFilterQualityPlots_R2.png"
+        R1=config["output_dir"]+"/figures/quality/rawFilterQualityPlots_R1.png",
+        R2=config["output_dir"]+"/figures/quality/rawFilterQualityPlots_R2.png"
     conda:
-        "../envs/dada2_arc.yaml"
-    log:
-	"output/logs/dada2/rawplotQualityProfile.log"
+        "dada2"
     script:
         "../scripts/dada2/plotQualityProfile.R"
 
 
-rule plotQualityProfile:
+rule plotQualityProfileAfterQC:
     input:
-        R1= expand("output/cutadapt_qc/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand("output/cutadapt_qc/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
+        R1= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
     output:
-        R1="output/figures/quality/predada2FilterQualityPlots_R1.png",
-        R2="output/figures/quality/predada2FilterQualityPlots_R2.png"
+        R1=config["output_dir"]+"/figures/quality/afterQCQualityPlots_R1.png",
+        R2=config["output_dir"]+"/figures/quality/afterQCQualityPlots_R2.png"
     conda:
-        "../envs/dada2_arc.yaml"
-    log:
-	"output/logs/dada2/PreplotQualityProfile.log"
+        "dada2"
     script:
         "../scripts/dada2/plotQualityProfile.R"
    
 
 
-rule dada2_filter:
+rule dada2Filter:
     input:
-        R1= expand("output/cutadapt_qc/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand("output/cutadapt_qc/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
+        R1= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
     output:
-        R1= expand("output/dada2/dada2_filter/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand("output/dada2/dada2_filter/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES),
-        nreads= "output/dada2/Nreads_filtered.txt",
-        percent_phix= "output/dada2/percent_phix.txt"
+        R1= expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES),
+        nreads= config["output_dir"]+"/dada2/Nreads_filtered.txt",
+        percent_phix= config["output_dir"]+"/dada2/percent_phix.txt"
     params:
         samples=SAMPLES,
-        nread="output/dada2/Nreads_filtered.txt",
-        percent_phix= "output/dada2/percent_phix.txt"
+        nread=config["output_dir"]+"/dada2/Nreads_filtered.txt",
+        percent_phix= config["output_dir"]+"/dada2/percent_phix.txt"
     threads:
-         config['threads']
+         config["threads"]
     conda:
-         "../envs/dada2_arc.yaml"
-    log:
-        "output/logs/dada2/dada2_filter.log"
+        "dada2"
     script:
         "../scripts/dada2/dada2_filter.R"
 
 
-rule plotQualityProfilePostFilter:
+rule plotQualityProfileAfterdada2:
     input:
-        R1= rules.dada2_filter.output.R1, 
-        R2= rules.dada2_filter.output.R2
+        R1= rules.dada2Filter.output.R1, 
+        R2= rules.dada2Filter.output.R2
     output:
-        R1="output/figures/quality/postdada2FilterQualityPlots_R1.png",
-        R2="output/figures/quality/postdada2FilterQualityPlots_R2.png"
+        R1=config["output_dir"]+"/figures/quality/afterdada2FilterQualityPlots_R1.png",
+        R2=config["output_dir"]+"/figures/quality/afterdada2FilterQualityPlots_R2.png"
     conda:
-        "../envs/dada2_arc.yaml"
-    log:
-        "output/logs/dada2/PostplotQualityProfile.log"
+        "dada2"
     script:
         "../scripts/dada2/plotQualityProfile.R"
 
@@ -74,78 +64,70 @@ rule plotQualityProfilePostFilter:
 
 rule learnErrorRates:
     input:
-        R1= rules.dada2_filter.output.R1,
-        R2= rules.dada2_filter.output.R2
+        R1= rules.dada2Filter.output.R1,
+        R2= rules.dada2Filter.output.R2
     output:
-        errR1= "output/dada2/learnErrorRates/ErrorRates_R1.rds",
-        errR2 = "output/dada2/learnErrorRates/ErrorRates_R2.rds",
-        plotErr1="output/figures/ErrorRates_R1.pdf",
-        plotErr2="output/figures/ErrorRates_R2.pdf"
+        errR1= config["output_dir"]+"/dada2/learnErrorRates/ErrorRates_R1.rds",
+        errR2 = config["output_dir"]+"/dada2/learnErrorRates/ErrorRates_R2.rds",
+        plotErr1=config["output_dir"]+"/figures/errorRates/ErrorRates_R1.pdf",
+        plotErr2=config["output_dir"]+"/figures/errorRates/ErrorRates_R2.pdf"
     threads:
         config['threads']
     conda:
-        "../envs/dada2_arc.yaml"
-    log:
-        "output/logs/dada2/learnErrorRates.log"
+        "dada2"
     script:
         "../scripts/dada2/learnErrorRates.R"
 
 
-rule dereplicate:
+rule generateSeqtab:
     input:
-        R1= rules.dada2_filter.output.R1,
-        R2= rules.dada2_filter.output.R2,
+        R1= rules.dada2Filter.output.R1,
+        R2= rules.dada2Filter.output.R2,
         errR1= rules.learnErrorRates.output.errR1,
         errR2= rules.learnErrorRates.output.errR2
     output:
-        seqtab= temp("output/dada2/seqtab_with_chimeras.rds"),
-        nreads= temp("output/dada2/Nreads_dereplicated.txt")
+        seqtab= temp(config["output_dir"]+"/dada2/seqtab_with_chimeras.rds"),
+        nreads= temp(config["output_dir"]+"/dada2/Nreads_with_chimeras.txt")
     params:
         samples=SAMPLES
     threads:
         config['threads']
     conda:
-        "../envs/dada2_arc.yaml"
-    log:
-        "output/logs/dada2/dereplicate.log"
+        "dada2"
     script:
-        "../scripts/dada2/dereplicate.R"
+        "../scripts/dada2/generateSeqtab.R"
 
 rule removeChimeras:
     input:
-        seqtab= rules.dereplicate.output.seqtab
+        seqtab= rules.generateSeqtab.output.seqtab
     output:
-        rds= "output/seqtab_nochimeras.rds",
-        nreads=temp("output/dada2/Nreads_chimera_removed.txt")
+        rds= config["output_dir"]+"/dada2/seqtab_nochimeras.rds",
+        nreads=temp(config["output_dir"]+"/dada2/Nreads_nochimera.txt")
     threads:
         config['threads']
     conda:
-        "../envs/dada2_arc.yaml"
-    log:
-        "output/logs/dada2/removeChimeras.log"
+        "dada2"
     script:
         "../scripts/dada2/removeChimeras.R"
 
 
 
-# Use this rule if you automatically want to subset the ASVs based on their distribution.
-# This rule is commented out at the moment
 
-rule filterLength:
+
+##plots the distribution of ASV length count and abundance based on length
+
+rule plotASVLength:
     input:
         seqtab= rules.removeChimeras.output.rds
     output:
-        plot_seqlength= "output/figures/ASVsLength/Sequence_Length_distribution.png",
-        plot_seqabundance= "output/figures/ASVsLength/Sequence_Length_distribution_abundance.png",
-        rds= "output/dada2/seqtab_filterLength.rds",
+        plot_seqlength= config["output_dir"]+"/figures/ASVsLength/Sequence_Length_distribution.png",
+        plot_seqabundance= config["output_dir"]+"/figures/ASVsLength/Sequence_Length_distribution_abundance.png",
     threads:
-        1
+        config["threads"]
     conda:
-        "../envs/dada2_arc.yaml"
-    log:
-        "output/logs/dada2/filterLength.log"
+        "dada2"
     script:
-        "../scripts/dada2/filterLength.R"
+        "../scripts/dada2/plotASVLength.R"
 
 
 rule IDtaxa:
@@ -154,26 +136,13 @@ rule IDtaxa:
         ref= lambda wc: config['idtaxa_dbs'][wc.ref],
         species= lambda wc: config['idtaxa_species'][wc.ref]
     output:
-        taxonomy= "output/taxonomy/{ref}.tsv",
+        taxonomy= config["output_dir"]+"/taxonomy/{ref}_IDtaxa.tsv",
     threads:
         config['threads']
-    log:
-        "output/logs/dada2/IDtaxa_{ref}.log"
     conda:
-        "../envs/dada2_arc.yaml"
+        "dada2"
     script:
         "../scripts/dada2/IDtaxa.R"
-
-rule combine_taxa:
-     input:
-        RDP="output/taxonomy/RDP.tsv",
-        SILVA="output/taxonomy/Silva.tsv",
-        GTDB="output/taxonomy/GTDB.tsv"
-     output:
-         taxonomy="output/taxonomy/consensus_taxa.tsv"
-     script:
-         "../scripts/dada2/consensus_taxa.py"
-
 
 rule RDPtaxa:
     input:
@@ -181,23 +150,12 @@ rule RDPtaxa:
         ref= lambda wc: config['RDP_dbs'][wc.ref],
         species= lambda wc: config['RDP_species'][wc.ref]
     output:
-        taxonomy= "output/taxonomy/{ref}_RDP.tsv",
+        taxonomy= config["output_dir"]+"/taxonomy/{ref}_RDP.tsv",
+        rds_bootstrap=config["output_dir"]+"/taxonomy/{ref}_RDP_boostrap.rds"
     threads:
         config['threads']
-    log:
-        "output/logs/dada2/RDPtaxa_{ref}.log"
     conda:
-        "../envs/dada2_arc.yaml"
+        "dada2"
     script:
         "../scripts/dada2/RDPtaxa.R"
 
-#rule combine_RDPtaxa:
-#     input:
-#        RDP="output/taxonomy/RDP_RDP.tsv",
-#        SILVA="output/taxonomy/Silva_RDP.tsv",
-#        GTDB="output/taxonomy/GTDB_RDP.tsv"
-#     output:
-#         taxonomy="output/taxonomy/consensus_RDPtaxa.tsv"
-#     script:
-#         "../scripts/dada2/consensus_taxa.py"
-   

@@ -23,9 +23,10 @@ samples$R2=basename(samples$R2)
 
 samples$name<-rownames(samples)
 
-remove_samples="DNA|Water|undetermined"
+remove_samples=snakemake@input[['remove_samples']]
+
 print(c("Samples not included in random selection:",remove_samples))
-samples<-samples[-grep(pattern = "DNA|Water|undetermined",samples$name),] 
+samples<-samples[-grep(pattern = remove_samples,samples$name),] 
 fiveRandom=samples[sample (samples$name, size=5, replace =F),]
 
 

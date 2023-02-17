@@ -1,33 +1,29 @@
 
-rule multiple_align:
+rule multipleAlign:
     input:
         seqtab =rules.removeChimeras.output.rds
     output:
-        seqfasta="output/taxonomy/ASV_seq.fasta",
-        alignment="output/taxonomy/ASV_aligned.fasta"
+        seqfasta=config["output_dir"]+"/phylogeny/ASV_seq.fasta",
+        alignment=config["output_dir"]+"/phylogeny/ASV_aligned.fasta"
     threads:
         config['threads']
     conda:
-        "../envs/dada2_arc.yaml"
-    log:
-        "output/logs/taxonomy/multiple_align.log"
+        "dada2"
     script:
         "../scripts/dada2/alignment.R"
 
    
 
-rule newick_tree:
+rule newickTree:
     input:
-         rules.multiple_align.output.alignment
+         rules.multipleAlign.output.alignment
     output:
-        "output/taxonomy/ASV_tree.nwk"
+        config["output_dir"]+"/phylogeny/ASV_tree.nwk"
     threads:
         config['threads']
     conda:
-        "../envs/fastree_mafft.yaml"
-    log:
-        "output/logs/taxonomy/fastree.log"
+        "fastree_mafft"
     shell:
         """
-        export OMP_NUM_THREADS={threads} && FastTreeMP -nt -gamma -spr 4 -log {log} -quiet {input} > {output} || fasttree -nt -gamma -spr 4 -log {log} -quiet {input} > {output}
+        export OMP_NUM_THREADS={threads} && FastTreeMP -nt -gamma -spr 4 {input} > {output} || fasttree -nt -gamma -spr 4  {input} > {output}
         """

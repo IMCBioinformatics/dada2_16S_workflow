@@ -1,107 +1,101 @@
-
-rule fastqc:
+rule fastqcRaw:
     input:
         unpack( lambda wc: dict(SampleTable.loc[wc.sample]))
     output:
-        R1= "output/fastqc/{sample}" + config["R1"] + "_fastqc.html",
-        R2 ="output/fastqc/{sample}" + config["R2"] + "_fastqc.html"
-    conda: 
-        "../envs/fastqc.yaml"
-    log:
-        "output/logs/qc/fastqc_{sample}_unfilt.log"
-    shell: "fastqc -o output/fastqc {input.R1} {input.R2} >> {log}"
-
-
-rule multiqc:
-    input:
-        R1 =expand("output/fastqc/{sample}" + config["R1"] +"_fastqc.html",sample=SAMPLES),
-        R2 =expand("output/fastqc/{sample}" + config["R2"] +"_fastqc.html",sample=SAMPLES)
-    output:
-        "output/multiqc_unfilt/multiqc_report_unfiltered.html"
+        R1= config["output_dir"] + "/fastqc_raw/{sample}" + config["R1"] + "_fastqc.html",
+        R2= config["output_dir"] + "/fastqc_raw/{sample}" + config["R2"] + "_fastqc.html"
     conda:
-        "../envs/multiqc.yaml"
-    log:
-        "output/logs/qc/multiqc_unfiltered.log"
+        "QC"
+    params:
+          output=config["output_dir"]+ "/fastqc_raw"
+    shell: "fastqc -o {params.output} {input.R1} {input.R2} "
+
+
+rule multiqcRaw:
+    input:
+        R1 =expand(config["output_dir"]+"/fastqc_raw/{sample}" + config["R1"] +"_fastqc.html",sample=SAMPLES),
+        R2 =expand(config["output_dir"]+"/fastqc_raw/{sample}" + config["R2"] +"_fastqc.html",sample=SAMPLES)
+    output:
+        config["output_dir"]+"/multiqc_raw/multiqc_report_raw.html"
+    conda:
+        "QC"
+    params:
+        fastqc_dir=config["output_dir"]+"/fastqc_raw",
+        multiqc_dir=config["output_dir"]+"/multiqc_raw",
+        multiqc_html="multiqc_report_raw.html"
     shell: 
-        "multiqc -f output/fastqc -o output/multiqc_unfilt -n multiqc_report_unfiltered.html >> {log}"
+        "multiqc -f {params.fastqc_dir} -o {params.multiqc_dir} -n {params.multiqc_html} "
 
 
 
-rule cutadapt:
+rule cutAdapt:
     input:
         unpack( lambda wc: dict(SampleTable.loc[wc.sample]))
     output:
-        R1= "output/cutadapt/{sample}" + config["R1"] + ".fastq.gz",
-        R2= "output/cutadapt/{sample}" + config["R2"] + ".fastq.gz"
-        #touch("mytask.done")
-
+        R1= config["output_dir"]+"/cutadapt/{sample}" + config["R1"] + ".fastq.gz",
+        R2= config["output_dir"]+"/cutadapt/{sample}" + config["R2"] + ".fastq.gz"
     params:
        inputs= lambda wc,input: f"{input.R1} {input.R2}",
-        m=10,
-        o=17,
-        e=0.1
+        m=config["min_len"],
+        o=config["min_overlap"],
+        e=config["max_e"]
     threads:
         config['threads']
     conda:
-        "../envs/cutadapt.yaml"
-    log: 
-        "output/logs/qc/cutadapt_primer/cutadapt{sample}.log"
+        "QC"
     shell:
         "cutadapt -m {params.m} -O {params.o} " 
 #       "-g {config[fwd_primer]} -G {config[rev_primer]} -a {config[rev_primer_rc]} -A {config[fwd_primer_rc]}"
         " -o {output.R1} -p {output.R2} "
-        "{params.inputs} >> {log}"
+        "{params.inputs} "
 
-rule cutadapt_qc:
+rule cutAdaptQc:
     input:
-        R1= rules.cutadapt.output.R1,
-        R2= rules.cutadapt.output.R2
+        R1= rules.cutAdapt.output.R1,
+        R2= rules.cutAdapt.output.R2
     output:
-        R1= "output/cutadapt_qc/{sample}" + config["R1"] + ".fastq.gz",
-        R2= "output/cutadapt_qc/{sample}" + config["R2"] + ".fastq.gz"
+        R1= config["output_dir"]+"/cutadapt_qc/{sample}" + config["R1"] + ".fastq.gz",
+        R2= config["output_dir"]+"/cutadapt_qc/{sample}" + config["R2"] + ".fastq.gz"
     params:
-        qf=20,
-        qr=20,
-        m=10,
+        qf=config["qf"],
+        qr=config["qr"],
+        m=config["min_len"]
     threads:
         config['threads']
     conda:
-        "../envs/cutadapt.yaml"
-    log: 
-        "output/logs/qc/cutadapt_primer/cutadapt{sample}.log"
+        "QC"
     shell:
-        "cutadapt -A XXX -q {params.qf},{params.qr} -m {params.m} -o {output.R1} -p {output.R2} {input.R1} {input.R2} >> {log}"
-#	 " {params.inputs}"
+        "cutadapt -A XXX -q {params.qf},{params.qr} -m {params.m} -o {output.R1} -p {output.R2} {input.R1} {input.R2} "
 
 
 
-
-rule fastqc_filt:
+rule fastqcFilt:
     input:
-        R1= rules.cutadapt_qc.output.R1,
-        R2= rules.cutadapt_qc.output.R2
+        R1= rules.cutAdaptQc.output.R1,
+        R2= rules.cutAdaptQc.output.R2
     output:
-        R1= "output/fastqc_filt/{sample}"+ config["R1"] + "_fastqc.html",
-        R2= "output/fastqc_filt/{sample}"+ config["R2"] + "_fastqc.html"
-    conda: 
-        "../envs/fastqc.yaml"
-    log: 
-        "output/logs/qc/fastqc_{sample}_filt.log"
-    shell: 
-        "fastqc -o output/fastqc_filt {input.R1} {input.R2} >> {log}"
-       
-
-
-
-rule multiqc_filt:
-    input:
-        R1= expand("output/fastqc_filt/{sample}"+ config["R1"] + "_fastqc.html",sample=SAMPLES),
-        R2= expand("output/fastqc_filt/{sample}"+ config["R2"] + "_fastqc.html",sample=SAMPLES)
-    output:
-        "output/multiqc_filt/multiqc_report_filtered.html"
+        R1= config["output_dir"]+"/fastqc_filt/{sample}"+ config["R1"] + "_fastqc.html",
+        R2= config["output_dir"]+"/fastqc_filt/{sample}"+ config["R2"] + "_fastqc.html"
     conda:
-        "../envs/multiqc.yaml"
-    log:   
-        "output/logs/qc/multiqc_filt.log"
+        "QC"
+    params:
+         fastqc_dir=config["output_dir"]+ "/fastqc_filt"
     shell: 
-        "multiqc -f output/fastqc_filt -o output/multiqc_filt -n multiqc_report_filtered.html >> {log}"
+        "fastqc -o {params.fastqc_dir} {input.R1} {input.R2} " 
+
+
+
+rule multiqcFilt:
+    input:
+        R1= expand(config["output_dir"]+"/fastqc_filt/{sample}"+ config["R1"] + "_fastqc.html",sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/fastqc_filt/{sample}"+ config["R2"] + "_fastqc.html",sample=SAMPLES)
+    output:
+        config["output_dir"]+"/multiqc_filt/multiqc_report_filtered.html"
+    conda:
+        "QC"
+    params:
+        fastqc_dir=config["output_dir"]+"/fastqc_filt",
+        multiqc_dir=config["output_dir"]+"/multiqc_filt",
+        multiqc_html="multiqc_report_filtered.html"
+    shell: 
+        "multiqc -f {params.fastqc_dir} -o {params.multiqc_dir} -n {params.multiqc_html}"

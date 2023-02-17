@@ -2,7 +2,6 @@ suppressMessages(library(dada2))
 suppressMessages(library(ggplot2))
 suppressMessages(library(gridExtra))
 
-#sink(snakemake@log[[1]])
 
 
 p_F<- plotQualityProfile(snakemake@input$R1,n=1e5,aggregate=T) + theme_classic(base_size=6)
