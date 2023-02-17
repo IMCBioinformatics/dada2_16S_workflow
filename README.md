@@ -107,8 +107,6 @@ conda activate snakemake
 python utils/scripts/common/prepare.py <DIR>
 ```
 
-## Config file
-
 4. Make sure to change the paths to sample.tsv file and the output directory of dada2 pipeline.
 
 5. Include the correct primer sequences in config.yaml for primer removal.
@@ -132,7 +130,7 @@ Then snakemake can be executed by the following bash script:
 ## Output files and logs
 
 ### Log files
-All logs are placed in output/logs
+All logs are placed in the logs directory. A copy of all snakemake files and logs will be copied to the output directory as well to avoid rewritting them by upcoming re-runs.
 
 ### Important result files:
 #### output/dada2
