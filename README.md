@@ -29,9 +29,94 @@ Output:
 
 <img src="rulegraph.png" width="600">
 
-## How to Use
 
-1. Please make sure you have installed conda (miniconda) and snakemake before running this workflow.
+
+## Installation
+
+1. Please install the following tools before running this workflow:
+
+conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
+
+snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+
+
+2. Then we need to set up a few environments to use in different steps of the pipeline.
+
+2.1. dada2 environment to run dada2 in R
+To create the dada2 environment and install r and dada2:
+
+```bash
+onda create -n dada2 -c conda-forge -c bioconda -c defaults --override-channels bioconductor-dada2![image](https://user-images.githubusercontent.com/54686930/219556305-abc535cd-1872-4b59-bfac-44b8cccb0274.png)
+```
+To activate the environment and install the required packages locally in R:
+
+```bash
+conda activate dada2
+```
+enter the R environment by running
+
+```bash
+(base) [username@hostname ~]$ R
+```
+gridExtra and DECIPHER packages are needed:
+
+```bash
+install.packages("gridExtra")
+```
+
+```bash
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("DECIPHER")
+```
+
+2.2. QC environment
+We need to install fastqc, multiQC, cutadapt, and seqkit tools for quality control.
+
+```bash
+conda create --name QC
+```
+
+```bash
+conda activate QC
+```
+
+```bash
+conda install -c bioconda fastqc
+```
+
+```bash
+conda install -c anaconda pip
+```
+
+```bash
+pip install multiqc
+```
+
+```bash
+conda install -c bioconda cutadapt
+```
+
+```bash
+conda install -c bioconda seqkit
+```
+to exit an environment
+```bash
+conda deactivate
+```
+2.3 fastree_mafft environment to make a phylogenetic tree
+
+```bash
+conda create -n fastree_mafft
+conda activate fastree_mafft
+conda install -c bioconda fasttree
+conda deactivate
+```
+
+
+## How to Use
+1. Make sure that all the environments are set up and required packages are installed.
 
 2. Navigate to your project directory and clone this repository into that directory using the following command:
 
