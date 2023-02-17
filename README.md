@@ -42,70 +42,40 @@ snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installati
 
 2. Then we need to set up a few environments to use in different steps of the pipeline.
 
-2.1. dada2 environment to run dada2 in R
-To create the dada2 environment and install r and dada2:
+    2.1. dada2 environment to run dada2 in R
+    To create the dada2 environment and install r and dada2:
 
 ```bash
-onda create -n dada2 -c conda-forge -c bioconda -c defaults --override-channels bioconductor-dada2![image](https://user-images.githubusercontent.com/54686930/219556305-abc535cd-1872-4b59-bfac-44b8cccb0274.png)
+conda create -n dada2 -c conda-forge -c bioconda -c defaults --override-channels bioconductor-dada2![image](https://user-images.githubusercontent.com/54686930/219556305-abc535cd-1872-4b59-bfac-44b8cccb0274.png)
 ```
-To activate the environment and install the required packages locally in R:
+    To activate the environment and install the required packages (gridExtra and DECIPHER) locally in R:
 
 ```bash
 conda activate dada2
-```
-enter the R environment by running
-
-```bash
-(base) [username@hostname ~]$ R
-```
-gridExtra and DECIPHER packages are needed:
-
-```bash
+(dada2) [username@hostname ~]$ R
 install.packages("gridExtra")
-```
 
-```bash
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-
 BiocManager::install("DECIPHER")
 ```
 
-2.2. QC environment
-We need to install fastqc, multiQC, cutadapt, and seqkit tools for quality control.
+    2.2. QC environment
+    We need to install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a new environment.
 
 ```bash
 conda create --name QC
-```
-
-```bash
 conda activate QC
-```
-
-```bash
 conda install -c bioconda fastqc
-```
-
-```bash
 conda install -c anaconda pip
-```
-
-```bash
 pip install multiqc
-```
-
-```bash
 conda install -c bioconda cutadapt
-```
-
-```bash
 conda install -c bioconda seqkit
-```
-to exit an environment
-```bash
 conda deactivate
 ```
-2.3 fastree_mafft environment to make a phylogenetic tree
+
+    2.3 fastree_mafft environment 
+    This environment is needed to make a phylogenetic tree a fasta file of ASVs.
 
 ```bash
 conda create -n fastree_mafft
