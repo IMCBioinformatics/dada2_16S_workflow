@@ -103,12 +103,13 @@ git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
 ```<DIR>``` is the location of the raw fastq files.
 
 ```bash
+conda activate snakemake
 python utils/scripts/common/prepare.py <DIR>
 ```
 
 ## Config file
 
-4. Make sure to change the paths to sample.tsv file and the main dada2 pipeline folder.
+4. Make sure to change the paths to sample.tsv file and the output directory of dada2 pipeline.
 
 5. Include the correct primer sequences in config.yaml for primer removal.
 
@@ -118,19 +119,15 @@ python utils/scripts/common/prepare.py <DIR>
 
 8. Once confident with all the parameters first run the snakemake dry run command to make sure that pipeline is working.
  
- 
  ```bash
  snakemake -np
- 
  ```
- if the pipeline is working then we can run the following command:
- 
+Then snakemake can be executed by the following bash script:
  
  ```bash
- snakemake --use-conda --cores THREADS
+ sbatch dada2_sbatch.sh
  ```
-
-
+ 
 
 ## Output files and logs
 
