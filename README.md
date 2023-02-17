@@ -27,7 +27,7 @@ Output:
 
 ## Pipeline summary
 
-<embed src="./dag.pdf" width="600px" height="400px" />
+<iframe src="dag.pdf" height="400" width="600"></iframe>
 
 
 ## How to Use
