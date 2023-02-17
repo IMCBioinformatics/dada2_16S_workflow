@@ -27,7 +27,7 @@ Output:
 
 ## Pipeline summary
 
-<img src="rulegraph.png" width="600">
+<img src="dag.pdf" width="600">
 
 
 ## How to Use
