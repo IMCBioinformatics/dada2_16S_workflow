@@ -49,12 +49,16 @@ To install r and dada2:
 conda create -n dada2 -c conda-forge -c bioconda -c defaults --override-channels bioconductor-dada2
 ```
 
-To activate the environment and install the required packages (gridExtra and DECIPHER) locally in R:
+To activate the environment and install the required packages (gridExtra, ggplot2 and DECIPHER) locally in R:
 
 ```bash
 conda activate dada2
 (dada2) [username@hostname ~]$ R
 install.packages("gridExtra")
+
+
+install.packages("ggplot2")
+
 
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
