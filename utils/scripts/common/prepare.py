@@ -3,8 +3,10 @@ import logging
 import pandas as pd
 from collections import defaultdict
 
+#make a directory
+os.makedirs("samples")
 
-def get_sample_files(path,outfile='samples.tsv'):
+def get_sample_files(path,outfile='samples/samples.tsv'):
     samples = defaultdict(dict)
     seen = set()
     for dir_name, sub_dirs, files in os.walk(os.path.abspath(path)):
