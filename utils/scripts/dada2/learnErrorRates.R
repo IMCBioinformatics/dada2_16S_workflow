@@ -4,7 +4,6 @@ suppressMessages(library(ggplot2))
 
 errF <- learnErrors(snakemake@input[['R1']], nbases=snakemake@config[["learn_nbases"]], multithread=snakemake@threads,randomize = TRUE)
 errR <- learnErrors(snakemake@input[['R2']], nbases=snakemake@config[["learn_nbases"]], multithread=snakemake@threads,randomize = TRUE)
-
 save(errF,file=snakemake@output[['errR1']])
 save(errR,file=snakemake@output[['errR2']])
 

@@ -1,6 +1,6 @@
 suppressMessages(library(dada2))
 suppressMessages(library(DECIPHER))
-
+#sink(snakemake@log[[1]])
 
 packageVersion("DECIPHER")
 
