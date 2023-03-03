@@ -1,9 +1,7 @@
-#Snakemake file for dada2 related rules
-
 rule plotQualityProfileRaw:
     input:
-        R1= expand(config["output_dir"]+"/cutadapt/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand(config["output_dir"]+"/cutadapt/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
+        R1= expand(config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + ".fastq.gz",sample=SAMPLES)
     output:
         R1=config["output_dir"]+"/figures/quality/rawFilterQualityPlots_R1.png",
         R2=config["output_dir"]+"/figures/quality/rawFilterQualityPlots_R2.png"
@@ -15,8 +13,8 @@ rule plotQualityProfileRaw:
 
 rule plotQualityProfileAfterQC:
     input:
-        R1= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
+        R1= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["reverse_read_suffix"] + ".fastq.gz",sample=SAMPLES)
     output:
         R1=config["output_dir"]+"/figures/quality/afterQCQualityPlots_R1.png",
         R2=config["output_dir"]+"/figures/quality/afterQCQualityPlots_R2.png"
@@ -29,11 +27,11 @@ rule plotQualityProfileAfterQC:
 
 rule dada2Filter:
     input:
-        R1= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES)
+        R1= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["reverse_read_suffix"] + ".fastq.gz",sample=SAMPLES)
     output:
-        R1= expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["R1"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["R2"] + ".fastq.gz",sample=SAMPLES),
+        R1= expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["reverse_read_suffix"] + ".fastq.gz",sample=SAMPLES),
         nreads= config["output_dir"]+"/dada2/Nreads_filtered.txt",
         percent_phix= config["output_dir"]+"/dada2/percent_phix.txt"
     params:

@@ -1,20 +1,23 @@
 rule fastqcRaw:
     input:
-        unpack( lambda wc: dict(SampleTable.loc[wc.sample]))
+        unpack(lambda wc: dict(list_files.loc[wc.sample]))
     output:
-        R1= config["output_dir"] + "/fastqc_raw/{sample}" + config["R1"] + "_fastqc.html",
-        R2= config["output_dir"] + "/fastqc_raw/{sample}" + config["R2"] + "_fastqc.html"
+        R1= config["output_dir"] + "/fastqc_raw/{sample}" + config["forward_read_suffix"] + "_fastqc.html",
+        R2= config["output_dir"] + "/fastqc_raw/{sample}" + config["reverse_read_suffix"] + "_fastqc.html"
+    resources:
+        tmpdir=temp(directory(config["output_dir"] + "/fastqc_raw/tmp/")),
+        disk_mb=10000
     conda:
         "QC"
     params:
-          output=config["output_dir"]+ "/fastqc_raw"
-    shell: "fastqc -o {params.output} {input.R1} {input.R2} "
+          output=directory(config["output_dir"]+ "/fastqc_raw")
+    shell: "fastqc -o {params.output} -d {resources.tmpdir} {input.R1} {input.R2} "
 
 
 rule multiqcRaw:
     input:
-        R1 =expand(config["output_dir"]+"/fastqc_raw/{sample}" + config["R1"] +"_fastqc.html",sample=SAMPLES),
-        R2 =expand(config["output_dir"]+"/fastqc_raw/{sample}" + config["R2"] +"_fastqc.html",sample=SAMPLES)
+        R1 =expand(config["output_dir"]+"/fastqc_raw/{sample}" + config["forward_read_suffix"] +"_fastqc.html",sample=SAMPLES),
+        R2 =expand(config["output_dir"]+"/fastqc_raw/{sample}" + config["reverse_read_suffix"] +"_fastqc.html",sample=SAMPLES)
     output:
         config["output_dir"]+"/multiqc_raw/multiqc_report_raw.html"
     conda:
@@ -30,10 +33,10 @@ rule multiqcRaw:
 
 rule cutAdapt:
     input:
-        unpack( lambda wc: dict(SampleTable.loc[wc.sample]))
+        unpack( lambda wc: dict(list_files.loc[wc.sample]))
     output:
-        R1= config["output_dir"]+"/cutadapt/{sample}" + config["R1"] + ".fastq.gz",
-        R2= config["output_dir"]+"/cutadapt/{sample}" + config["R2"] + ".fastq.gz"
+        R1= config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + ".fastq.gz",
+        R2= config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + ".fastq.gz"
     params:
        inputs= lambda wc,input: f"{input.R1} {input.R2}",
         m=config["min_len"],
@@ -54,8 +57,8 @@ rule cutAdaptQc:
         R1= rules.cutAdapt.output.R1,
         R2= rules.cutAdapt.output.R2
     output:
-        R1= config["output_dir"]+"/cutadapt_qc/{sample}" + config["R1"] + ".fastq.gz",
-        R2= config["output_dir"]+"/cutadapt_qc/{sample}" + config["R2"] + ".fastq.gz"
+        R1= config["output_dir"]+"/cutadapt_qc/{sample}" + config["forward_read_suffix"] + ".fastq.gz",
+        R2= config["output_dir"]+"/cutadapt_qc/{sample}" + config["reverse_read_suffix"] + ".fastq.gz"
     params:
         qf=config["qf"],
         qr=config["qr"],
@@ -74,21 +77,24 @@ rule fastqcFilt:
         R1= rules.cutAdaptQc.output.R1,
         R2= rules.cutAdaptQc.output.R2
     output:
-        R1= config["output_dir"]+"/fastqc_filt/{sample}"+ config["R1"] + "_fastqc.html",
-        R2= config["output_dir"]+"/fastqc_filt/{sample}"+ config["R2"] + "_fastqc.html"
+        R1= config["output_dir"]+"/fastqc_filt/{sample}"+ config["forward_read_suffix"] + "_fastqc.html",
+        R2= config["output_dir"]+"/fastqc_filt/{sample}"+ config["reverse_read_suffix"] + "_fastqc.html"
+    resources:
+        tempdir=temp(directory(config["output_dir"] + "/fastqc_filt/tmp/")),
+        disk_mb=10000
     conda:
         "QC"
     params:
-         fastqc_dir=config["output_dir"]+ "/fastqc_filt"
+         fastqc_dir=directory(config["output_dir"]+ "/fastqc_filt")
     shell: 
-        "fastqc -o {params.fastqc_dir} {input.R1} {input.R2} " 
+        "fastqc -o {params.fastqc_dir} -d {resources.tmpdir} {input.R1} {input.R2} " 
 
 
 
 rule multiqcFilt:
     input:
-        R1= expand(config["output_dir"]+"/fastqc_filt/{sample}"+ config["R1"] + "_fastqc.html",sample=SAMPLES),
-        R2= expand(config["output_dir"]+"/fastqc_filt/{sample}"+ config["R2"] + "_fastqc.html",sample=SAMPLES)
+        R1= expand(config["output_dir"]+"/fastqc_filt/{sample}"+ config["forward_read_suffix"] + "_fastqc.html",sample=SAMPLES),
+        R2= expand(config["output_dir"]+"/fastqc_filt/{sample}"+ config["reverse_read_suffix"] + "_fastqc.html",sample=SAMPLES)
     output:
         config["output_dir"]+"/multiqc_filt/multiqc_report_filtered.html"
     conda:

@@ -1,4 +1,3 @@
-
 rule multipleAlign:
     input:
         seqtab =rules.removeChimeras.output.rds
