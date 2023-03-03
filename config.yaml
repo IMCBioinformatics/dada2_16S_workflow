@@ -7,14 +7,21 @@
 #**************
 
 # List of files
-sampletable: "samples.tsv"
+list_files: "samples/samples.tsv"
+
+input_dir: "/work/IMC_binf/sbagheri/16S_pipeline_test/test"
+
+output_dir: "output_test2"
+
+#path of the main snakemake directory
+path: "/work/IMC_binf/sbagheri/16S_pipeline_test/dada2_snakemake_workflow"
 
 
-##Path to where snakemake main directories are. So we can read files from to generate the html report
-path: "/home/username/dada2_snakemake_workflow/"
+# Reads format
 
-#Name of the directory Where all the output  results are going to be saved.
-output_dir: "output_test"
+forward_read_suffix: "_R1_001"
+reverse_read_suffix: "_R2_001"
+
 
 
 #**************
@@ -25,7 +32,7 @@ output_dir: "output_test"
 #For QC reports, we randomly choose samples to check their reads length distribution, here we exclude controls and undetermined samples
 #Example "Water|DNA|Undetermined
 
-remove_samples: "Undetermined|Water|DNA"
+excluded_samples: "Undetermined|Water|DNA|Neg|neg"
 
 
 ## Cutadapt
@@ -62,11 +69,6 @@ qf: 20
 qr: 20
 
 
-#Reads format: the text between _R and .fastq.gz
-
-R1: "_R1_001"
-R2: "_R2_001"
-
 
 #***************
 #**** DADA2 ****
@@ -100,9 +102,6 @@ learn_nbases: 100e6
 chimera_method: "consensus"
 
 
-#Filtering merged reads that are shorter or longer than the most common length by 7  value of difference
-max_length_variation: 7
-
 
 #Initialize random number generator for reproducibility of taxonomy assignment
 seed: 100 
@@ -124,11 +123,9 @@ idtaxa_species:
 RDP_dbs:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_train_set_18.fa.gz"
  Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_nr99_v138.1_train_set.fa.gz"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_fullTaxo.fa.gz"
- URE: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/UREv2.1_genus.fasta"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Genus.fa.gz"
 
 RDP_species:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_species_assignment_18.fa.gz"
  Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_species_assignment_v138.1.fa.gz"
  GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Species.fa.gz"  
- URE: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/UREv2.1_species.fasta"
