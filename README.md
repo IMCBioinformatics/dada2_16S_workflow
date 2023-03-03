@@ -1,14 +1,13 @@
 
 # Amplicon sequencing DADA2 snakemake workflow
 
-[![Snakemake](https://img.shields.io/badge/snakemake-v6.13.1-blue)](https://snakemake.bitbucket.io)
-[![DADA2](https://img.shields.io/badge/DADA2-v1.14-orange)](https://benjjneb.github.io/dada2/index.html)
-[![Conda](https://img.shields.io/badge/conda-v4.11.0-lightgrey)](https://docs.conda.io/en/latest/)
+[![Conda](https://img.shields.io/badge/conda-v4.14.0-lightgrey)](https://docs.conda.io/en/latest/)
+[![Snakemake](https://img.shields.io/badge/snakemake-7.21.0.1-blue)](https://snakemake.bitbucket.io)
+[![DADA2](https://img.shields.io/badge/DADA2-v1.26.0-orange)](https://benjjneb.github.io/dada2/index.html)
 
 
 This is a snakemake workflow for profiling microbial communities from amplicon sequencing
-data using dada2. The initial code was cloned from https://github.com/SilasK/amplicon-seq-dada2 
-and modified to make a workflow suitable for our needs.
+data using dada2. DADA2 tutorial can be found from https://benjjneb.github.io/dada2/index.html. The initial code was cloned from https://github.com/SilasK/amplicon-seq-dada2 and modified to make a workflow suitable for our needs.
 
 ## Overview
 
@@ -27,11 +26,77 @@ Output:
 
 ## Pipeline summary
 
-<img src="rulegraph.png" width="600">
+<img src="rulegraph.png" width="700" height="550">
+
+
+
+## Installation
+
+1. Please install the following tools before running this workflow:
+
+conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
+
+snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+
+
+2. Then we need to set up a few environments to use in different steps of the pipeline.
+
+2.1. dada2 environment
+
+To install r and dada2:
+
+```bash
+conda create -n dada2 -c conda-forge -c bioconda -c defaults --override-channels bioconductor-dada2
+```
+
+To activate the environment and install the required packages (gridExtra, ggplot2, DECIPHER, and Biostrings) locally in R:
+
+```bash
+conda activate dada2
+(dada2) [username@hostname ~]$ R
+install.packages("gridExtra")
+
+
+install.packages("ggplot2")
+
+
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("DECIPHER")
+
+
+BiocManager::install("Biostrings")
+```
+
+2.2. QC environment
+
+To install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a new environment:
+
+```bash
+conda create --name QC
+conda activate QC
+conda install -c bioconda fastqc
+conda install -c anaconda pip
+pip install multiqc
+conda install -c bioconda cutadapt
+conda install -c bioconda seqkit
+conda deactivate
+```
+
+2.3 fastree_mafft environment 
+
+To create an environment for generating a phylogenetic tree and a fasta file of ASVs:
+
+```bash
+conda create -n fastree_mafft
+conda activate fastree_mafft
+conda install -c bioconda fasttree
+conda deactivate
+```
+
 
 ## How to Use
-
-1. Please make sure you have installed conda (miniconda) and snakemake before running this workflow.
+1. Make sure that all the environments are set up and required packages are installed.
 
 2. Navigate to your project directory and clone this repository into that directory using the following command:
 
@@ -47,9 +112,7 @@ git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
 python utils/scripts/common/prepare.py <DIR>
 ```
 
-## Config file
-
-4. Make sure to change the paths to sample.tsv file and the main dada2 pipeline folder.
+4. Make sure to change the paths to sample.tsv file and the output directory of dada2 pipeline.
 
 5. Include the correct primer sequences in config.yaml for primer removal.
 
@@ -59,24 +122,20 @@ python utils/scripts/common/prepare.py <DIR>
 
 8. Once confident with all the parameters first run the snakemake dry run command to make sure that pipeline is working.
  
- 
  ```bash
  snakemake -np
- 
  ```
- if the pipeline is working then we can run the following command:
- 
+Then snakemake can be executed by the following bash script:
  
  ```bash
- snakemake --use-conda --cores THREADS
+ sbatch dada2_sbatch.sh
  ```
-
-
+ 
 
 ## Output files and logs
 
 ### Log files
-All logs are placed in output/logs
+All logs are placed in the logs directory. A copy of all snakemake files and logs will be copied to the output directory as well to avoid rewritting them by upcoming re-runs.
 
 ### Important result files:
 #### output/dada2
