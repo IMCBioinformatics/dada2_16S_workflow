@@ -2,11 +2,26 @@
 import os
 import pandas as pd
 
-##Input files
 
+##Input file
 configfile: "config.yaml"
-SampleTable = pd.read_table(config['sampletable'],index_col=0)
-SAMPLES = list(SampleTable.index)
+list_files = pd.read_table(config['list_files'],index_col=0)
+SAMPLES = list(list_files.index)
+
+
+## Find random samples to make qc plots with
+subset=list_files[list_files[ "R1" ].str.contains( config["excluded_samples"] )==False ]
+random_samples=subset.sample(n = 5)
+
+isExist = os.path.exists(config["output_dir"])
+if not isExist:
+   os.makedirs(config["output_dir"])
+
+random_samples.to_csv("samples/random_samples.tsv", columns=[], header=False,line_terminator = '\r')
+#print(random_samples)
+
+
+
 
 
 rule all:
@@ -28,44 +43,13 @@ rule all:
         config["output_dir"]+"/dada2/Nreads_filtered.txt",
         config["output_dir"]+"/dada2/percent_phix.txt",
         config["output_dir"]+"/multiqc_filt/multiqc_report_filtered.html",
-        config["output_dir"]+"/multiqc_raw/multiqc_report_raw.html"
-#        "qc_report.html"
+        config["output_dir"]+"/multiqc_raw/multiqc_report_raw.html",
+	config["output_dir"]+"/random_samples/"+"temp_raw.txt",
+	config["output_dir"]+"/random_samples/"+"temp_dada2.txt",
+	config["output_dir"]+"/random_samples/"+"temp_cutadapt.txt",
+        "qc_report.Rmd"
+      
 
-
-
-rule rawReadCount:
-    input:
-        SampleTable["R1"][1].rsplit("/",1)[0]
-    output:
-        config["output_dir"]+"/rawReadCount.txt"
-    conda: "QC"
-    shell:
-        "seqkit stats -a {input}/*.gz > {output}"
-
-
-rule numSeqParse:
-     input:rules.rawReadCount.output
-     output:config["output_dir"]+"/dada2/Parsed_rawReadCount.txt"
-     shell:
-        " sed 's/,//g' {input} | sed -n '1p;0~2p' | awk '{{print $1,$4}}'| rev | cut -d'/' -f 1 | rev | sed 's/\_R.*gz//'  | tr ' ' '\t'> {output}"
-
-
-#Used to combine read counts from each step of dada2
-rule combineReadCounts:
-    input:
-        config["output_dir"]+"/dada2/Parsed_rawReadCount.txt",
-        config["output_dir"]+"/dada2/Nreads_filtered.txt",
-        config["output_dir"]+"/dada2/Nreads_with_chimeras.txt",
-        config["output_dir"]+"/dada2/Nreads_nochimera.txt"
-    output:
-        config["output_dir"]+"/dada2/Nreads.tsv"
-    run:
-        import pandas as pd
-        D= pd.read_table(input[0],index_col=0)
-        D= D.join(pd.read_table(input[1],index_col=0))
-        D= D.join(pd.read_table(input[2],index_col=0))
-        D= D.join(pd.read_table(input[3],squeeze=True,index_col=0))
-        D.to_csv(output[0],sep='\t')
 
 
 #rule qc_report:
@@ -82,4 +66,6 @@ rule combineReadCounts:
 include: "utils/rules/qc_cutadapt.smk"
 include: "utils/rules/dada2.smk"
 include: "utils/rules/phylo_tree.smk"
-#include: "utils/rules/readsLengthDistribution.smk"
+include: "utils/rules/readCount.smk"
+include: "utils/rules/ASV_length.smk"
+include: "utils/rules/readsLengthDistribution.smk"
