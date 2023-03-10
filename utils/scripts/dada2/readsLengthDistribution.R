@@ -124,7 +124,7 @@ for (i in 1:length(files)){
     facet_wrap(readtype~filetype,ncol = 3,nrow = 2, strip.position = "top")+theme_bw()+
     labs(title = files[i])+xlab(label = "Length (bp)")+ylab(label = "Reads")+
     theme(legend.position = "none")
-  ggsave(filename = paste0(args[2],"/","S",i,"_qc.png"),temp)
+  ggsave(filename = paste0(args[2],"/","S",i,"_ASVLength.png"),temp)
 }
 
 
