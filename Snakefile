@@ -17,11 +17,8 @@ isExist = os.path.exists(config["output_dir"])
 if not isExist:
    os.makedirs(config["output_dir"])
 
-random_samples.to_csv("samples/random_samples.tsv", columns=[], header=False,line_terminator = '\r')
+random_samples.to_csv("samples/random_samples.tsv", columns=[], header=False,line_terminator = '')
 #print(random_samples)
-
-
-
 
 
 rule all:
@@ -44,11 +41,11 @@ rule all:
         config["output_dir"]+"/dada2/percent_phix.txt",
         config["output_dir"]+"/multiqc_filt/multiqc_report_filtered.html",
         config["output_dir"]+"/multiqc_raw/multiqc_report_raw.html",
-	config["output_dir"]+"/random_samples/"+"temp_raw.txt",
+        config["output_dir"]+"/random_samples/"+"temp_raw.txt",
 	config["output_dir"]+"/random_samples/"+"temp_dada2.txt",
 	config["output_dir"]+"/random_samples/"+"temp_cutadapt.txt",
-        "qc_report.Rmd"
-      
+        config["output_dir"]+"/figures/ASVsLength/temp_read_length.txt",
+#        "qc_report.Rmd"
 
 
 
