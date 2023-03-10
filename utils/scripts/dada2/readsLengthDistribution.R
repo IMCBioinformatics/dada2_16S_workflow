@@ -101,6 +101,7 @@ for (i in names){
 }
 
 
+rm(combined_data)
 
 # Loop through each file and make column filetype a factor
 for (file in ls(pattern = "combined_")) {
@@ -115,13 +116,15 @@ for (file in ls(pattern = "combined_")) {
 }
 
 
+files=ls(pattern = "combined_")
+
 ##Making a distribution plot by a for loop
-for (i in ls(pattern = "combined_")){
-  temp=ggplot(get(i), aes(x=read_length,y=num_reads,fill="red"))+geom_col(width=4)+
+for (i in 1:length(files)){
+  temp=ggplot(get(files[i]), aes(x=read_length,y=num_reads,fill="red"))+geom_col(width=4)+
     facet_wrap(readtype~filetype,ncol = 3,nrow = 2, strip.position = "top")+theme_bw()+
-    labs(title = i)+xlab(label = "Length (bp)")+ylab(label = "Reads")+
+    labs(title = files[i])+xlab(label = "Length (bp)")+ylab(label = "Reads")+
     theme(legend.position = "none")
-  ggsave(filename = paste0(args[2],"/",i,"_qc.png"),temp)
+  ggsave(filename = paste0(args[2],"/","S",i,"_qc.png"),temp)
 }
 
 
