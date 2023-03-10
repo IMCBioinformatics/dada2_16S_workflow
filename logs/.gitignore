@@ -1,5 +1,5 @@
 *
 !.gitignore
-!.DS_Store
-utils/!.DS_Store
-utils/scripts/!.DS_Store
+.DS_Store
+utils/.DS_Store
+utils/scripts/.DS_Store
