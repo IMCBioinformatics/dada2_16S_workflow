@@ -1,20 +1,22 @@
-library(ggplot2)
+#!/usr/bin/env Rscript	
+args = commandArgs(trailingOnly=TRUE)
 
-# set the path to the directory containing the text files
-path <- snakemake@input[['files']]
+library(ggplot2)
+library(limma)
 
 ##reading files in and save them as objects
-object_names <- list.files(path, pattern = "R1|R2",full.names = T)
+object_names <- list.files(args[1], pattern = "R1|R2",full.names = T)
+
 
 for (i in 1:length(object_names)) {
   # Read in the object
   my_data <- read.table(object_names[i],header = F)
   # Save the updated object
-  assign(x=gsub(".txt","",object_names[i]),value = my_data)
+  assign(x=gsub(".txt","",basename(object_names[i])),value = my_data)
   
 }
-  
-  
+
+
 ## fixing raw files
 raw_objects <- ls(pattern = "raw")
 
@@ -32,39 +34,39 @@ object_names <- ls(pattern = "R1|R2")
 
 #### Loop over each file and change the column names and save them as a new object each
 for (i in object_names) {
-# Read in the object
-my_data <- get(i)
-
-# Print the current column names
-print(colnames(my_data))
-
-# Change the column names
-colnames(my_data) <- c("read_length", "num_reads")
-
-# Print the new column names
-print(colnames(my_data))
-
-# Save the updated object
-assign(i,value = my_data)
+  # Read in the object
+  my_data <- get(i)
+  
+  # Print the current column names
+  #print(colnames(my_data))
+  
+  # Change the column names
+  colnames(my_data) <- c("read_length", "num_reads")
+  
+  # Print the new column names
+  #print(colnames(my_data))
+  
+  # Save the updated object
+  assign(i,value = my_data)
 }
 
 
 
 #add two columns of readtype and filetype to all object files based on a name
 
-# select objects with specific names 
+# select objects with specific names
 
 names <- c("raw","dada2","cutadapt")
 
 # loop over the selected objects and add columns to them
 for (i in names){
   objs <- ls(pattern = i)
-    for (j in objs){
-      x <- get(j)
-      x <- cbind(x, filetype = i)
-      colnames(x)
-      assign(j, x)
-    }
+  for (j in objs){
+    x <- get(j)
+    x <- cbind(x, filetype = i)
+    colnames(x)
+    assign(j, x)
+  }
 }
 
 
@@ -82,29 +84,25 @@ for (i in reads){
 }
 
 
-## Merging all the raw, cutadapt, & dada2 files of all samples 
-list_files <- read.table(snakemake@config[['list_files']], header=TRUE, row.names=1)
-samples <- rownames(list_files)
 
-
-# Create an empty data frame to store the combined data
-combined_data <- data.frame()
+names<-unique(strsplit2(object_names,split="_R[1-2]")[,1])
 
 # Loop through the list of object names and combine them using rbind
-for (i in samples){
+for (i in names){
   obj_list=ls(pattern = i)
+  combined_data <- data.frame() # Create an empty data frame to store the combined data
   for (j in obj_list) {
     obj <- get(j)
     if (is.data.frame(obj)) {
       combined_data <- rbind(combined_data, obj)
+      assign(x = paste0("combined_",i), combined_data)
     }
-    assign(x = paste0("combined_",i), combined_data)
   }
 }
 
 
 
-# Loop through each file
+# Loop through each file and make column filetype a factor
 for (file in ls(pattern = "combined_")) {
   # Read in the file
   data <- get(file)
@@ -119,11 +117,28 @@ for (file in ls(pattern = "combined_")) {
 
 ##Making a distribution plot by a for loop
 for (i in ls(pattern = "combined_")){
-    temp=ggplot(get(i), aes(x=read_length,y=num_reads,fill="red"))+geom_col(width=4)+
+  temp=ggplot(get(i), aes(x=read_length,y=num_reads,fill="red"))+geom_col(width=4)+
     facet_wrap(readtype~filetype,ncol = 3,nrow = 2, strip.position = "top")+theme_bw()+
     labs(title = i)+xlab(label = "Length (bp)")+ylab(label = "Reads")+
     theme(legend.position = "none")
-    ggsave(filename = snakemake@output[['outdir']],"/",i,"_qc.png"),temp)
+  ggsave(filename = paste0(args[2],"/",i,"_qc.png"),temp)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
