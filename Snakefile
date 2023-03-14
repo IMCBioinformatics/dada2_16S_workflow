@@ -8,6 +8,7 @@ configfile: "config.yaml"
 list_files = pd.read_table(config['list_files'],index_col=0)
 SAMPLES = list(list_files.index)
 
+config["path"]+"/"+config["output_dir"]
 
 ## Find random samples to make qc plots with
 subset=list_files[list_files[ "R1" ].str.contains( config["excluded_samples"] )==False ]
@@ -44,20 +45,9 @@ rule all:
         config["output_dir"]+"/random_samples/"+"temp_raw.txt",
 	config["output_dir"]+"/random_samples/"+"temp_dada2.txt",
 	config["output_dir"]+"/random_samples/"+"temp_cutadapt.txt",
-        config["output_dir"]+"/figures/ASVsLength/temp_read_length.txt",
-#        "qc_report.Rmd"
+        config["output_dir"]+"/figures/ASVsLength/"+"temp_read_length.txt",
+        config["output_dir"]+"/QC_html_report/"+"qc_report.html"
 
-
-
-#rule qc_report:
-#    input:
-#        config["output_dir"]+"/dada2/Nreads.tsv"
-#    conda:
-#        "utils/envs/rmd.yaml"
-#    output:
-#        "qc_report.html"
-#    script:
-#        "qc_report.Rmd"
 
 
 include: "utils/rules/qc_cutadapt.smk"
@@ -66,3 +56,4 @@ include: "utils/rules/phylo_tree.smk"
 include: "utils/rules/readCount.smk"
 include: "utils/rules/ASV_length.smk"
 include: "utils/rules/readsLengthDistribution.smk"
+include: "utils/rules/qc_report.smk"
