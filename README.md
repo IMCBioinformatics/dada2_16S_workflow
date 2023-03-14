@@ -68,6 +68,9 @@ BiocManager::install("DECIPHER")
 BiocManager::install("Biostrings")
 
 BiocManager::install("limma")
+
+q() #to quit R
+conda deactivate
 ```
 
 2.2. QC environment
@@ -93,6 +96,23 @@ To create an environment for generating a phylogenetic tree and a fasta file of 
 conda create -n fastree_mafft
 conda activate fastree_mafft
 conda install -c bioconda fasttree
+conda deactivate
+```
+
+2.4 rmd environment
+
+```bash
+conda create -n rmd
+conda activate rmd
+conda install -c conda-forge r-base
+
+(dada2) [username@hostname ~]$ R
+install.packages('DT')
+install.packages("ggplot2")
+install.packages("dplyr")
+
+q() #to quit R
+
 conda deactivate
 ```
 
