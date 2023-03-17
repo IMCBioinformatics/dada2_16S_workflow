@@ -10,6 +10,6 @@ rule reads_Length_Distribution:
         "dada2"
     shell:
         """
-        Rscript utils/scripts/dada2/length_distribution_plotting.R {params.files} {params.outdir}
+        Rscript utils/scripts/dada2/seqkit_length_report.R {params.files} {params.outdir}
         touch {output.temp}
         """
