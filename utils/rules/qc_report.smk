@@ -1,7 +1,7 @@
 rule qc_repor:
     input:
         Nread=config["path"]+"/"+config["output_dir"]+"/dada2/Nreads.tsv",
-        ASVLength=config["path"]+"/"+config["output_dir"]+"/figures/ASVsLength/",
+        Length_distribution=config["path"]+"/"+config["output_dir"]+"/figures/Length_distribution/",
         quality=config["path"]+"/"+config["output_dir"]+"/figures/quality/"
     conda:
         "rmd"
