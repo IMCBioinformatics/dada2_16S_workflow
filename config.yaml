@@ -14,7 +14,7 @@ input_dir: "/work/IMC_binf/sbagheri/16S_pipeline_test/test"
 output_dir: "output_test2"
 
 #path of the main snakemake directory
-path: "/work/IMC_binf/sbagheri/16S_pipeline_test/dada2_snakemake_workflow"
+path: "/work/IMC_binf/sbagheri/16S_pipeline_test/github_test/dada2_snakemake_workflow"
 
 
 # Reads format
@@ -124,8 +124,16 @@ RDP_dbs:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_train_set_18.fa.gz"
  Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_nr99_v138.1_train_set.fa.gz"
  GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Genus.fa.gz"
+ URE: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/UREv2.1_genus.fasta"
 
 RDP_species:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_species_assignment_18.fa.gz"
  Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_species_assignment_v138.1.fa.gz"
  GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Species.fa.gz"  
+ URE: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/UREv2.1_species.fasta"
+
+
+## Taxonomy using vsearch
+vsearch_DBs: 
+ GTDB:"/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_fullTaxo.fa.gz"
+ URE:"/bulk/IMCshared_bulk/shared/dbs/16s_dbs/UREv2.1_full_taxonomy.fasta"
