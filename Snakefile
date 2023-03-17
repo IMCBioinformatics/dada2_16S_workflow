@@ -12,7 +12,7 @@ config["path"]+"/"+config["output_dir"]
 
 ## Find random samples to make qc plots with
 subset=list_files[list_files[ "R1" ].str.contains( config["excluded_samples"] )==False ]
-random_samples=subset.sample(n = 5)
+random_samples=subset.sample(n = 8)
 
 isExist = os.path.exists(config["output_dir"])
 if not isExist:
@@ -46,7 +46,8 @@ rule all:
 	config["output_dir"]+"/random_samples/"+"temp_dada2.txt",
 	config["output_dir"]+"/random_samples/"+"temp_cutadapt.txt",
         config["output_dir"]+"/figures/ASVsLength/"+"temp_read_length.txt",
-        config["output_dir"]+"/QC_html_report/"+"qc_report.html"
+        config["output_dir"]+"/QC_html_report/"+"qc_report.html",
+        config["output_dir"]+"/taxonomy/"+"annotaion_combined_dada2.txt"
 
 
 
@@ -57,3 +58,4 @@ include: "utils/rules/readCount.smk"
 include: "utils/rules/ASV_length.smk"
 include: "utils/rules/readsLengthDistribution.smk"
 include: "utils/rules/qc_report.smk"
+include: "utils/rules/annotation_output_dada2.smk"
