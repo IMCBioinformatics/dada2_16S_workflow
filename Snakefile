@@ -45,7 +45,7 @@ rule all:
         config["output_dir"]+"/random_samples/"+"temp_raw.txt",
 	config["output_dir"]+"/random_samples/"+"temp_dada2.txt",
 	config["output_dir"]+"/random_samples/"+"temp_cutadapt.txt",
-        config["output_dir"]+"/figures/ASVsLength/"+"temp_read_length.txt",
+        config["output_dir"]+"/figures/Length_distribution/"+"temp_read_length.txt",
         config["output_dir"]+"/QC_html_report/"+"qc_report.html",
         config["output_dir"]+"/taxonomy/"+"annotaion_combined_dada2.txt"
 
