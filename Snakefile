@@ -24,8 +24,8 @@ random_samples.to_csv("samples/random_samples.tsv", columns=[], header=False,lin
 
 rule all:
     input:
-        config["output_dir"]+"/figures/Length_distribution/Sequence_Length_distribution_abundance.png",
-        config["output_dir"]+"/figures/Length_distribution/Sequence_Length_distribution.png",
+        config["output_dir"]+"/figures/length_distribution/Sequence_Length_distribution_abundance.png",
+        config["output_dir"]+"/figures/length_distribution/Sequence_Length_distribution.png",
         config["output_dir"]+"/figures/quality/afterQCQualityPlots_R1.png",
         config["output_dir"]+"/figures/quality/afterQCQualityPlots_R2.png",
         config["output_dir"]+"/figures/quality/rawFilterQualityPlots_R1.png",
@@ -45,7 +45,7 @@ rule all:
         config["output_dir"]+"/random_samples/"+"temp_raw.txt",
 	config["output_dir"]+"/random_samples/"+"temp_dada2.txt",
 	config["output_dir"]+"/random_samples/"+"temp_cutadapt.txt",
-        config["output_dir"]+"/figures/Length_distribution/"+"temp_read_length.txt",
+        config["output_dir"]+"/figures/length_distribution/"+"temp_read_length.txt",
         config["output_dir"]+"/QC_html_report/"+"qc_report.html",
         config["output_dir"]+"/taxonomy/"+"annotaion_combined_dada2.txt"
 
