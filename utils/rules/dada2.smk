@@ -118,14 +118,14 @@ rule plotASVLength:
     input:
         seqtab= rules.removeChimeras.output.rds
     output:
-        plot_seqlength= config["output_dir"]+"/figures/ASVsLength/Sequence_Length_distribution.png",
-        plot_seqabundance= config["output_dir"]+"/figures/ASVsLength/Sequence_Length_distribution_abundance.png",
+        plot_seqlength= config["output_dir"]+"/figures/Length_distribution/Sequence_Length_distribution.png",
+        plot_seqabundance= config["output_dir"]+"/figures/Length_distribution/Sequence_Length_distribution_abundance.png",
     threads:
         config["threads"]
     conda:
         "dada2"
     script:
-        "../scripts/dada2/plotASVLength.R"
+        "../scripts/dada2/asv_length_distribution_plotting.R"
 
 
 rule IDtaxa:
