@@ -1,7 +1,7 @@
 rule qc_report:
     input:
         Nread=config["path"]+"/"+config["output_dir"]+"/dada2/Nreads.tsv",
-        Length_distribution=config["path"]+"/"+config["output_dir"]+"/figures/Length_distribution/",
+        Length_distribution=config["path"]+"/"+config["output_dir"]+"/figures/length_distribution/",
         quality=config["path"]+"/"+config["output_dir"]+"/figures/quality/"
     conda:
         "rmd"
