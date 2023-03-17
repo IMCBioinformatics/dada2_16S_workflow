@@ -24,8 +24,8 @@ random_samples.to_csv("samples/random_samples.tsv", columns=[], header=False,lin
 
 rule all:
     input:
-        config["output_dir"]+"/figures/ASVsLength/Sequence_Length_distribution_abundance.png",
-        config["output_dir"]+"/figures/ASVsLength/Sequence_Length_distribution.png",
+        config["output_dir"]+"/figures/Length_distribution/Sequence_Length_distribution_abundance.png",
+        config["output_dir"]+"/figures/Length_distribution/Sequence_Length_distribution.png",
         config["output_dir"]+"/figures/quality/afterQCQualityPlots_R1.png",
         config["output_dir"]+"/figures/quality/afterQCQualityPlots_R2.png",
         config["output_dir"]+"/figures/quality/rawFilterQualityPlots_R1.png",
