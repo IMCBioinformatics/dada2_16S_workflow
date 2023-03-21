@@ -32,7 +32,7 @@ output:
 ```{r,results='asis', echo=F}
 Sys.setenv(RSTUDIO_PANDOC="/home/sahar.bagheri1/softwares/miniconda/envs/rmd/bin")
 
-files <- list.files(path = snakemake@input[["quality"]], pattern = "raw", full.names = TRUE)
+files <- list.files(path = snakemake@params[["quality"]], pattern = "raw", full.names = TRUE)
 
 for (f in files) {
   cat(paste0("![](", f, "){width=50%}"))
@@ -47,7 +47,7 @@ for (f in files) {
 
 ```{r, results='asis',echo=F}
 
-files <- list.files(path = snakemake@input[["quality"]], pattern = "afterQC", full.names =TRUE)
+files <- list.files(path = snakemake@params[["quality"]], pattern = "afterQC", full.names =TRUE)
 
 for (f in files) {
   cat(paste0("![](", f, "){width=50%}"))
@@ -61,7 +61,7 @@ for (f in files) {
 
 ```{r, results='asis', echo=F}
 
-files <- list.files(path = snakemake@input[["quality"]], pattern = "afterdada2", full.names =TRUE)
+files <- list.files(path = snakemake@params[["quality"]], pattern = "afterdada2", full.names =TRUE)
 
 for (f in files) {
   cat(paste0("![](", f, "){width=50%}"))
@@ -77,7 +77,7 @@ for (f in files) {
 
 ```{r, results='asis', echo=F}
 
-files <- list.files(path = snakemake@input[["length_distribution"]], pattern = "S1", full.names =TRUE)
+files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S1", full.names =TRUE)
 
 for (f in files) {
   cat(paste0("![](", f, ")\n"))
@@ -91,7 +91,7 @@ for (f in files) {
 
 ```{r, results='asis', echo=F}
 
-files <- list.files(path = snakemake@input[["length_distribution"]], pattern = "S2", full.names =TRUE)
+files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S2", full.names =TRUE)
 
 for (f in files) {
   cat(paste0("![](", f, ")\n"))
@@ -104,7 +104,7 @@ for (f in files) {
 
 ```{r, results='asis', echo=F}
 
-files <- list.files(path = snakemake@input[["length_distribution"]], pattern = "S3", full.names =TRUE)
+files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S3", full.names =TRUE)
 
 for (f in files) {
   cat(paste0("![](", f, ")\n"))
@@ -117,7 +117,7 @@ for (f in files) {
 
 ```{r, results='asis', echo=F}
 
-files <- list.files(path = snakemake@input[["length_distribution"]], pattern = "S4", full.names =TRUE)
+files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S4", full.names =TRUE)
 
 for (f in files) {
   cat(paste0("![](", f, ")\n"))
@@ -130,7 +130,7 @@ for (f in files) {
 
 ```{r, results='asis', echo=F}
 
-files <- list.files(path = snakemake@input[["length_distribution"]], pattern = "S5", full.names =TRUE)
+files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S5", full.names =TRUE)
 
 for (f in files) {
   cat(paste0("![](", f, ")\n"))
@@ -150,7 +150,7 @@ suppressMessages(library(dplyr))
 suppressMessages(library(ggplot2))
 
 
-reads<-read.csv(snakemake@input[["Nread"]],sep="\t") %>% filter(!grepl('Undetermined|undetermined', file))
+reads<-read.csv(snakemake@params[["Nread"]],sep="\t") %>% filter(!grepl('Undetermined|undetermined', file))
 
 #datatable(reads,caption="Read processing")
 
