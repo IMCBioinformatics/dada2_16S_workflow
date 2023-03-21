@@ -10,8 +10,7 @@ rule qc_report:
     params:
         Nread=config["output_dir"]+"/dada2/Nreads.tsv",
         quality=config["path"]+"/"+config["output_dir"]+"/figures/quality/",
-        length_distribution=config["path"]+"/"+config["output_dir"]+"/figures/length_distribution/",
-        config["output_dir"]+"/QC_html_report"
+        length_distribution=config["path"]+"/"+config["output_dir"]+"/figures/length_distribution/"
     output:
         config["output_dir"]+"/QC_html_report/"+"qc_report.html"
     script:
