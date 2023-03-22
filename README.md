@@ -179,7 +179,7 @@ Then snakemake can be executed by the following bash script:
 <details>
 <summary> 4. Output files and logs </summary>
 
-To make sure that the pipeline is run completely, we need to check log and output files.
+To make sure that the pipeline is run completely, we need to check the log and output files.
 
 #### 4.1 Log files
 All logs are placed in the logs directory. 
