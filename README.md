@@ -135,7 +135,7 @@ conda deactivate
 
 Then please follow these steps to set up and run the pipeline.
 
-#### 3.1 Make sure that all the environments are set up and required packages are installed.
+#### 3.1 Make sure that all the environments are set up and required packages are installed. To do so, after installing each package, you can run the tool name and the flag -h (i.g. fastqc -h) to see if it is installed.
 
 #### 3.2 Navigate to your project directory and clone this repository into that directory using the following command:
 
