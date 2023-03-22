@@ -18,11 +18,15 @@ rule seqkit_counts:
         """
 	while read IDS
 	 do
-         echo $IDS
-	 input_r1={params.input_dir}"$IDS"{params.input_suff_r1} 
-	 input_r2={params.input_dir}"$IDS"{params.input_suff_r2} 
-	 output_r1={params.output_dir}"/""$IDS"{params.output_suff1}".txt" 
+         echo "IDs: $IDS"
+	 input_r1={params.input_dir}"$IDS"{params.input_suff_r1}
+	 echo "input_r1:$input_r1"
+         input_r2={params.input_dir}"$IDS"{params.input_suff_r2} 
+         echo "input_r2: $input_r2"
+         output_r1={params.output_dir}"/""$IDS"{params.output_suff1}".txt" 
+         echo "output_r1: $output_r1"
 	 output_r2={params.output_dir}"/""$IDS"{params.output_suff2}".txt" 
+         echo "output_r2: $output_r2"
          if [[ ! -f "$input_r1" || ! -f "$input_r2" ]]; then
              echo "Error: input file does not exist for ID $IDS"
              continue
