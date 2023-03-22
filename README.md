@@ -30,7 +30,7 @@ Output:
 
 
 
-### <summary>1. Installation<summary>
+<summary> ### 1. Installation <summary>
 
 </details>
 
@@ -39,6 +39,7 @@ Please install the following tools before running this workflow:
 conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
 
 snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+
 </details>
 
 
