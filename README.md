@@ -31,6 +31,7 @@ Output:
 
 <details>
 <summary> 1. Installation </summary>
+
 Please install the following tools before running this workflow.
 
 conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
@@ -42,6 +43,7 @@ snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installati
 
 <details>
 <summary> 2. Setting up environments </summary>
+
 Next we need to set up a few environments to use in different steps of the pipeline.
 
 #### 2.1. dada2 environment
@@ -124,6 +126,7 @@ conda deactivate
 
 <details>
 <summary> 3. Usage </summary>
+
 Then please follow these steps to set up and run the pipeline.
 
 #### 3.1 Make sure that all the environments are set up and required packages are installed.
@@ -175,6 +178,7 @@ Then snakemake can be executed by the following bash script:
 
 <details>
 <summary> 4. Output files and logs </summary>
+
 To make sure that the pipeline is run completely, we need to check log and output files.
 
 #### 4.1 Log files
