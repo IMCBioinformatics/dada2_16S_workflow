@@ -30,7 +30,7 @@ Output:
 
 
 <details>
-<summary> 1. Installation </summary>
+<summary> 1. Prerequisites </summary>
 
 Please install the following tools before running this workflow.
 
