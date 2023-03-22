@@ -10,7 +10,6 @@ This is a snakemake workflow for profiling microbial communities from amplicon s
 data using dada2. DADA2 tutorial can be found from https://benjjneb.github.io/dada2/index.html. The initial code was cloned from https://github.com/SilasK/amplicon-seq-dada2 and modified to make a workflow suitable for our needs.
 
 <br>
-<br> 
 
 ## Overview
 
@@ -26,11 +25,13 @@ Output:
 * Summary of reads filtered at each step (Nreads.tsv).
 * A phylogenetic tree (ASV_tree.nwk).
 
+<br> 
 
 ## Pipeline summary
 
 <img src="rulegraph.png" width="700" height="400">
 
+<br> 
 
 ## Workflow
 
@@ -45,6 +46,7 @@ snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installati
 
 </details>
 
+<br> 
 
 <details>
 <summary> 2. Setting up environments </summary>
@@ -128,6 +130,7 @@ conda deactivate
 
 </details>
 
+<br> 
 
 <details>
 <summary> 3. Usage </summary>
@@ -180,6 +183,7 @@ Then snakemake can be executed by the following bash script:
  ```
 </details>
 
+<br> 
 
 <details>
 <summary> 4. Output files and logs </summary>
