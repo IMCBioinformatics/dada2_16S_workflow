@@ -29,6 +29,8 @@ Output:
 <img src="rulegraph.png" width="700" height="400">
 
 
+## Workflow
+
 <details>
 <summary> 1. Prerequisites </summary>
 
@@ -145,7 +147,7 @@ git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
 python utils/scripts/common/prepare.py <DIR>
 ```
 
-#### 3.4 Make sure to make required changes in the config.yaml file.
+#### 3.4 Make sure to configure the config.yaml file.
 
 ##### 3.4.1 modifying pipeline parameters:
   - path of the input directory
