@@ -157,14 +157,17 @@ Then snakemake can be executed by the following bash script:
 ## Output files and logs
 
 ### Log files
-All logs are placed in the logs directory. A copy of all snakemake files and logs will be copied to the output directory as well to avoid rewritting them by upcoming re-runs.
+All logs are placed in the logs directory. 
+A copy of all snakemake files and logs will be copied to the output directory (output_test2/snakemake_files/) as well to avoid rewritting them by upcoming re-runs.
 
 ### Important result files:
 #### output/dada2
       1. seqtab_nochimeras.rds
-      2. seqtab_filterLength.rds
-      3. Nreads.tsv
+      2. Nreads.tsv
 #### output/taxonomy
-    1. <DATABASE>.tsv
-    2. ASV_seq.fasta
-    3. ASV_tree.nwk
+      1. <DATABASE>.tsv
+#### output/phylogeny    
+      1. ASV_seq.fasta
+      2. ASV_tree.nwk
+#### output/QC_html_report
+      1. qc_report.html
