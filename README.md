@@ -30,9 +30,9 @@ Output:
 
 
 
-<summary> 1. Installation <summary>
+### <summary> 1. Installation </summary>
 
-</details>
+<details>
 
 Please install the following tools before running this workflow:
 
@@ -44,8 +44,8 @@ snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installati
 
 
 
-### 2. Setting up environments
-</details>
+### <summary> 2. Setting up environments </summary>
+<details>
 
 Then we need to set up a few environments to use in different steps of the pipeline.
 
@@ -126,8 +126,8 @@ conda deactivate
 </details>
 
 
-### 3. Usage
-</details>
+### <summary> 3. Usage </summary>
+<details>
 
 #### 3.1 Make sure that all the environments are set up and required packages are installed.
 
@@ -176,8 +176,8 @@ Then snakemake can be executed by the following bash script:
 </details>
 
 
-### 4. Output files and logs
-</details>
+### <summary> 4. Output files and logs </summary>
+<details>
 
 #### 4.1 Log files
 All logs are placed in the logs directory. 
