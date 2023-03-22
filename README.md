@@ -26,7 +26,7 @@ Output:
 
 ## Pipeline summary
 
-<img src="rulegraph.png" width="700" height="450">
+<img src="rulegraph.png" width="700" height="400">
 
 
 
