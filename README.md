@@ -30,16 +30,18 @@ Output:
 
 
 
-## Installation
+1. Installation
 
-1. Please install the following tools before running this workflow:
+Please install the following tools before running this workflow:
 
 conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
 
 snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
 
 
-2. Then we need to set up a few environments to use in different steps of the pipeline.
+2. Setting up environments
+ 
+Then we need to set up a few environments to use in different steps of the pipeline.
 
 2.1. dada2 environment
 
@@ -117,16 +119,17 @@ conda deactivate
 ```
 
 
-## How to Use
-1. Make sure that all the environments are set up and required packages are installed.
+3. Usage
 
-2. Navigate to your project directory and clone this repository into that directory using the following command:
+3.1 Make sure that all the environments are set up and required packages are installed.
+
+3.2 Navigate to your project directory and clone this repository into that directory using the following command:
 
 ```bash
 git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
 ```
 
-3. Use prepare.py script to generate the samples.tsv file as an input for this pipeline using the following command:. 
+3.3 Use prepare.py script to generate the samples.tsv file as an input for this pipeline using the following command: 
 
 ```<DIR>``` is the location of the raw fastq files.
 
@@ -134,11 +137,21 @@ git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
 python utils/scripts/common/prepare.py <DIR>
 ```
 
-4. Make sure to change the paths to sample.tsv file and the output directory of dada2 pipeline.
+3.4 Make sure to make required changes in the config.yaml file.
 
-5. Include the correct primer sequences in config.yaml for primer removal.
+3.4.1 modifying pipeline parameters:
+  - path of the input directory
+  - name and path of the output directory
+  - Forward and reverse reads format
 
-6. Make sure you modify TRUNC and Trim parameters for DADA2's filter function in config file.
+3.4.2 modifying QC parameters:
+  - primer sequences (if they are sequenced)
+  - primer removal and quality trimming values
+  
+3.4.3 modifying dada2 parameters:
+  - DADA2 filter and trim thresholds
+  - chimera removal method
+  - number of reads for error rate learning
 
 7. Download the taxonomy databases from http://www2.decipher.codes/Downloads.html  that you plan to use in utils/databases/ and consequently set the path for them in the config file.
 
