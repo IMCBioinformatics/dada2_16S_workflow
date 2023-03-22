@@ -192,7 +192,7 @@ A copy of all snakemake files and logs will be copied to the output directory (o
    - seqtab_nochimeras.rds
    - Nreads.tsv
 ##### 4.2.2 output/taxonomy
-   - <DATABASE>.tsv
+   - ```<DATABASE>```.tsv
 ##### 4.2.3 output/phylogeny    
    - ASV_seq.fasta
    - ASV_tree.nwk
