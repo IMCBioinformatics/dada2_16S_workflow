@@ -17,11 +17,11 @@ Input:
 
 Output:
 
-* Taxonomic assignment tables for specified databases (GTDB, RDP, SILVA).
-* ASV abundance table (seqtab_nochimera.rds, seqtab_fitlerLength.rds)
-* ASV sequences in a fasta file from seqtab_nochimera.rds
-* Summary of reads filtered at each step (Nreads.tsv)
-* A phylogenetic tree
+* Taxonomic assignment tables for specified databases (GTDB, RDP, SILVA, URE).
+* ASV abundance table (seqtab_nochimera.rds).
+* ASV sequences in a fasta file from seqtab_nochimera.rds (ASV_seq.fasta).
+* Summary of reads filtered at each step (Nreads.tsv).
+* A phylogenetic tree (ASV_tree.nwk).
 
 
 ## Pipeline summary
@@ -30,7 +30,7 @@ Output:
 
 
 
-1. Installation
+### 1. Installation
 
 Please install the following tools before running this workflow:
 
@@ -39,11 +39,11 @@ conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/
 snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
 
 
-2. Setting up environments
+### 2. Setting up environments
  
 Then we need to set up a few environments to use in different steps of the pipeline.
 
-2.1. dada2 environment
+#### 2.1. dada2 environment
 
 To install r and dada2:
 
@@ -75,7 +75,7 @@ q() #to quit R
 conda deactivate
 ```
 
-2.2. QC environment
+#### 2.2. QC environment
 
 To install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a new environment:
 
@@ -90,7 +90,7 @@ conda install -c bioconda seqkit
 conda deactivate
 ```
 
-2.3 fastree_mafft environment 
+#### 2.3 fastree_mafft environment 
 
 To create an environment for generating a phylogenetic tree and a fasta file of ASVs:
 
@@ -101,7 +101,7 @@ conda install -c bioconda fasttree
 conda deactivate
 ```
 
-2.4 rmd environment
+#### 2.4 rmd environment
 
 ```bash
 conda create -n rmd
@@ -119,17 +119,17 @@ conda deactivate
 ```
 
 
-3. Usage
+### 3. Usage
 
-3.1 Make sure that all the environments are set up and required packages are installed.
+#### 3.1 Make sure that all the environments are set up and required packages are installed.
 
-3.2 Navigate to your project directory and clone this repository into that directory using the following command:
+#### 3.2 Navigate to your project directory and clone this repository into that directory using the following command:
 
 ```bash
 git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
 ```
 
-3.3 Use prepare.py script to generate the samples.tsv file as an input for this pipeline using the following command: 
+#### 3.3 Use prepare.py script to generate the samples.tsv file as an input for this pipeline using the following command: 
 
 ```<DIR>``` is the location of the raw fastq files.
 
@@ -137,25 +137,25 @@ git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
 python utils/scripts/common/prepare.py <DIR>
 ```
 
-3.4 Make sure to make required changes in the config.yaml file.
+#### 3.4 Make sure to make required changes in the config.yaml file.
 
-3.4.1 modifying pipeline parameters:
+##### 3.4.1 modifying pipeline parameters:
   - path of the input directory
   - name and path of the output directory
   - Forward and reverse reads format
 
-3.4.2 modifying QC parameters:
+##### 3.4.2 modifying QC parameters:
   - primer sequences (if they are sequenced)
   - primer removal and quality trimming values
   
-3.4.3 modifying dada2 parameters:
+##### 3.4.3 modifying dada2 parameters:
   - DADA2 filter and trim thresholds
   - chimera removal method
   - number of reads for error rate learning
 
-7. Download the taxonomy databases from http://www2.decipher.codes/Downloads.html  that you plan to use in utils/databases/ and consequently set the path for them in the config file.
+#### 3.5 Download the taxonomy databases from http://www2.decipher.codes/Downloads.html that you plan to use in utils/databases/ and consequently set the path for them in the config file.
 
-8. Once confident with all the parameters first run the snakemake dry run command to make sure that pipeline is working.
+#### 3.6 Once confident with all the parameters first run the snakemake dry run command to make sure that pipeline is working.
  
  ```bash
  snakemake -np
@@ -167,20 +167,20 @@ Then snakemake can be executed by the following bash script:
  ```
  
 
-## Output files and logs
+### 4. Output files and logs
 
-### Log files
+#### 4.1 Log files
 All logs are placed in the logs directory. 
-A copy of all snakemake files and logs will be copied to the output directory (output_test2/snakemake_files/) as well to avoid rewritting them by upcoming re-runs.
+A copy of all snakemake files and logs will be copied to the output directory (output/snakemake_files/) as well to avoid rewritting them by upcoming re-runs.
 
-### Important result files:
-#### output/dada2
+#### 4.2 Important result files:
+##### 4.2.1 output/dada2
       1. seqtab_nochimeras.rds
       2. Nreads.tsv
-#### output/taxonomy
+##### 4.2.2 output/taxonomy
       1. <DATABASE>.tsv
-#### output/phylogeny    
+##### 4.2.3 output/phylogeny    
       1. ASV_seq.fasta
       2. ASV_tree.nwk
-#### output/QC_html_report
+##### 4.2.4 output/QC_html_report
       1. qc_report.html
