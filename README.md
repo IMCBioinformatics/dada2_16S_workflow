@@ -46,7 +46,6 @@ snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installati
 
 </details>
 
-<br> 
 
 <details>
 <summary><h3 style="font-size: 24px;">2. Setting up environments</h3></summary>
@@ -129,8 +128,7 @@ conda deactivate
 ```
 
 </details>
-
-<br>  
+ 
 
 <details>
 <summary><h3 style="font-size: 24px;">3. Usage</h3></summary> 
@@ -183,7 +181,6 @@ Then snakemake can be executed by the following bash script:
  ```
 </details>
 
-<br> 
 
 <details>
 <summary><h3 style="font-size: 24px;">4. Output files and logs</h3></summary> 
