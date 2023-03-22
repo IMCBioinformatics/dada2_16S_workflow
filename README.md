@@ -30,7 +30,7 @@ Output:
 
 
 <details>
-<summary> ### 1. Installation </summary>
+<summary> 1. Installation </summary>
 Please install the following tools before running this workflow.
 
 conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
