@@ -36,7 +36,7 @@ Output:
 ## Workflow
 
 <details>
-<summary> **1. Prerequisites** </summary>
+<summary><h3 style="font-size: 24px;">1. Prerequisites</h3></summary>
 <br> 
 Please install the following tools before running this workflow.
 
