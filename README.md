@@ -42,8 +42,8 @@ snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installati
 
 
 <details>
-
 ### <summary> 2. Setting up environments </summary>
+
 Next we need to set up a few environments to use in different steps of the pipeline.
 
 #### 2.1. dada2 environment
@@ -120,11 +120,14 @@ q() #to quit R
 
 conda deactivate
 ```
+
 </details>
 
 
 <details>
+
 ### <summary> 3. Usage </summary>
+
 Then please follow these steps to set up and run the pipeline.
 
 #### 3.1 Make sure that all the environments are set up and required packages are installed.
