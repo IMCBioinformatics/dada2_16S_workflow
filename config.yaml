@@ -32,7 +32,7 @@ reverse_read_suffix: "_R2_001"
 #For QC reports, we randomly choose samples to check their reads length distribution, here we exclude controls and undetermined samples
 #Example "Water|DNA|Undetermined
 
-excluded_samples: "Undetermined|Water|DNA|Neg|neg"
+excluded_samples: "Undetermined|Water|WATER|DNA|Neg|neg"
 
 
 ## Cutadapt
