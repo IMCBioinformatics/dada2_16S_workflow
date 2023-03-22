@@ -175,12 +175,12 @@ A copy of all snakemake files and logs will be copied to the output directory (o
 
 #### 4.2 Important result files:
 ##### 4.2.1 output/dada2
-      1. seqtab_nochimeras.rds
-      2. Nreads.tsv
+       - seqtab_nochimeras.rds
+       - Nreads.tsv
 ##### 4.2.2 output/taxonomy
-      1. <DATABASE>.tsv
+       - <DATABASE>.tsv
 ##### 4.2.3 output/phylogeny    
-      1. ASV_seq.fasta
-      2. ASV_tree.nwk
+       - ASV_seq.fasta
+       - ASV_tree.nwk
 ##### 4.2.4 output/QC_html_report
-      1. qc_report.html
+       - qc_report.html
