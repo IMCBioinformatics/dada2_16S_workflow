@@ -9,6 +9,9 @@
 This is a snakemake workflow for profiling microbial communities from amplicon sequencing
 data using dada2. DADA2 tutorial can be found from https://benjjneb.github.io/dada2/index.html. The initial code was cloned from https://github.com/SilasK/amplicon-seq-dada2 and modified to make a workflow suitable for our needs.
 
+<br>
+<br> 
+
 ## Overview
 
 Input: 
