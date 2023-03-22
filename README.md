@@ -36,7 +36,7 @@ Output:
 ## Workflow
 
 <details>
-<summary> 1. Prerequisites </summary>
+<summary> **1. Prerequisites** </summary>
 <br> 
 Please install the following tools before running this workflow.
 
