@@ -32,15 +32,20 @@ Output:
 
 ### 1. Installation
 
+</details>
+
 Please install the following tools before running this workflow:
 
 conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
 
 snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+</details>
+
 
 
 ### 2. Setting up environments
- 
+</details>
+
 Then we need to set up a few environments to use in different steps of the pipeline.
 
 #### 2.1. dada2 environment
@@ -117,9 +122,11 @@ q() #to quit R
 
 conda deactivate
 ```
+</details>
 
 
 ### 3. Usage
+</details>
 
 #### 3.1 Make sure that all the environments are set up and required packages are installed.
 
@@ -165,9 +172,11 @@ Then snakemake can be executed by the following bash script:
  ```bash
  sbatch dada2_sbatch.sh
  ```
- 
+</details>
+
 
 ### 4. Output files and logs
+</details>
 
 #### 4.1 Log files
 All logs are placed in the logs directory. 
@@ -184,3 +193,4 @@ A copy of all snakemake files and logs will be copied to the output directory (o
    - ASV_tree.nwk
 ##### 4.2.4 output/QC_html_report
    - qc_report.html
+</details>
