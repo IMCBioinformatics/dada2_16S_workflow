@@ -30,7 +30,7 @@ Output:
 
 
 
-<summary> ### 1. Installation <summary>
+<summary> 1. Installation <summary>
 
 </details>
 
