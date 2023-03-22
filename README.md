@@ -9,6 +9,8 @@
 This is a snakemake workflow for profiling microbial communities from amplicon sequencing
 data using dada2. DADA2 tutorial can be found from https://benjjneb.github.io/dada2/index.html. The initial code was cloned from https://github.com/SilasK/amplicon-seq-dada2 and modified to make a workflow suitable for our needs.
 
+<br>
+
 ## Overview
 
 Input: 
@@ -17,31 +19,41 @@ Input:
 
 Output:
 
-* Taxonomic assignment tables for specified databases (GTDB, RDP, SILVA).
-* ASV abundance table (seqtab_nochimera.rds, seqtab_fitlerLength.rds)
-* ASV sequences in a fasta file from seqtab_nochimera.rds
-* Summary of reads filtered at each step (Nreads.tsv)
-* A phylogenetic tree
+* Taxonomic assignment tables for specified databases (GTDB, RDP, SILVA, URE).
+* ASV abundance table (seqtab_nochimera.rds).
+* ASV sequences in a fasta file from seqtab_nochimera.rds (ASV_seq.fasta).
+* Summary of reads filtered at each step (Nreads.tsv).
+* A phylogenetic tree (ASV_tree.nwk).
 
+<br> 
 
 ## Pipeline summary
 
-<img src="rulegraph.png" width="700" height="550">
+<img src="rulegraph.png" width="700" height="400">
 
+<br> 
 
+## Workflow
 
-## Installation
-
-1. Please install the following tools before running this workflow:
+<details>
+<summary><h3 style="font-size: 24px;">1. Prerequisites</h3></summary>
+    
+Please install the following tools before running this workflow.
 
 conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
 
 snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
 
+</details>
 
-2. Then we need to set up a few environments to use in different steps of the pipeline.
+<br> 
 
-2.1. dada2 environment
+<details>
+<summary><h3 style="font-size: 24px;">2. Setting up environments</h3></summary>
+
+Next we need to set up a few environments to use in different steps of the pipeline.
+
+#### 2.1. dada2 environment
 
 To install r and dada2:
 
@@ -73,7 +85,7 @@ q() #to quit R
 conda deactivate
 ```
 
-2.2. QC environment
+#### 2.2. QC environment
 
 To install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a new environment:
 
@@ -88,7 +100,7 @@ conda install -c bioconda seqkit
 conda deactivate
 ```
 
-2.3 fastree_mafft environment 
+#### 2.3 fastree_mafft environment 
 
 To create an environment for generating a phylogenetic tree and a fasta file of ASVs:
 
@@ -99,7 +111,7 @@ conda install -c bioconda fasttree
 conda deactivate
 ```
 
-2.4 rmd environment
+#### 2.4 rmd environment
 
 ```bash
 conda create -n rmd
@@ -116,17 +128,24 @@ q() #to quit R
 conda deactivate
 ```
 
+</details>
 
-## How to Use
-1. Make sure that all the environments are set up and required packages are installed.
+<br>  
 
-2. Navigate to your project directory and clone this repository into that directory using the following command:
+<details>
+<summary><h3 style="font-size: 24px;">3. Usage</h3></summary> 
+
+Then please follow these steps to set up and run the pipeline.
+
+#### 3.1 Make sure that all the environments are set up and required packages are installed.
+
+#### 3.2 Navigate to your project directory and clone this repository into that directory using the following command:
 
 ```bash
 git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
 ```
 
-3. Use prepare.py script to generate the samples.tsv file as an input for this pipeline using the following command:. 
+#### 3.3 Use prepare.py script to generate the samples.tsv file as an input for this pipeline using the following command: 
 
 ```<DIR>``` is the location of the raw fastq files.
 
@@ -134,15 +153,25 @@ git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
 python utils/scripts/common/prepare.py <DIR>
 ```
 
-4. Make sure to change the paths to sample.tsv file and the output directory of dada2 pipeline.
+#### 3.4 Make sure to configure the config.yaml file.
 
-5. Include the correct primer sequences in config.yaml for primer removal.
+##### 3.4.1 modifying pipeline parameters:
+  - path of the input directory
+  - name and path of the output directory
+  - Forward and reverse reads format
 
-6. Make sure you modify TRUNC and Trim parameters for DADA2's filter function in config file.
+##### 3.4.2 modifying QC parameters:
+  - primer sequences (if they are sequenced)
+  - primer removal and quality trimming values
+  
+##### 3.4.3 modifying dada2 parameters:
+  - DADA2 filter and trim thresholds
+  - chimera removal method
+  - number of reads for error rate learning
 
-7. Download the taxonomy databases from http://www2.decipher.codes/Downloads.html  that you plan to use in utils/databases/ and consequently set the path for them in the config file.
+#### 3.5 Download the taxonomy databases from http://www2.decipher.codes/Downloads.html that you plan to use in utils/databases/ and consequently set the path for them in the config file.
 
-8. Once confident with all the parameters first run the snakemake dry run command to make sure that pipeline is working.
+#### 3.6 Once confident with all the parameters first run the snakemake dry run command to make sure that pipeline is working.
  
  ```bash
  snakemake -np
@@ -152,19 +181,28 @@ Then snakemake can be executed by the following bash script:
  ```bash
  sbatch dada2_sbatch.sh
  ```
+</details>
+
+<br> 
+
+<details>
+<summary><h3 style="font-size: 24px;">4. Output files and logs</h3></summary> 
  
+To make sure that the pipeline is run completely, we need to check the log and output files.
 
-## Output files and logs
+#### 4.1 Log files
+All logs are placed in the logs directory. 
+A copy of all snakemake files and logs will be copied to the output directory (output/snakemake_files/) as well to avoid rewritting them by upcoming re-runs.
 
-### Log files
-All logs are placed in the logs directory. A copy of all snakemake files and logs will be copied to the output directory as well to avoid rewritting them by upcoming re-runs.
-
-### Important result files:
-#### output/dada2
-      1. seqtab_nochimeras.rds
-      2. seqtab_filterLength.rds
-      3. Nreads.tsv
-#### output/taxonomy
-    1. <DATABASE>.tsv
-    2. ASV_seq.fasta
-    3. ASV_tree.nwk
+#### 4.2 Important result files:
+##### 4.2.1 output/dada2
+   - seqtab_nochimeras.rds
+   - Nreads.tsv
+##### 4.2.2 output/taxonomy
+   - ```<DATABASE>```.tsv
+##### 4.2.3 output/phylogeny    
+   - ASV_seq.fasta
+   - ASV_tree.nwk
+##### 4.2.4 output/QC_html_report
+   - qc_report.html
+</details>
