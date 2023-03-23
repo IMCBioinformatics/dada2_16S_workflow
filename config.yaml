@@ -6,12 +6,17 @@
 #*** inputs ***
 #**************
 
-# List of files
+# List of fastq files
 list_files: "samples/samples.tsv"
 
+
+#A path to where the raw fastq files are stored
 input_dir: "/work/IMC_binf/sbagheri/16S_pipeline_test/test"
 
+
+#The name of the output directory. This is for not overwriting the output folder in case of rerunning the pipeline after changing some parameters.
 output_dir: "output_test2"
+
 
 #path of the main snakemake directory
 path: "/work/IMC_binf/sbagheri/16S_pipeline_test/github_test/dada2_snakemake_workflow"
