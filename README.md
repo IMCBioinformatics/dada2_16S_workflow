@@ -94,6 +94,7 @@ conda activate QC
 conda install -c bioconda fastqc
 conda install -c anaconda pip
 pip install multiqc
+pip install pandas
 conda install -c bioconda cutadapt or pip install cutadapt
 conda install -c bioconda seqkit
 conda deactivate
