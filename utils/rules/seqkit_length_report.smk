@@ -1,3 +1,13 @@
+rule random_samples:
+    input:
+        "samples/samples.tsv"
+    output:
+        "samples/random_samples.tsv"
+    conda: "QC"
+    script:
+        "../scripts/common/random_sample.py"
+
+
 rule seqkit_counts:
     input:
         R1= expand(config["output_dir"]+"/dada2/dada2_filter/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
@@ -6,27 +16,22 @@ rule seqkit_counts:
     output:
           temp=config["output_dir"]+"/random_samples/"+"temp_cutadapt.txt"
     params:
-          output_dir=config["output_dir"]+"/random_samples/",
+          output_dir=config["output_dir"]+"/random_samples",
           input_dir=config["output_dir"]+"/cutadapt_qc/",
           input_suff_r1=config["forward_read_suffix"]+".fastq.gz",
           input_suff_r2=config["reverse_read_suffix"]+".fastq.gz",
           output_suff1=config["forward_read_suffix"]+"_cutadapt",          
           output_suff2=config["reverse_read_suffix"]+"_cutadapt"          
 
-    conda: "seqkit"
+    conda: "QC"
     shell:
         """
 	while read IDS
 	 do
-         echo "IDs: $IDS"
 	 input_r1={params.input_dir}"$IDS"{params.input_suff_r1}
-	 echo "input_r1:$input_r1"
          input_r2={params.input_dir}"$IDS"{params.input_suff_r2} 
-         echo "input_r2: $input_r2"
          output_r1={params.output_dir}"/""$IDS"{params.output_suff1}".txt" 
-         echo "output_r1: $output_r1"
 	 output_r2={params.output_dir}"/""$IDS"{params.output_suff2}".txt" 
-         echo "output_r2: $output_r2"
          if [[ ! -f "$input_r1" || ! -f "$input_r2" ]]; then
              echo "Error: input file does not exist for ID $IDS"
              continue
@@ -45,7 +50,7 @@ use rule seqkit_counts as seqkit_counts_dada2 with:
           input_dir=config["output_dir"]+"/dada2/dada2_filter/",
           input_suff_r1=config["forward_read_suffix"]+".fastq.gz",
           input_suff_r2=config["reverse_read_suffix"]+".fastq.gz",
-          output_dir=config["output_dir"]+"/random_samples/",
+          output_dir=config["output_dir"]+"/random_samples",
           output_suff1=config["forward_read_suffix"]+"_dada2",          
           output_suff2=config["reverse_read_suffix"]+"_dada2"          
 
@@ -58,6 +63,6 @@ use rule seqkit_counts as seqkit_counts_raw with:
           input_dir=config["input_dir"] + "/",
           input_suff_r1=config["forward_read_suffix"]+".fastq.gz",
           input_suff_r2=config["reverse_read_suffix"]+".fastq.gz",
-          output_dir=config["output_dir"]+"/random_samples/",
+          output_dir=config["output_dir"]+"/random_samples",
           output_suff1=config["forward_read_suffix"]+"_raw",          
           output_suff2=config["reverse_read_suffix"]+"_raw"
