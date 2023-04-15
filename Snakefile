@@ -8,18 +8,6 @@ configfile: "config.yaml"
 list_files = pd.read_table(config['list_files'],index_col=0)
 SAMPLES = list(list_files.index)
 
-config["path"]+"/"+config["output_dir"]
-
-## Find random samples to make qc plots with
-subset=list_files[list_files[ "R1" ].str.contains( config["excluded_samples"] )==False ]
-random_samples=subset.sample(n = 8)
-
-isExist = os.path.exists(config["output_dir"])
-if not isExist:
-   os.makedirs(config["output_dir"])
-
-random_samples.to_csv("samples/random_samples.tsv", columns=[], header=False,line_terminator = '')
-#print(random_samples)
 
 
 rule all:
