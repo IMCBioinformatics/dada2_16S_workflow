@@ -1,6 +1,6 @@
 rule reads_Length_Distribution:
     input:
-        needed=rules.seqkit_counts_raw.output
+        needed=rules.seqkit_counts_dada2.output
     output:
         temp=config["output_dir"]+"/figures/length_distribution/"+"temp_read_length.txt"
     params:
