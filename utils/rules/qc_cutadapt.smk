@@ -6,11 +6,12 @@ rule fastqcRaw:
         R2= config["output_dir"] + "/fastqc_raw/{sample}" + config["reverse_read_suffix"] + "_fastqc.html"
     resources:
         tmpdir=temp(directory(config["output_dir"] + "/fastqc_raw/tmp/")),
-        disk_mb=10000
+        disk_mb=40000,
+        mem_mb=10000
     conda:
         "QC"
     params:
-          output=directory(config["output_dir"]+ "/fastqc_raw")
+        output=directory(config["output_dir"]+ "/fastqc_raw")
     shell: "fastqc -o {params.output} -d {resources.tmpdir} {input.R1} {input.R2} "
 
 
@@ -38,7 +39,7 @@ rule cutAdapt:
         R1= config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + ".fastq.gz",
         R2= config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + ".fastq.gz"
     params:
-       inputs= lambda wc,input: f"{input.R1} {input.R2}",
+        inputs= lambda wc,input: f"{input.R1} {input.R2}",
         m=config["min_len"],
         o=config["min_overlap"],
         e=config["max_e"]
@@ -81,7 +82,8 @@ rule fastqcFilt:
         R2= config["output_dir"]+"/fastqc_filt/{sample}"+ config["reverse_read_suffix"] + "_fastqc.html"
     resources:
         tempdir=temp(directory(config["output_dir"] + "/fastqc_filt/tmp/")),
-        disk_mb=10000
+        disk_mb=40000,
+        mem_mb=10000
     conda:
         "QC"
     params:
