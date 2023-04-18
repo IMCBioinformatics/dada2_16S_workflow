@@ -117,7 +117,8 @@ conda deactivate
 conda create -n rmd
 conda activate rmd
 conda install -c conda-forge r-base
-
+conda install -c conda-forge pandoc
+    
 (dada2) [username@hostname ~]$ R
 install.packages('DT')
 install.packages("ggplot2")
