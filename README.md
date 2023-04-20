@@ -96,7 +96,7 @@ conda install -c bioconda fastqc==0.11.9
 conda install -c anaconda pip
 pip install multiqc
 pip install pandas==1.5.3
-conda install -c bioconda cutadapt or pip install cutadapt
+pip install cutadapt
 conda install -c bioconda seqkit
 conda deactivate
 ```
