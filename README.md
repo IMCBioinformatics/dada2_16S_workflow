@@ -93,7 +93,7 @@ To install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a 
 conda create --name QC
 conda activate QC
 conda install -c bioconda fastqc==0.11.9
-conda install -c anaconda pip
+conda install pip
 pip install multiqc
 pip install pandas==1.5.3
 pip install cutadapt
@@ -120,7 +120,7 @@ conda activate rmd
 conda install -c conda-forge r-base
 conda install -c conda-forge pandoc
     
-(dada2) [username@hostname ~]$ R
+(rmd) [username@hostname ~]$ R
 install.packages('DT')
 install.packages("ggplot2")
 install.packages("dplyr")
