@@ -3,19 +3,19 @@ suppressMessages(library("dplyr"))
 ## Importing data
 taxa_GTDB<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/GTDB_RDP.tsv"),header=TRUE, row.names = 1, sep = "\t")
 taxa_GTDB<-cbind(taxa_GTDB,rownames(taxa_GTDB))
-colnames(taxa_GTDB)[8]<-"asv_num"
+colnames(taxa_GTDB)[8]<-"asv_seq"
 
 taxa_RDP<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/RDP_RDP.tsv"))
 taxa_RDP<-cbind(taxa_RDP,rownames(taxa_RDP))
-colnames(taxa_RDP)[8]<-"asv_num"
+colnames(taxa_RDP)[8]<-"asv_seq"
 
 taxa_Silva<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/Silva_RDP.tsv"))
 taxa_Silva<-cbind(taxa_Silva,rownames(taxa_Silva))
-colnames(taxa_Silva)[8]<-"asv_num"
+colnames(taxa_Silva)[8]<-"asv_seq"
 
 taxa_URE<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/URE_RDP.tsv"))
 taxa_URE<-cbind(taxa_URE,rownames(taxa_URE))
-colnames(taxa_URE)[8]<-"asv_num"
+colnames(taxa_URE)[8]<-"asv_seq"
   
 seqtab<-readRDS(snakemake@input[["seqs"]])
 seqtab2<-t(seqtab)
@@ -26,7 +26,7 @@ seqtab3<-cbind(rowSums(seqtab2),seqtab2);colnames(seqtab3)[1]<-"total"
 
 #adding ASVs as a column to seqtab
 seqtab4<-data.frame(cbind(rownames(seqtab3),seqtab3))
-colnames(seqtab4)[1]<-"asv_num"
+colnames(seqtab4)[1]<-"asv_seq"
 
 
 ##Genering ASV_number,sequences and length columns
@@ -36,11 +36,11 @@ colnames(df)<-c("asv_num", "asv_seq","asv_len")
 
 #joining all taxonoy files ands seq table by ASV seqs
 
-df1<-left_join(df,taxa_GTDB,by="asv_num")
-df2<-left_join(df1,taxa_RDP,by="asv_num")
-df3<-left_join(df2,taxa_Silva,by="asv_num")
-df4<-left_join(df3,taxa_URE,by="asv_num")
-df5<-left_join(df4,seqtab4,by="asv_num")
+df1<-left_join(df,taxa_GTDB,by="asv_seq")
+df2<-left_join(df1,taxa_RDP,by="asv_seq")
+df3<-left_join(df2,taxa_Silva,by="asv_seq")
+df4<-left_join(df3,taxa_URE,by="asv_seq")
+df5<-left_join(df4,seqtab4,by="asv_seq")
 
 colnames(df5)[1:31]<-c("asv_num", "asv_seq",	"asv_len",	
 "kingdom_gtdb",	"phylum_gtdb",	"class_gtdb",	"order_gtdb",	
