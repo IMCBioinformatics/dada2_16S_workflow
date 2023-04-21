@@ -70,12 +70,11 @@ install.packages("gridExtra")
 
 install.packages("ggplot2")
 
-
+install.packages("dplyr")
+    
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("DECIPHER")
-
-BiocManager::install("dplyr")
 
 BiocManager::install("Biostrings")
 
