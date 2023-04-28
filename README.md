@@ -38,7 +38,11 @@ Output:
 <details>
 <summary><h3 style="font-size: 24px;">1. Prerequisites</h3></summary>
     
-Please install the following tools before running this workflow.
+Please install the following tools before running this workflow. Please request an interactive session before starting the installation step by running the following command:
+
+```bash
+    salloc --mem=20G --time=05:00:00
+```
 
 conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
 
