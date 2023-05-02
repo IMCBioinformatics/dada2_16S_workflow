@@ -135,7 +135,7 @@ idtaxa_species:
 RDP_dbs:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_train_set_18.fa.gz"
  Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_nr99_v138.1_train_set.fa.gz"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Genus.fa.gz"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_fullTaxo.fa.gz"
  URE: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/UREv2.1_genus.fasta"
 
 RDP_species:
