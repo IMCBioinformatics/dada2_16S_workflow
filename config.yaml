@@ -15,7 +15,7 @@ input_dir: "/work/IMC_binf/sbagheri/16S_pipeline_test/test"
 
 
 #The name of the output directory. This is for not overwriting the output folder in case of rerunning the pipeline after changing some parameters.
-output_dir: "output_test2"
+output_dir: "output"
 
 
 #path of the main snakemake directory
