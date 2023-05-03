@@ -29,6 +29,6 @@ rule combineReadCounts:
         D= pd.read_table(input[0],index_col=0)
         D= D.join(pd.read_table(input[1],index_col=0))
         D= D.join(pd.read_table(input[2],index_col=0))
-        D= D.join(pd.read_table(input[3],squeeze=True,index_col=0))
+        D= D.join(pd.read_table(input[3]).squeeze(0))
         D.to_csv(output[0],sep='\t')
 
