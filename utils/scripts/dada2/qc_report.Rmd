@@ -230,8 +230,10 @@ element_line(colour = "black"))
 
 ```{r raw reads distribution plot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,include=T,fig.width=7,fig.height=5,eval=T}
 
+n=max(reads2$value)/10
+
 ggplot(reads2, aes(x=value)) + 
-  geom_histogram(color="black", fill="#E69F00",binwidth = 25000,boundary=0)+   #boundary start starts the bin from zero
+  geom_histogram(color="black", fill="#E69F00",binwidth = n,boundary=0)+ #boundary start starts the bin from zero
   theme_bw()+
   theme(axis.text.x = element_text(angle = 45, size = 12, colour = "black",  hjust = 1, face= "bold"),
         axis.title.y = element_text(size = 12, face = "bold"), legend.title = element_text(size = 16, face = "bold"),
@@ -244,7 +246,7 @@ ggplot(reads2, aes(x=value)) +
   ggtitle("Starting number of reads distribution")+theme(panel.background = element_blank(),panel.border =element_rect(fill = NA, color = "black"), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), axis.line = element_line(colour = 
 "black"))+
   # update: adds counts above bars
-  stat_bin(binwidth = 25000,boundary = 0, aes(label=ifelse(..count.. > 0, ..count.., "")),geom="text",vjust=-0.9,hjust=0.5)#+labs(caption="Binwidth is 5.")
+  stat_bin(binwidth = n,boundary = 0, aes(label=ifelse(..count.. > 0, ..count.., "")),geom="text",vjust=-0.9,hjust=0.5)#+labs(caption="Binwidth is 5.")
 
 #scale_x_continuous(breaks = seq(0,400000,))+ylim(c(0,60))
 
