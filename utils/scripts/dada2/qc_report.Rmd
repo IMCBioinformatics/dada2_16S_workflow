@@ -159,7 +159,7 @@ reads<-read.csv(snakemake@params[["Nread"]],sep="\t") %>% filter(!grepl('Undeter
 <br>
 <br>
 
-## Percentage distribution of clean reads in samples
+## Reads count throughout the dada2 pipeline in all samples
 
 <br>
 
