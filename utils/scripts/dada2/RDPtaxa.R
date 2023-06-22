@@ -12,4 +12,9 @@ saveRDS(taxtab,file=snakemake@output[['rds_bootstrap']])
 
 taxtab<-addSpecies(taxtab$tax, refFasta=snakemake@input[['species']],tryRC=TRUE,allowMultiple = TRUE)
 
+if(ncol(taxtab)>7){
+  taxtab<-taxtab[,-7]
+  colnames(taxtab)[7]<-"Species"
+}
+
 write.table(taxtab,snakemake@output[['taxonomy']],sep='\t')

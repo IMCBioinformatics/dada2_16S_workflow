@@ -38,7 +38,11 @@ Output:
 <details>
 <summary><h3 style="font-size: 24px;">1. Prerequisites</h3></summary>
     
-Please install the following tools before running this workflow.
+Please install the following tools before running this workflow. Please request an interactive session before starting the installation step by running the following command:
+
+```bash
+    salloc --mem=20G --time=05:00:00
+```
 
 conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
 
@@ -60,7 +64,7 @@ To install r and dada2:
 conda create -n dada2 -c conda-forge -c bioconda -c defaults --override-channels bioconductor-dada2
 ```
 
-To activate the environment and install the required packages (gridExtra, ggplot2, DECIPHER, Biostrings, limma) locally in R:
+To activate the environment and install the required packages (dplyr, gridExtra, ggplot2, DECIPHER, Biostrings, limma) locally in R:
 
 ```bash
 conda activate dada2
@@ -70,11 +74,11 @@ install.packages("gridExtra")
 
 install.packages("ggplot2")
 
-
+install.packages("dplyr")
+    
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("DECIPHER")
-
 
 BiocManager::install("Biostrings")
 
@@ -91,11 +95,11 @@ To install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a 
 ```bash
 conda create --name QC
 conda activate QC
-conda install -c bioconda fastqc
-conda install -c anaconda pip
+conda install -c bioconda fastqc==0.11.9
+conda install pip
 pip install multiqc
-pip install pandas
-conda install -c bioconda cutadapt or pip install cutadapt
+pip install pandas==1.5.3
+pip install cutadapt
 conda install -c bioconda seqkit
 conda deactivate
 ```
@@ -117,8 +121,9 @@ conda deactivate
 conda create -n rmd
 conda activate rmd
 conda install -c conda-forge r-base
-
-(dada2) [username@hostname ~]$ R
+conda install -c conda-forge pandoc
+    
+(rmd) [username@hostname ~]$ R
 install.packages('DT')
 install.packages("ggplot2")
 install.packages("dplyr")

@@ -10,20 +10,21 @@
 list_files: "samples/samples.tsv"
 
 
+#******* CHECK BEFORE RUNNING ON A NEW DATASET******#
 #A path to where the raw fastq files are stored
 input_dir: "/work/IMC_binf/sbagheri/16S_pipeline_test/test"
 
 
 #The name of the output directory. This is for not overwriting the output folder in case of rerunning the pipeline after changing some parameters.
-output_dir: "output_test2"
+output_dir: "output"
 
-
+#******* CHECK BEFORE RUNNING ON A NEW DATASET******#
 #path of the main snakemake directory
 path: "/work/IMC_binf/sbagheri/16S_pipeline_test/github_test/dada2_snakemake_workflow"
 
 
+#******* CHECK BEFORE RUNNING ON A NEW DATASET******#
 # Reads format
-
 forward_read_suffix: "_R1_001"
 reverse_read_suffix: "_R2_001"
 
@@ -49,6 +50,8 @@ excluded_samples: "Undetermined|Water|WATER|DNA|Neg|neg"
 #fwd_primer_rc: "CTGCWGCCNCCCGTAGGCTGTCTCTTATACACATCTGACGCTGCCGACGA"  
 #rev_primer_rc: "GGATTAGATACCCBDGTAGTCCTGTCTCTTATACACATCTCCGAGCCCACGAGAC"
 
+
+#******* CHECK BEFORE RUNNING ON ANY REGION******#
 primers:
 # Illumina V4 protocol primers
 fwd_primer: ""
@@ -63,12 +66,14 @@ rev_primer_rc: ""
 
 min_len: 10
 
+#******* CHECK BEFORE RUNNING ON ANY REGION******#
 # minimum overlap length
 min_overlap: 17
 
 # maximum error rate
 max_e: 0.1
 
+#******* CHECK BEFORE RUNNING ON ANY REGION******#
 # quality trimming
 qf: 20
 qr: 20
@@ -90,6 +95,8 @@ threads: 20
 #  - 260
 #  - 220
 
+
+#******* CHECK BEFORE RUNNING ON ANY REGION******#
 #Maximum error rate (maximum number of “expected errors” allowed in a read)
 maxEE:
   - 2
@@ -128,7 +135,7 @@ idtaxa_species:
 RDP_dbs:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_train_set_18.fa.gz"
  Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_nr99_v138.1_train_set.fa.gz"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_Genus.fa.gz"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r207_fullTaxo.fa.gz"
  URE: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/UREv2.1_genus.fasta"
 
 RDP_species:

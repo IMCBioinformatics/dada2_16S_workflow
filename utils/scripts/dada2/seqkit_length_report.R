@@ -23,9 +23,13 @@ raw_objects <- ls(pattern = "raw")
 for (i in raw_objects){
   # Read in the object
   my_data <- get(i)
-  my_data<-data.frame(V1=seq_along(1:my_data$V1),V2=c(rep(x = 0,times=my_data$V1-1),rep(my_data$V2,times=1)))
-  # Save the updated object
-  assign(i,value = my_data)
+  if (nrow(my_data) == 1){ #this for times that primers are already removed from raw reads and they are not the same length anymore
+    my_data <- data.frame(
+      V1 = seq_along(1:my_data$V1),
+      V2 = c(rep(x = 0, times = my_data$V1-1), rep(my_data$V2, times = 1))) # Add missing closing parentheses
+    #Save the updated object
+    assign(i, value = my_data)
+  }
 }
 
 

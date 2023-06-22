@@ -6,5 +6,5 @@ subset = list_files[list_files["R1"].str.contains(snakemake.config["excluded_sam
 print(subset)
 random_samples = subset.sample(n=8)
 print(random_samples)
-random_samples.to_csv(snakemake.output[0], index=True,columns=[], header=False, line_terminator="\n")
+random_samples.to_csv(snakemake.output[0], index=True,columns=[], header=False)
 

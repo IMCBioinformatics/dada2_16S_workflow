@@ -1,6 +1,6 @@
 rule random_sample:
     input:
-        "samples/samples.tsv"
+        config["list_files"]
     output:
         "samples/random_samples.tsv"
     conda: "QC"
