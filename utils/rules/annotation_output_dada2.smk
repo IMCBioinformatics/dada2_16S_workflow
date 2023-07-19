@@ -6,7 +6,7 @@ rule combining_annotations:
         config["output_dir"]+"/taxonomy/Silva_RDP.tsv",
         seqs=rules.removeChimeras.output.rds 
     output:
-        table=config["output_dir"]+"/taxonomy/"+"annotation_combined_dada2.txt"
+        table=config["output_dir"]+"/taxonomy/"+"annotation_combined_dada2.csv"
     conda:
         "dada2"
     script:
