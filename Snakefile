@@ -47,6 +47,9 @@ rule all:
         config["output_dir"]+"/vsearch/Final_colapsed_output.tsv",
         config["output_dir"]+"/taxonomy/Vsearch_output.tsv"
 
+
+##path to where different snakemake rule files are saved
+
 include: "utils/rules/qc_cutadapt.smk"
 include: "utils/rules/dada2.smk"
 include: "utils/rules/phylo_tree.smk"
