@@ -12,7 +12,7 @@ list_files: "samples/samples.tsv"
 
 #******* CHECK BEFORE RUNNING ON A NEW DATASET******#
 #A path to where the raw fastq files are stored
-input_dir: "/work/IMC_binf/sbagheri/IMC_projects/16SITS_analysis/v1v2/data"
+input_dir: "/home/data"
 
 
 #The name of the output directory. This is for not overwriting the output folder in case of rerunning the pipeline after changing some parameters.
@@ -20,7 +20,7 @@ output_dir: "output"
 
 #******* CHECK BEFORE RUNNING ON A NEW DATASET******#
 #path of the main snakemake directory
-path: "/work/IMC_binf/sbagheri/16S_pipeline/test_vsearch/dada2_snakemake_workflow"
+path: "/home/analysis/dada2_snakemake_workflow"
 
 
 #******* CHECK BEFORE RUNNING ON A NEW DATASET******#
