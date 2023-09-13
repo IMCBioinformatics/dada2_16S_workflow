@@ -233,15 +233,32 @@ To make sure that the pipeline is run completely, we need to check the log and o
 All logs are placed in the logs directory. 
 A copy of all snakemake files and logs will be copied to the output directory (output/snakemake_files/) as well to avoid rewritting them by upcoming re-runs.
 
+<br>
+
 #### 4.2 Important result files:
+
+
 ##### 4.2.1 output/dada2
    - seqtab_nochimeras.rds
    - Nreads.tsv
+
+<br>
+
 ##### 4.2.2 output/taxonomy
-   - ```<DATABASE>```.tsv
+   - GTDB_RDP.tsv
+   - RDP_RDP.tsv
+   - Silva_RDP.tsv
+   - URE_RDP.tsv
+   - Vsearch_output.tsv
+
+<br>
+
 ##### 4.2.3 output/phylogeny    
    - ASV_seq.fasta
    - ASV_tree.nwk
+
+<br>
+
 ##### 4.2.4 output/QC_html_report
    - qc_report.html
 </details>
