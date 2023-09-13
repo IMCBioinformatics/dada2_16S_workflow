@@ -11,6 +11,12 @@ data using dada2. DADA2 tutorial can be found from https://benjjneb.github.io/da
 
 <br>
 
+In the dada2 pipeline, species assignment is accomplished through the application of a naive Bayesian classifier method (https://pubmed.ncbi.nlm.nih.gov/17586664/), where a strict requirement of a 100% nucleotide identity match between the reference sequences and the query is employed. To enhance the adaptability of the species assignment process, we leveraged an established tool to adjust the identity threshold to 99.3% (modifiable).
+VSEARCH, an open-source alternative to the widely utilized USEARCH tool, is employed in this context. VSEARCH excels in performing optimal global sequence alignments for the query against potential target sequences.
+For a more comprehensive understanding of this methodology, please refer to the paper available at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5075697/.
+
+<br>
+
 ## Overview
 
 Input: 
