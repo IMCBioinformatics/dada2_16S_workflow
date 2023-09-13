@@ -35,7 +35,7 @@ Output:
 
 ## Pipeline summary
 
-<img src="dag.svg" width="700" height="400">
+<img src="dag.svg" width="1100" height="700">
 
 <br> 
 
@@ -74,7 +74,12 @@ To activate the environment and install the required packages (dplyr, gridExtra,
 
 ```bash
 conda activate dada2
-(dada2) [username@hostname ~]$ R
+```
+
+to open an R session within the dada2 environment type R, (dada2) [username@hostname ~]$ R
+
+
+```bash
 install.packages("gridExtra")
 
 
@@ -89,10 +94,15 @@ BiocManager::install("DECIPHER")
 BiocManager::install("Biostrings")
 
 BiocManager::install("limma")
+```
 
-q() #to quit R
+to quit R type q(), (dada2) [username@hostname ~]$ q()
+
+```bash
 conda deactivate
 ```
+
+<br>
 
 #### 2.2. QC environment
 
@@ -110,6 +120,8 @@ conda install -c bioconda seqkit
 conda deactivate
 ```
 
+<br>
+
 #### 2.3 fastree_mafft environment 
 
 To create an environment for generating a phylogenetic tree and a fasta file of ASVs:
@@ -121,6 +133,8 @@ conda install -c bioconda fasttree
 conda deactivate
 ```
 
+<br>
+
 #### 2.4 rmd environment
 
 ```bash
@@ -128,14 +142,30 @@ conda create -n rmd
 conda activate rmd
 conda install -c conda-forge r-base
 conda install -c conda-forge pandoc
-    
-(rmd) [username@hostname ~]$ R
+```
+
+to open an R session within the dada2 environment type R, (rmd) [username@hostname ~]$ R
+
+```bash
 install.packages('DT')
 install.packages("ggplot2")
 install.packages("dplyr")
+```
 
-q() #to quit R
+to quit R type q(), (rmd) [username@hostname ~]$ q()
 
+```bash
+conda deactivate
+```
+
+<br>
+
+#### 2.5 vsearch environment
+
+```
+conda create -n vsearch
+conda activate vsearch
+conda install -c "bioconda/label/cf201901" vsearch
 conda deactivate
 ```
 
