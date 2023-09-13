@@ -25,7 +25,7 @@ Input:
 
 Output:
 
-* Taxonomic assignment tables for specified databases (GTDB, RDP, SILVA, URE).
+* Taxonomic assignment tables using RDP classifier (by GTDB, RDP, SILVA, and URE databases), in addition to VSEARCH (by GTDB and URE databases).
 * ASV abundance table (seqtab_nochimera.rds).
 * ASV sequences in a fasta file from seqtab_nochimera.rds (ASV_seq.fasta).
 * Summary of reads filtered at each step (Nreads.tsv).
