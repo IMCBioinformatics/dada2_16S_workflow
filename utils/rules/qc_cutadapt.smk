@@ -80,7 +80,7 @@ rule fastqcFilt:
         R2= config["output_dir"]+"/fastqc_filt/{sample}"+ config["reverse_read_suffix"] + "_fastqc.html"
     resources:
         tempdir=temp(directory(config["output_dir"] + "/fastqc_filt/tmp/"))
-     conda:
+    conda:
         "QC"
     params:
          fastqc_dir=directory(config["output_dir"]+ "/fastqc_filt")
