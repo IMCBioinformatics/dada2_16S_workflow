@@ -208,10 +208,11 @@ python utils/scripts/common/prepare.py <DIR>
   - chimera removal method
   - number of reads for error rate learning
 
-##### 3.4.4 modifying vsearch parameter
+##### 3.4.4 modifying vsearch parameters:
   - identity threshold
   - maximum number of hits to consider per query
   - if URE should be used after using GTDB for speciation
+
 
 #### 3.5 Download the taxonomy databases from http://www2.decipher.codes/Downloads.html that you plan to use in utils/databases/ and consequently set the path for them in the config file.
 
