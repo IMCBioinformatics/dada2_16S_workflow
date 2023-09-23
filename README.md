@@ -35,9 +35,7 @@ Output:
 
 ## Pipeline summary
 
-<img src="dag.svg" width="1300" height="900">
-
-<br> 
+<img src="dag.svg" width="1200" height="850" style="vertical-align: middle;">
 
 ## Workflow
 
