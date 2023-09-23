@@ -35,7 +35,7 @@ Output:
 
 ## Pipeline summary
 
-<img src="dag.svg" width="1200" height="850" style="vertical-align: middle;">
+<img src="dag.svg" width= auto height= auto >
 
 ## Workflow
 
@@ -200,12 +200,18 @@ python utils/scripts/common/prepare.py <DIR>
 
 ##### 3.4.2 modifying QC parameters:
   - primer sequences (if they are sequenced)
-  - primer removal and quality trimming values
+  - primer removal (Optional: Set to "False" when primers are not sequenced)
+  - quality trimming values
   
 ##### 3.4.3 modifying dada2 parameters:
   - DADA2 filter and trim thresholds
   - chimera removal method
   - number of reads for error rate learning
+
+##### 3.4.4 modifying vsearch parameter
+  - identity threshold
+  - maximum number of hits to consider per query
+  - if URE should be used after using GTDB for speciation
 
 #### 3.5 Download the taxonomy databases from http://www2.decipher.codes/Downloads.html that you plan to use in utils/databases/ and consequently set the path for them in the config file.
 
