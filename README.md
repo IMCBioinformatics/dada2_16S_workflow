@@ -35,7 +35,7 @@ Output:
 
 ## Pipeline summary
 
-<img src="dag.svg" width="1100" height="700">
+<img src="dag.svg" width="800" height="400">
 
 <br> 
 
