@@ -41,7 +41,7 @@ rm(derepF); rm(derepR)
 seqtab.all <- makeSequenceTable(mergers)
 
 ## ---- save seqtab ----
-write.csv(seqtab.all,snakemake@output[['seqtab']])
+saveRDS(seqtab.all, snakemake@output[['seqtab']])
 
 ## get N reads
 
