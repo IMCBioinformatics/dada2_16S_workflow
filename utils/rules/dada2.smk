@@ -100,6 +100,7 @@ rule removeChimeras:
         seqtab= rules.generateSeqtab.output.seqtab
     output:
         rds= config["output_dir"]+"/dada2/seqtab_nochimeras.rds",
+        csv= config["output_dir"]+"/dada2/seqtab_nochimeras.csv",
         nreads=temp(config["output_dir"]+"/dada2/Nreads_nochimera.txt")
     threads:
         config['threads']
