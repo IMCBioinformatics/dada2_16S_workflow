@@ -16,7 +16,7 @@ names <- c("asv_seq", "taxonomy", "identity")
 colnames(output_table_URE) <- names
 
 
-if (snakemake@config[['URE_after_GTDB']]==TRUE){
+if (snakemake@config[['URE_after_GTDB']]=="True"){
 # Join the output_table_GTDB data frame with the output table for the URE vsearch
 output_table <- output_table_GTDB %>% left_join(output_table_URE, by = "asv_seq", suffix = c("_GTDB", "_URE"),multiple = "all") %>% 
     # Add a new 'Database' column that identifies which database each hit came from, based on the 'identity' columns
