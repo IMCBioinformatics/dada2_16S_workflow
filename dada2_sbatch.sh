@@ -6,8 +6,8 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --time=2-00:00:00
 #SBATCH --mem=38G
-#SBATCH --error=log_dada2.%J.err
-#SBATCH --output=log_dada2.%J.out
+#SBATCH --error=record_dada2.%J.err
+#SBATCH --output=record_dada2.%J.out
 
 log_dir="$(pwd)"
 log_file="logs/dada2-analysis.log.txt"
