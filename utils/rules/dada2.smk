@@ -1,7 +1,7 @@
 rule plotQualityProfileRaw:
     input:
-        R1= expand(config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
-        R2= expand(config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + ".fastq.gz",sample=SAMPLES)
+        R1= expand(config["input_dir"]+"/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
+        R2= expand(config["input_dir"]+"/{sample}" + config["reverse_read_suffix"] + ".fastq.gz",sample=SAMPLES)
     output:
         R1=config["output_dir"]+"/figures/quality/rawFilterQualityPlots_R1.png",
         R2=config["output_dir"]+"/figures/quality/rawFilterQualityPlots_R2.png"
