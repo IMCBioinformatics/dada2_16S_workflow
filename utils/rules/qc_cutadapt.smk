@@ -37,7 +37,6 @@ rule cutAdapt:
         R1= config["output_dir"]+"/cutadapt/{sample}" + config["forward_read_suffix"] + ".fastq.gz",
         R2= config["output_dir"]+"/cutadapt/{sample}" + config["reverse_read_suffix"] + ".fastq.gz"
     params:
-        inputs= lambda wc,input: f"{input.R1} {input.R2}",
         m=config["min_len"],
         o=config["min_overlap"],
         e=config["max_e"]
@@ -46,15 +45,21 @@ rule cutAdapt:
     conda:
         "QC"
     shell:
-        "cutadapt -m {params.m} -O {params.o} " 
-        "-g {config[fwd_primer]} -G {config[rev_primer]} -a {config[rev_primer_rc]} -A {config[fwd_primer_rc]}"
-        " -o {output.R1} -p {output.R2} "
-        "{params.inputs} "
+        """
+        if [[ "{config[primer_removal]}" == "True" ]]; then
+            cutadapt -m {params.m} -O {params.o} \
+                -g {config[fwd_primer]} -G {config[rev_primer]} -a  {config[rev_primer_rc]} -A {config[fwd_primer_rc]} \
+                -o {output.R1} -p {output.R2} \
+                {input.R1} {input.R2}
+        else
+            touch {output.R1} {output.R2}
+            echo "Rule 'cutAdapt' is not executed because 'primer_removal' is set to 'false' in the config file."
+        fi
+        """
 
 rule cutAdaptQc:
     input:
-        R1= rules.cutAdapt.output.R1,
-        R2= rules.cutAdapt.output.R2
+        rules.cutAdapt.output if config.get("primer_removal", True) else (unpack(lambda wc: dict(list_files.loc[wc.sample])),)
     output:
         R1= config["output_dir"]+"/cutadapt_qc/{sample}" + config["forward_read_suffix"] + ".fastq.gz",
         R2= config["output_dir"]+"/cutadapt_qc/{sample}" + config["reverse_read_suffix"] + ".fastq.gz"
