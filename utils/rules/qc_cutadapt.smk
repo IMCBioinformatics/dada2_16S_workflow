@@ -72,7 +72,7 @@ rule cutAdaptQc:
     conda:
         "QC"
     shell:
-        "cutadapt -A XXX -q {params.qf},{params.qr} -m {params.m} -o {output.R1} -p {output.R2} {input.R1} {input.R2} "
+        "cutadapt -A XXX -q {params.qf},{params.qr} -m {params.m} -o {output.R1} -p {output.R2} {input} "
 
 
 
