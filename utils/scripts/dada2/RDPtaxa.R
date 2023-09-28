@@ -10,11 +10,6 @@ set.seed(snakemake@config[['seed']]) # Initialize random number generator for re
 taxtab <- assignTaxonomy(seqtab, refFasta = snakemake@input[['ref']],tryRC=TRUE,multithread=snakemake@threads,outputBootstraps = T)
 saveRDS(taxtab,file=snakemake@output[['rds_bootstrap']])
 
-taxtab<-addSpecies(taxtab$tax, refFasta=snakemake@input[['species']],tryRC=TRUE,allowMultiple = TRUE)
-
-if(ncol(taxtab)>7){
-  taxtab<-taxtab[,-7]
-  colnames(taxtab)[7]<-"Species"
-}
+taxtab<-addSpecies(taxtab$tax[,1:6], refFasta=snakemake@input[['species']],tryRC=TRUE,allowMultiple = TRUE)
 
 write.table(taxtab,snakemake@output[['taxonomy']],sep='\t')
