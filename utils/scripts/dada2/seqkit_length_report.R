@@ -74,7 +74,7 @@ for (i in names){
 }
 
 
-reads <- c("R1","R2")
+reads <- c("_R1","_R2")
 
 # loop over the selected objects and add columns to them
 for (i in reads){
