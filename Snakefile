@@ -37,12 +37,6 @@ rule all:
         config["output_dir"]+"/QC_html_report/"+"qc_report.html",
         config["output_dir"]+"/taxonomy/"+"annotation_combined_dada2.txt",
         "samples/random_samples.tsv",
-        config["output_dir"]+"/vsearch/GTDB/Vsearch_GTDB_selected.tsv",
-        config["output_dir"]+"/vsearch/GTDB/Vsearch_GTDB_raw.tsv",
-        config["output_dir"]+"/vsearch/GTDB/GTDB_temp.tsv",
-        config["output_dir"]+"/vsearch/GTDB/no_hits_GTDB.fasta",
-        config["output_dir"]+"/vsearch/URE/Vsearch_URE_selected.tsv",
-        config["output_dir"]+"/vsearch/URE/Vsearch_URE_raw.tsv",
         config["output_dir"]+"/vsearch/Final_uncollapsed_output.tsv",
         config["output_dir"]+"/vsearch/Final_colapsed_output.tsv",
         config["output_dir"]+"/taxonomy/Vsearch_output.tsv"
