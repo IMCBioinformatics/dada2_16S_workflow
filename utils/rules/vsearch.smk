@@ -50,8 +50,15 @@ rule vsearchURE:
         id=config["Identity"],
         maxaccepts=config["Maxaccepts"]
     shell:
-        "time vsearch --usearch_global {input.fas} --db {params.db} --userout {output.output1} --userfields query+target+id --uc {output.output2} --id {params.id} --iddef 0 --log {log} --threads {threads} --uc_allhits --maxaccepts {params.maxaccepts} --top_hits_only --strand both --gapopen '*' "
-
+        """
+        if [[ "{config[URE_after_GTDB]}" == True ]]; then
+            time vsearch --usearch_global {input.fas} --db {params.db} --userout {output.output1} \
+            --userfields query+target+id --uc {output.output2} --id {params.id} --iddef 0 --log {log} \
+            --threads {threads} --uc_allhits --maxaccepts {params.maxaccepts} --top_hits_only --strand both --gapopen '*'
+        else
+            echo "Rule 'vsearchURE' is not executed."
+        fi
+        """
 
 
 
