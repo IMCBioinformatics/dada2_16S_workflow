@@ -228,7 +228,7 @@ element_line(colour = "black"))
 <br>
 <br>
 
-```{r raw reads distribution plot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,include=T,fig.width=7,fig.height=5,eval=T}
+```{r raw reads distribution plot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,include=T,fig.width=9,fig.height=5,eval=T}
 
 n=max(reads2$value)/10
 
@@ -260,7 +260,7 @@ ggplot(reads2, aes(x=value)) +
 
 
 
-```{r distribution plot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,include=T,fig.width=7,fig.height=5,eval=T}
+```{r distribution plot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,include=T,fig.width=9,fig.height=5,eval=T}
 
 ggplot(reads3, aes(x=value)) + 
   geom_histogram(color="black", fill="#E69F00",binwidth = 5,boundary=0)+   #boundary start starts the bin from zero
