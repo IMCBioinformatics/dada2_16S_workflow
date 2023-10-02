@@ -228,6 +228,8 @@ element_line(colour = "black"))
 <br>
 <br>
 
+## Distribution of Initial Read Counts in 16S Amplicon Sequencing Run
+
 ```{r raw reads distribution plot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,include=T,fig.width=9,fig.height=5,eval=T}
 
 n=max(reads2$value)/10
@@ -258,7 +260,7 @@ ggplot(reads2, aes(x=value)) +
 <br>
 <br>
 
-
+## Percentage of Clean Reads Post-DADA2 Processing in Current Run
 
 ```{r distribution plot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,include=T,fig.width=9,fig.height=5,eval=T}
 
