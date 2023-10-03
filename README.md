@@ -140,6 +140,7 @@ conda create -n rmd
 conda activate rmd
 conda install -c conda-forge r-base
 conda install -c conda-forge pandoc
+conda install -c conda-forge r-tidyverse
 ```
 
 to open an R session within the dada2 environment type R, (rmd) [username@hostname ~]$ R
@@ -148,6 +149,15 @@ to open an R session within the dada2 environment type R, (rmd) [username@hostna
 install.packages('DT')
 install.packages("ggplot2")
 install.packages("dplyr")
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("phyloseq") #This takes a while
+install.packages("remotes")
+remotes::install_github("cpauvert/psadd")
+BiocManager::install("dada2")
+BiocManager::install("limma")
+BiocManager::install("kableExtra")
+install.packages("RColorBrewer")
 ```
 
 to quit R type q(), (rmd) [username@hostname ~]$ q()
