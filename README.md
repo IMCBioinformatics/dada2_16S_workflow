@@ -135,6 +135,10 @@ conda activate rmd
 conda install -c conda-forge r-base
 conda install -c conda-forge pandoc
 conda install -c conda-forge r-tidyverse
+wget https://github.com/marbl/Krona/releases/download/v2.8.1/KronaTools-2.8.1.tar 
+tar xf KronaTools-2.8.1.tar 
+cd KronaTools-2.8.1
+./install.pl --prefix=/softwares/miniconda/envs/rmd/bin
 ```
 
 to open an R session within the dada2 environment type R, (rmd) [username@hostname ~]$ R
