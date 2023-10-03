@@ -79,18 +79,12 @@ to open an R session within the dada2 environment type R, (dada2) [username@host
 
 ```bash
 install.packages("gridExtra")
-
-
 install.packages("ggplot2")
-
 install.packages("dplyr")
-    
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("DECIPHER")
-
 BiocManager::install("Biostrings")
-
 BiocManager::install("limma")
 ```
 
