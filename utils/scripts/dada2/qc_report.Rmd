@@ -1,5 +1,6 @@
 ---
-title: "QC Run Quality Report"
+title: "Navigating Raw Data"
+subtitle: "A Sequencing Run Analysis of Read Count, Quality, Length, and Taxonomy"
 author:
     - "IMC Bioinformatics"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -17,20 +18,36 @@ output:
     smooth_scroll: yes
 ---
 
+<br>
+<br>
 
-
-## Overall read quality plots {.tabset .tabset-fade}
+# Overall read quality plots {.tabset .tabset-fade}
 
 <br>
 
-### Read quality raw 
+## Read quality raw 
 
 <br>
 
+```{r needed packages,echo=F,include=F}
 
+suppressMessages(library(DT))
+suppressMessages(library(dplyr))
+suppressMessages(library(ggplot2))
+suppressMessages(library(psadd))
+suppressMessages(library(phyloseq))
+suppressMessages(library(dada2))
+suppressMessages(library(RColorBrewer))
+suppressMessages(library(limma))
+suppressMessages(library(tidyverse))
+suppressMessages(library(reshape2))
+suppressMessages(library(kableExtra))
+
+Sys.setenv(RSTUDIO_PANDOC="/home/sahar.bagheri1/softwares/miniconda/envs/rmd/bin")
+
+```
 
 ```{r,results='asis', echo=F}
-Sys.setenv(RSTUDIO_PANDOC="/home/sahar.bagheri1/softwares/miniconda/envs/rmd/bin")
 
 files <- list.files(path = snakemake@params[["quality"]], pattern = "raw", full.names = TRUE)
 
@@ -40,8 +57,14 @@ for (f in files) {
 
 ```
 
+<br>
+<br>
+<br>
+<br>
+<br>
 
-### Read Quality after read trimming
+
+## Read Quality after read trimming
 
 <br>
 
@@ -54,8 +77,13 @@ for (f in files) {
  }
 ```
 
+<br>
+<br>
+<br>
+<br>
+<br>
 
-### Read Quality after read filtering
+## Read Quality after read filtering
 
 <br>
 
@@ -68,12 +96,17 @@ for (f in files) {
  }
 ```
 
+<br>
+<br>
+<br>
+<br>
+<br>
 
-## Read length distribution for 5 random samples in the run {.tabset .tabset-fade}
+# Read length distribution for 5 random samples in the run {.tabset .tabset-fade}
 
 <br>
 
-### Sample 1
+## Sample 1
 
 ```{r, results='asis', echo=F}
 
@@ -85,9 +118,13 @@ for (f in files) {
 
 ```
 
+<br>
+<br>
+<br>
+<br>
+<br>
 
-
-### Sample 2
+## Sample 2
 
 ```{r, results='asis', echo=F}
 
@@ -98,9 +135,13 @@ for (f in files) {
  }
 ```
 
+<br>
+<br>
+<br>
+<br>
+<br>
 
-
-### Sample 3
+## Sample 3
 
 ```{r, results='asis', echo=F}
 
@@ -111,9 +152,14 @@ for (f in files) {
  }
 ```
 
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
-### Sample 4
+## Sample 4
 
 ```{r, results='asis', echo=F}
 
@@ -124,9 +170,14 @@ for (f in files) {
  }
 ```
 
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
-### Sample 5
+## Sample 5
 
 ```{r, results='asis', echo=F}
 
@@ -137,29 +188,19 @@ for (f in files) {
  }
 ```
 
-
-
 <br>
 <br>
-
+<br>
+<br>
+<br>
 
 ```{r,echo=F,messages=FALSE, warning=FALSE}
 
-suppressMessages(library(DT))
-suppressMessages(library(dplyr))
-suppressMessages(library(ggplot2))
-
-
 reads<-read.csv(snakemake@params[["Nread"]],sep="\t") %>% filter(!grepl('Undetermined|undetermined', file))
-
-#datatable(reads,caption="Read processing")
 
 ```
 
-<br>
-<br>
-
-## Reads count throughout the dada2 pipeline in all samples
+# Reads count throughout the dada2 pipeline in all samples
 
 <br>
 
@@ -199,8 +240,6 @@ colnames(reads2)<-c("Var","value")
 reads3<-data.frame(rep("Current run",times=nrow(reads1)),reads1$Clean_Reads_Percent)
 colnames(reads3)<-c("Var","value")
 
-
-
 ```
 
 
@@ -228,7 +267,7 @@ element_line(colour = "black"))
 <br>
 <br>
 
-## Distribution of initial read counts
+# Distribution of initial read counts
 
 <br>
 
@@ -262,7 +301,7 @@ ggplot(reads2, aes(x=value)) +
 <br>
 <br>
 
-## Percentage of clean reads post-DADA2
+# Percentage of clean reads post-DADA2
 
 <br>
 
@@ -285,9 +324,148 @@ element_line(colour = "black"))+
   stat_bin(binwidth = 5,boundary = 0, aes(label=ifelse(..count.. > 0, ..count.., "")),geom="text",vjust=-0.9)#+labs(caption="Binwidth is 5.")
 
 #  scale_x_continuous(breaks = seq(0,100,10))+ylim(c(0,70))
+```
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+# Bacterial composition in the positive controls
+
+<br>
+
+```{r, warning=F, message=F, results='asis',echo=F,fig.width=10, fig.height=7}
+
+
+Taxa<-c("Pseudomonas_aeruginosa", "Escherichia_coli","Salmonella_enterica",
+        "Lactobacillus_fermentum","Enterococcus_faecalis","Staphylococcus_aureus",
+        "Listeria_monocytogenes","Bacillus_subtilis")
+
+
+
+Expected<-c(4.2, 10.1, 10.4,18.4, 9.9, 15.5, 14.1, 17.4)
+
+AA<-data.frame(Taxa,Expected)
+
+
+
+# Load sequenced data and taxonomy
+
+seqtab <- readRDS(file = snakemake@params[["seqtab"]])
+taxa <- read.table(snakemake@params[["taxonomy"]])
+
+# Prepare data
+data <- data.frame(samples = rownames(seqtab))
+rownames(data) <- data$samples
+
+
+
+# Create phyloseq object (note: taxa are columns)
+ps <- phyloseq(otu_table(as.matrix(seqtab), taxa_are_rows = FALSE), 
+               sample_data(data),
+               tax_table(as.matrix(taxa)))
+
+
+
+
+n <- 74
+qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
+col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
+
+
+samples<-snakemake@params[["pos"]]
+
+sample_list <- unlist(strsplit(samples, split="\\|"))
+
+
+for (i in sample_list) {
+mock<-prune_samples(ps@sam_data$samples==i,ps)
+mock<-prune_taxa(colSums(mock@otu_table)>0,x = mock)
+
+mock.ref <- getSequences(snakemake@params[["ref"]])
+unqs.mock <- mock@otu_table@.Data
+
+match.ref <- as.data.frame(sapply(colnames(unqs.mock), function(x) grepl(x, mock.ref)))
+colnames(match.ref)
+
+match.ref$species<-strsplit2(names(mock.ref),split = "_16")[,1]
+
+maps<-gather(data = match.ref,key = "seqs",value = "present",-species) %>% 
+filter(present==TRUE)
+
+maps$abundance<-c(mock@otu_table[,maps$seqs])
+
+tot_abund<-maps %>% summarise(abundance=sum(abundance))
+ 
+temp=maps %>% dplyr::group_by(species) %>% 
+dplyr::summarise("Observed"=round(100*(sum(abundance)/unlist(tot_abund)),digits = 1))
+colnames(temp)[1]<-"Taxa"
+
+temp<-left_join(AA,temp,by="Taxa")
+
+
+temp
+
+A<- ggplot(melt(temp),aes(x = variable,y = 
+value,fill=Taxa))+geom_bar(colour="black",position="stack", stat="identity",  width=.8)+
+xlab(NULL)+
+ggtitle(paste0("Bacterial profile in ",i))+
+theme(legend.position = "right",
+axis.text.x = element_text(angle = 90, size = 15, colour = "black", vjust = 0.9, hjust = 0.83, face= "bold")
+,
+axis.title.y = element_text(size = 15, face = "bold"),
+axis.title.x = element_text(size = 15, face = "bold"),
+legend.title = element_text(size = 12, face = "bold"),
+legend.text = element_text(size = 12, face = "bold", colour = "black"),
+axis.text.y = element_text(colour = "black", size = 13, face = "bold"),
+plot.caption = element_text(hjust = 0,vjust=0,size = 17, face = "bold", colour = "red"),
+plot.title = element_text(size=15,face="bold"),
+strip.text.x = element_text(size = 15, colour="black"))+ylab("Counts")+
+  scale_fill_manual(values = col_vector)+theme(panel.background = 
+element_blank(),panel.border =element_rect(fill = NA, color = "black"), panel.grid.major = 
+element_blank(),
+panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
+
+print(A)
+
+cat("<br><br>")
+cat("<br><br>")
+
+B<-kable(format(as.data.frame(temp),scientific=F, digits=3),
+         caption = "Abundance table of taxa found in the positive control sample") %>% 
+  column_spec(1:ncol(temp), width = "6cm")
+
+print(B)
+cat("\n")
+
+cat("<br><br>")
+cat("<br><br>")
+cat("<br><br>")
+cat("<br><br>")
+
+}
 
 ```
 
-## Source
-<a download="qc_report.Rmd" href="`r base64enc::dataURI(file = params$rmd, mime = 'text/rmd', encoding = 'base64')`">R Markdown source file (to produce this document)</a>
+<br>
 
+```{r krona-plot, echo=FALSE,message=F, warning=F}
+# Taxonomy profile
+
+
+options(browser = "echo")
+
+
+# Plot Krona chart
+a <- plot_krona(physeq=ps, output=snakemake@params[['krona']], variable="samples", trim = TRUE)
+
+```
+
+<iframe src="/work/IMC_binf/sbagheri/IMC_QC_runs/Bisi_2023/230925/dada2_snakemake_workflow/output/QC_html_re
+port/krona_Species_result.html" width="1100" height="700" scrolling="yes"></iframe>
+
+<div Class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
