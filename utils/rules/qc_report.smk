@@ -10,7 +10,12 @@ rule qc_report:
     params:
         Nread=config["output_dir"]+"/dada2/Nreads.tsv",
         quality=config["path"]+"/"+config["output_dir"]+"/figures/quality/",
-        length_distribution=config["path"]+"/"+config["output_dir"]+"/figures/length_distribution/"
+        length_distribution=config["path"]+"/"+config["output_dir"]+"/figures/length_distribution/",
+        taxonomy=config["path"]+"/"+config["output_dir"]+"/taxonomy/GTDB_RDP.tsv",
+        seqtab=config["path"]+"/"+config["output_dir"]+"/dada2/seqtab_nochimeras.rds",
+        pos=config["Positive_samples"],
+        ref=config["path"]+"/utils/databases/DNA_ST_zymo.fasta",
+        krona=config["output_dir"]+"/QC_html_report/"+"krona_Species_result"
     output:
         config["output_dir"]+"/QC_html_report/"+"qc_report.html"
     script:
