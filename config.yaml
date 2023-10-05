@@ -75,6 +75,12 @@ qf: 20
 qr: 20
 
 
+## Positive control samples to visualize for qc report
+#******* CHECK BEFORE RUNNING ON ANY REGION******#
+Positive_samples: "Lib-pos-1_S78_L001|Lib-pos-2_S256_L001"
+
+
+
 
 #***************
 #**** DADA2 ****
