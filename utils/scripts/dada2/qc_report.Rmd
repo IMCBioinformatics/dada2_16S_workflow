@@ -457,15 +457,16 @@ cat("<br><br>")
 # Taxonomy profile
 
 
-options(browser = "echo")
-
+options(browser = "echo") #plot_krona is set to open the krona plot as a separate html file, this stops it
 
 # Plot Krona chart
 a <- plot_krona(physeq=ps, output=snakemake@params[['krona']], variable="samples", trim = TRUE)
 
+file=snakemake@config[['path']]
+
 ```
 
-<iframe src="/work/IMC_binf/sbagheri/IMC_QC_runs/Bisi_2023/230925/dada2_snakemake_workflow/output/QC_html_re
-port/krona_Species_result.html" width="1100" height="700" scrolling="yes"></iframe>
+<iframe src="`r paste0(file, "/output/QC_html_report/krona_Species_result.html")`" width="1100" height="700" scrolling="yes"></iframe>
+
 
 <div Class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
