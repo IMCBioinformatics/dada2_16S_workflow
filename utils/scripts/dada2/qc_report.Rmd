@@ -273,6 +273,9 @@ element_line(colour = "black"))
 
 ```{r raw reads distribution plot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,include=T,fig.width=9,fig.height=5,eval=T}
 
+# Determine max bin count
+max_count <- max(hist(reads2$value, breaks=seq(0, max(reads2$value), by=n), plot=FALSE)$counts)
+
 n=max(reads2$value)/10
 
 ggplot(reads2, aes(x=value)) + 
@@ -289,7 +292,7 @@ ggplot(reads2, aes(x=value)) +
   ggtitle("Starting number of reads distribution")+theme(panel.background = element_blank(),panel.border =element_rect(fill = NA, color = "black"), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), axis.line = element_line(colour = 
 "black"))+
   # update: adds counts above bars
-  stat_bin(binwidth = n,boundary = 0, aes(label=ifelse(..count.. > 0, ..count.., "")),geom="text",vjust=-0.9,hjust=0.5)#+labs(caption="Binwidth is 5.")
+  stat_bin(binwidth = n,boundary = 0, aes(label=ifelse(..count.. > 0, ..count.., "")),geom="text",vjust=-0.9,hjust=0.5)+ coord_cartesian(ylim=c(0, max_count + 30))#+labs(caption="Binwidth is 5.")
 
 #scale_x_continuous(breaks = seq(0,400000,))+ylim(c(0,60))
 
@@ -307,6 +310,8 @@ ggplot(reads2, aes(x=value)) +
 
 ```{r distribution plot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,include=T,fig.width=9,fig.height=5,eval=T}
 
+max_value <- max(hist(reads3$value, breaks=seq(0, max(reads3$value) + 5, by=5), plot=FALSE)$counts) 
+
 ggplot(reads3, aes(x=value)) + 
   geom_histogram(color="black", fill="#E69F00",binwidth = 5,boundary=0)+   #boundary start starts the bin from zero
   theme_bw()+
@@ -321,7 +326,7 @@ ggplot(reads3, aes(x=value)) +
   ggtitle("Remained Clean reads percentage after dada2 in the current run")+theme(panel.background = element_blank(),panel.border =element_rect(fill = NA, color = "black"), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), axis.line = 
 element_line(colour = "black"))+
   # update: adds counts above bars
-  stat_bin(binwidth = 5,boundary = 0, aes(label=ifelse(..count.. > 0, ..count.., "")),geom="text",vjust=-0.9)#+labs(caption="Binwidth is 5.")
+  stat_bin(binwidth = 5,boundary = 0, aes(label=ifelse(..count.. > 0, ..count.., "")),geom="text",vjust=-0.9)+ coord_cartesian(ylim=c(0, max_value + 30))#+labs(caption="Binwidth is 5.")
 
 #  scale_x_continuous(breaks = seq(0,100,10))+ylim(c(0,70))
 ```
