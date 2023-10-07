@@ -273,10 +273,10 @@ element_line(colour = "black"))
 
 ```{r raw reads distribution plot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,include=T,fig.width=9,fig.height=5,eval=T}
 
+n=max(reads2$value)/10
+
 # Determine max bin count
 max_count <- max(hist(reads2$value, breaks=seq(0, max(reads2$value), by=n), plot=FALSE)$counts)
-
-n=max(reads2$value)/10
 
 ggplot(reads2, aes(x=value)) + 
   geom_histogram(color="black", fill="#E69F00",binwidth = n,boundary=0)+ #boundary start starts the bin from zero
