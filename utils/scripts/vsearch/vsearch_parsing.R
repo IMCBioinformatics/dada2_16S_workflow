@@ -193,22 +193,18 @@ df<- vsearch %>% left_join(.,dd2,by=c("asv_num","asv_seq","asv_len"))
 
 # create a dataframe to colapse the taxonomy from vsearch + dada2_gtdb + dada2_URE
 colapsed <- df[1:3] 
-colapsed[c("kingdom_final","phylum_final","class_final","order_final","family_final","genus_final","spe
-cies_final")]<-df[6:12]
+colapsed[c("kingdom_final","phylum_final","class_final","order_final","family_final","genus_final","species_final")]<-df[6:12]
 
 # only dada2 gtdb assignments
-gtdb_dd2 <- df[c("kingdom_gtdb","phylum_gtdb","class_gtdb","order_gtdb","family_gtdb","genus_gtdb","spe
-cies_gtdb")]
+gtdb_dd2 <- df[c("kingdom_gtdb","phylum_gtdb","class_gtdb","order_gtdb","family_gtdb","genus_gtdb","species_gtdb")]
 
 # only dada2 URE assignments , if TRUE in the pipelie
 if(snakemake@config[['URE_after_GTDB']]==TRUE){
-  ure_dd2 <- df[c("kingdom_URE","phylum_URE","class_URE","order_URE","family_URE","genus_URE","species_
-URE")]
+  ure_dd2 <- df[c("kingdom_URE","phylum_URE","class_URE","order_URE","family_URE","genus_URE","species_URE")]
 }
 
 
-# This loop checks if there is a Vsearch assignment to each ASV, if not it checks dada2_gtdb for assign
-ment to any level, if not it tries dada2_URE when URE=TRUE
+# This loop checks if there is a Vsearch assignment to each ASV, if not it checks dada2_gtdb for assignment to any level, if not it tries dada2_URE when URE=TRUE
 
 for(i in 1:nrow(df)){
   if(df$identity_vsearch[i]==0 & all(is.na(gtdb_dd2[i,]))==F){
@@ -228,7 +224,6 @@ write.table(final, file = snakemake@output[["merged_final"]], row.names = F, sep
 
 ##This file can be used for the downstream analysis
 selected_final_table <- final %>% 
-  select(asv_seq, kingdom_final, phylum_final, class_final, order_final, family_final, genus_final,spec
-ies_final)
+  select(asv_seq, kingdom_final, phylum_final, class_final, order_final, family_final, genus_final,species_final)
 
 write.table(selected_final_table, snakemake@output[["Vsearch_final"]], sep = "\t",col.names =NA)
