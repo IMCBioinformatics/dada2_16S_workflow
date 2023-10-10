@@ -169,11 +169,66 @@ final_result_unique_id$Num_hits <- ifelse(is.na(final_result_unique_id$Num_hits)
 write.table(output_table,snakemake@output[["SemiParsed_uncollapsed"]],row.names=F,sep="\t")
 write.table(final_result_unique_id,snakemake@output[["parsed_collapsed_GTDB_URE"]],row.names=F,sep="\t")
 
+
+############ merging vsearch and dada2 results #############
+
+# load dada2 final combined output table from output/taxomomy
+
+
+dd2 <- read.table(file= snakemake@input[["annotation"]], sep = ',', header = T)
+
+
+# load vsearch final colapsed table from output/vsearch/ and select only desired columns
+vsearch<-final_result_unique_id %>% select(c(1:3,5,6,8:13,15,16)) %>% rename(Species=Species_unique)
+
+
+# adjust vsearch column names and add a suffix
+colnames(vsearch)<-tolower(colnames(vsearch))
+colnames(vsearch)[4:13] <- paste0(colnames(vsearch)[4:13], "_vsearch")
+
+
+# join dada2 and vsearch tables
+df<- vsearch %>% left_join(.,dd2,by=c("asv_num","asv_seq","asv_len"))
+
+
+# create a dataframe to colapse the taxonomy from vsearch + dada2_gtdb + dada2_URE
+colapsed <- df[1:3] 
+colapsed[c("kingdom_final","phylum_final","class_final","order_final","family_final","genus_final","spe
+cies_final")]<-df[6:12]
+
+# only dada2 gtdb assignments
+gtdb_dd2 <- df[c("kingdom_gtdb","phylum_gtdb","class_gtdb","order_gtdb","family_gtdb","genus_gtdb","spe
+cies_gtdb")]
+
+# only dada2 URE assignments , if TRUE in the pipelie
+if(snakemake@config[['URE_after_GTDB']]==TRUE){
+  ure_dd2 <- df[c("kingdom_URE","phylum_URE","class_URE","order_URE","family_URE","genus_URE","species_
+URE")]
+}
+
+
+# This loop checks if there is a Vsearch assignment to each ASV, if not it checks dada2_gtdb for assign
+ment to any level, if not it tries dada2_URE when URE=TRUE
+
+for(i in 1:nrow(df)){
+  if(df$identity_vsearch[i]==0 & all(is.na(gtdb_dd2[i,]))==F){
+    colapsed[i,4:10]<- gtdb_dd2[i,]
+  } else if (df$identity_vsearch[i]==0 & snakemake@config[['URE_after_GTDB']]==TRUE) {
+    colapsed[i,4:10]<- ure_dd2[i,]
+  } 
+}
+
+
+
+final <- colapsed %>% left_join(.,df,by=c("asv_num","asv_seq","asv_len"))
+
+write.table(final, file = snakemake@output[["merged_final"]], row.names = F, sep = "\t")
+
+
+
 ##This file can be used for the downstream analysis
-selected_final_table <- final_result_unique_id %>% 
-  column_to_rownames(var = "asv_seq") %>%
-  select(Kingdom,Phylum,Class,Order,Family,Genus,Species_unique)
+selected_final_table <- final %>% 
+  select(asv_seq, kingdom_final, phylum_final, class_final, order_final, family_final, genus_final,spec
+ies_final)
 
-colnames(selected_final_table)[7]<-"Species"
-
-write.table(selected_final_table, snakemake@output[["Vsearch_final"]], sep = "\t",row.names= T,col.names =NA)
+write.table(selected_final_table, snakemake@output[["Vsearch_final"]], sep = "\t",col.names =NA)
