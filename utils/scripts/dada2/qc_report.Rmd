@@ -425,74 +425,85 @@ col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_co
 
 samples<-snakemake@params[["pos"]]
 
-sample_list <- unlist(strsplit(samples, split="\\|"))
 
 
-for (i in sample_list) {
-mock<-prune_samples(ps@sam_data$samples==i,ps)
-mock<-prune_taxa(colSums(mock@otu_table)>0,x = mock)
+if (!is.null(samples) && samples != "" ) {
+  sample_list <- unlist(strsplit(samples, split = "\\|"))
 
-mock.ref <- getSequences(snakemake@params[["ref"]])
-unqs.mock <- mock@otu_table@.Data
+  for (i in sample_list) {
+    mock <- prune_samples(ps@sam_data$samples == i, ps)
+    mock <- prune_taxa(colSums(mock@otu_table) > 0, x = mock)
 
-match.ref <- as.data.frame(sapply(colnames(unqs.mock), function(x) grepl(x, mock.ref)))
-colnames(match.ref)
+    mock.ref <- getSequences(snakemake@params[["ref"]])
+    unqs.mock <- mock@otu_table@.Data
 
-match.ref$species<-strsplit2(names(mock.ref),split = "_16")[,1]
+    match.ref <- as.data.frame(sapply(colnames(unqs.mock), function(x) grepl(x, mock.ref)))
+    colnames(match.ref)
 
-maps<-gather(data = match.ref,key = "seqs",value = "present",-species) %>%
-filter(present==TRUE)
+    match.ref$species <- strsplit2(names(mock.ref), split = "_16")[, 1]
 
-maps$abundance<-c(mock@otu_table[,maps$seqs])
+    maps <- gather(data = match.ref, key = "seqs", value = "present", -species) %>%
+      filter(present == TRUE)
 
-tot_abund<-maps %>% summarise(abundance=sum(abundance))
+    maps$abundance <- c(mock@otu_table[, maps$seqs])
 
-temp=maps %>% dplyr::group_by(species) %>%
-dplyr::summarise("Observed"=round(100*(sum(abundance)/unlist(tot_abund)),digits = 1))
-colnames(temp)[1]<-"Taxa"
+    tot_abund <- maps %>% summarise(abundance = sum(abundance))
 
-temp<-left_join(AA,temp,by="Taxa")
+    temp = maps %>% dplyr::group_by(species) %>%
+      dplyr::summarise("Observed" = round(100 * (sum(abundance) / unlist(tot_abund)), digits = 1))
+    colnames(temp)[1] <- "Taxa"
 
+    temp <- left_join(AA, temp, by = "Taxa")
 
-temp
+    A <- ggplot(melt(temp), aes(x = variable, y = value, fill = Taxa)) +
+      geom_bar(colour = "black", position = "stack", stat = "identity", width = 0.8) +
+      xlab(NULL) +
+      ggtitle(paste0("Bacterial profile in ", i)) +
+      theme(legend.position = "right",
+            axis.text.x = element_text(angle = 90, size = 15, colour = "black", vjust = 0.9, hjust = 0.83, face = "bold"),
+            axis.title.y = element_text(size = 15, face = "bold"),
+            axis.title.x = element_text(size = 15, face = "bold"),
+            legend.title = element_text(size = 12, face = "bold"),
+            legend.text = element_text(size = 12, face = "bold", colour = "black"),
+            axis.text.y = element_text(colour = "black", size = 13, face = "bold"),
+            plot.caption = element_text(hjust = 0, vjust = 0, size = 17, face = "bold", colour = "red"),
+            plot.title = element_text(size = 15, face = "bold"),
+            strip.text.x = element_text(size = 15, colour = "black")) +
+      ylab("Counts") +
+      scale_fill_manual(values = col_vector) +
+      theme(panel.background = element_blank(),
+            panel.border = element_rect(fill = NA, color = "black"),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            axis.line = element_line(colour = "black"))
 
-A<- ggplot(melt(temp),aes(x = variable,y =
-value,fill=Taxa))+geom_bar(colour="black",position="stack", stat="identity",  width=.8)+
-xlab(NULL)+
-ggtitle(paste0("Bacterial profile in ",i))+
-theme(legend.position = "right",
-axis.text.x = element_text(angle = 90, size = 15, colour = "black", vjust = 0.9, hjust = 0.83, face= "bold"),
-axis.title.y = element_text(size = 15, face = "bold"),
-axis.title.x = element_text(size = 15, face = "bold"),
-legend.title = element_text(size = 12, face = "bold"),
-legend.text = element_text(size = 12, face = "bold", colour = "black"),
-axis.text.y = element_text(colour = "black", size = 13, face = "bold"),
-plot.caption = element_text(hjust = 0,vjust=0,size = 17, face = "bold", colour = "red"),
-plot.title = element_text(size=15,face="bold"),
-strip.text.x = element_text(size = 15, colour="black"))+ylab("Counts")+
-  scale_fill_manual(values = col_vector)+theme(panel.background =
-element_blank(),panel.border =element_rect(fill = NA, color = "black"), panel.grid.major =
-element_blank(),
-panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
+    print(A)
 
-print(A)
+    cat("<br><br>")
+    cat("<br><br>")
 
-cat("<br><br>")
-cat("<br><br>")
+    B <- kable(format(as.data.frame(temp), scientific = F, digits = 3),
+               caption = "Abundance table of taxa found in the positive control sample") %>%
+      column_spec(1:ncol(temp), width = "6cm")
 
-B<-kable(format(as.data.frame(temp),scientific=F, digits=3),
-         caption = "Abundance table of taxa found in the positive control sample") %>%
-  column_spec(1:ncol(temp), width = "6cm")
+    print(B)
+    cat("\n")
 
-print(B)
-cat("\n")
+    cat("<br><br>")
+    cat("<br><br>")
+    cat("<br><br>")
+    cat("<br><br>")
+  }
 
-cat("<br><br>")
-cat("<br><br>")
-cat("<br><br>")
-cat("<br><br>")
+} else {
 
+  print("There was no positive control in this run")
+    cat("<br><br>")
+    cat("<br><br>")
+    cat("<br><br>")
+    cat("<br><br>")
 }
+
 ```
 
 
