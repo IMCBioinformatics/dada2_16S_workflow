@@ -12,7 +12,6 @@ SAMPLES = list(list_files.index)
 
 rule all:
     input:
-        config["output_dir"]+"/figures/length_distribution/Sequence_Length_distribution_abundance.png",
         config["output_dir"]+"/figures/length_distribution/Sequence_Length_distribution.png",
         config["output_dir"]+"/figures/quality/afterQCQualityPlots_R1.png",
         config["output_dir"]+"/figures/quality/afterQCQualityPlots_R2.png",
@@ -49,7 +48,6 @@ include: "utils/rules/dada2.smk"
 include: "utils/rules/phylo_tree.smk"
 include: "utils/rules/readCount.smk"
 include: "utils/rules/seqkit_length_report.smk"
-include: "utils/rules/reads_length_plotting.smk"
 include: "utils/rules/qc_report.smk"
 include: "utils/rules/annotation_output_dada2.smk"
 include: "utils/rules/vsearch.smk"
