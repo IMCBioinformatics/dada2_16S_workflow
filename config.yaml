@@ -79,7 +79,7 @@ qr: 20
 #******* CHECK BEFORE RUNNING ON ANY REGION******#
 Positive_samples: "Lib-pos-1_S78_L001|Lib-pos-2_S256_L001"
 
-
+pandoc: "/home/username/miniconda/envs/rmd/bin"
 
 
 #***************
