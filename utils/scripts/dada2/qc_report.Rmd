@@ -36,7 +36,8 @@ suppressMessages(library(waterfalls))
 suppressMessages(library(ggpubr))
 
 
-Sys.setenv(RSTUDIO_PANDOC="/home/sahar.bagheri1/softwares/miniconda/envs/rmd/bin")
+Sys.setenv(RSTUDIO_PANDOC=snakemake@config[["pandoc"]])
+
 
 ```
 
