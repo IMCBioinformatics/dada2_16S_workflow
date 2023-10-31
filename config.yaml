@@ -47,7 +47,7 @@ excluded_samples: "Undetermined|Water|WATER|DNA|Neg|neg"
 ##***If primers need to be removed set this to True and add the primer sequences***
 
 #******* CHECK BEFORE RUNNING ON ANY REGION******#
-primer_removal: True  #True or False
+primer_removal: False  #True or False
 
 primers:
 fwd_primer: ""
@@ -126,7 +126,7 @@ seed: 100
 
 Identity: 0.993      # Minimum percent identity for a hit to be considered a match
 Maxaccepts: 30       # Maximum number of hits to consider per query
-URE_after_GTDB: True #True or False
+URE_after_GTDB: False #True or False
 
 ######## All databases ###################################################################
 
