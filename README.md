@@ -156,6 +156,8 @@ BiocManager::install("dada2")
 BiocManager::install("limma")
 BiocManager::install("kableExtra")
 install.packages("RColorBrewer")
+install.packages("ggpubr")
+install.packages("waterfalls")
 ```
 
 to quit R type q(), (rmd) [username@hostname ~]$ q()
