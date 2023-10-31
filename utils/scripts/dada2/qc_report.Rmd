@@ -211,7 +211,7 @@ reads<-read.csv(snakemake@params[["Nread"]],sep="\t") %>% filter(!grepl('Undeter
 
 <br>
 
-```{r table merge,echo=F,messages=FALSE, warning=FALSE,include=T,fig.width=7,fig.height=5}
+```{r table merge,echo=F,messages=FALSE, warning=FALSE,include=T,fig.width=9,fig.height=7}
 reads1<-reads
 
 colnames(reads1)[1:7]<-c("Sample", "Raw", "Quality_Trimmed", "Filtered", "Denoised", "Merged", "Cleaned")
@@ -307,7 +307,7 @@ colnames(reads3)<-c("Var","value")
 
 <br>
 
-```{r boxplot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,include=F,fig.width=7,fig.height=5,eval=F}
+```{r boxplot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,fig.width=11,fig.height=7}
 
 n=max(reads2$value)/10
 
