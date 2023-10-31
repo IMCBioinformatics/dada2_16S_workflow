@@ -1,20 +1,18 @@
 ---
 title: "From 16S Amplicon Raw Data to ASVs (Amplicon Sequence Variants)"
-
-author:
-    - "IMC Bioinformatics"
+author: "IMC Bioinformatics"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 params:
    rmd: "qc_report.Rmd"
 output:
-  html_document:
-  highlight: tango
-  number_sections: yes
-  theme: flatly
-  toc: yes
-  toc_depth: 4
-  toc_float:
-    collapsed: no
+html_document:
+    theme: flatly
+    highlight: tango
+    toc: yes
+    number_sections: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: no
     smooth_scroll: yes
 ---
 
