@@ -45,7 +45,7 @@ Sys.setenv(RSTUDIO_PANDOC=snakemake@config[["pandoc"]])
 
 <br>
 
-# Overall read quality plots {.tabset .tabset-fade}
+## Overall read quality plots {.tabset .tabset-fade}
 
 <br>
 
