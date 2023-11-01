@@ -41,9 +41,9 @@ p <- ggplot(final, aes(x = LENGTH)) +
   ggtitle("ASVs length distribution") +
   labs(caption =
   "The plot visualizes the distribution of ASVs (Amplicon Sequence Variants)
-  by their length. The black bars represent the count of ASVs at each
+  by their length. The grey bars represent the count of ASVs at each
   specific length, indicating how frequently ASVs of that length occur
-  in the dataset. The red line illustrates the abundance of ASVs, which
+  in the dataset. The orange line illustrates the abundance of ASVs, which
   reflects the total number of sequences for ASVs of each length.") +
   theme(plot.caption = element_text(hjust = 0,size=12),
         axis.text.x = element_text(angle = 45, size = 12, colour = "black",  hjust = 1, face= "bold"),
