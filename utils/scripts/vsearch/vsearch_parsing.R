@@ -195,6 +195,9 @@ df<- vsearch %>% left_join(.,dd2,by=c("asv_num","asv_seq","asv_len"))
 colapsed <- df[1:3] 
 colapsed[c("kingdom_final","phylum_final","class_final","order_final","family_final","genus_final","species_final")]<-df[6:12]
 
+colapsed$database_final<-df$database_vsearch
+colapsed$package<-"Vsearch"
+
 # only dada2 gtdb assignments
 gtdb_dd2 <- df[c("kingdom_gtdb","phylum_gtdb","class_gtdb","order_gtdb","family_gtdb","genus_gtdb","species_gtdb")]
 
@@ -209,11 +212,17 @@ if(snakemake@config[['URE_after_GTDB']]==TRUE){
 for(i in 1:nrow(df)){
   if(df$identity_vsearch[i]==0 & all(is.na(gtdb_dd2[i,]))==F){
     colapsed[i,4:10]<- gtdb_dd2[i,]
+    colapsed[i,"database_final"]<-"GTDB"
+    colapsed[i,"package"]<-"DADA2"
   } else if (df$identity_vsearch[i]==0 & snakemake@config[['URE_after_GTDB']]==TRUE) {
     colapsed[i,4:10]<- ure_dd2[i,]
-  } 
+    colapsed[i,"database_final"]<-"URE"
+    colapsed[i,"package"]<-"DADA2"
+  } else if (df$identity_vsearch[i]==0){
+    colapsed[i,"database_final"]<-""
+    colapsed[i,"package"]<-""
+  }
 }
-
 
 
 final <- colapsed %>% left_join(.,df,by=c("asv_num","asv_seq","asv_len"))
@@ -224,6 +233,6 @@ write.table(final, file = snakemake@output[["merged_final"]], row.names = F, sep
 
 ##This file can be used for the downstream analysis
 selected_final_table <- final %>% 
-  select(asv_seq, kingdom_final, phylum_final, class_final, order_final, family_final, genus_final,species_final)
+  select(asv_seq, kingdom_vsearch, phylum_vsearch, class_vsearch, order_vsearch, family_vsearch, genus_vsearch,species_vsearch)
 
 write.table(selected_final_table, snakemake@output[["Vsearch_final"]], sep = "\t",col.names =NA)
