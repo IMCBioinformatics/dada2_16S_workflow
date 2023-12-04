@@ -14,7 +14,7 @@ rule qc_report:
         taxonomy=config["path"]+"/"+config["output_dir"]+"/taxonomy/GTDB_RDP.tsv",
         seqtab=config["path"]+"/"+config["output_dir"]+"/dada2/seqtab_nochimeras.rds",
         pos=config["Positive_samples"],
-        ref=config["path"]+"/utils/databases/DNA_ST_zymo.fasta",
+        ref=config["path"]+"/utils/databases/",
         krona=config["output_dir"]+"/QC_html_report/"+"krona_Species_result"
     output:
         config["output_dir"]+"/QC_html_report/"+"qc_report.html"
