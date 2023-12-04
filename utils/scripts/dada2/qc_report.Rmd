@@ -386,123 +386,124 @@ ggarrange(A,B)
 
 ```{r, warning=F, message=F, results='asis',echo=F,fig.width=10, fig.height=7}
 
+#Read sequence data and taxonomy data
+seqtab <- data.frame(read.csv(file = snakemake@params[["seqtab"]],row.names = 1))
+taxa <- read.table(snakemake@params[["taxonomy"]], header = TRUE, sep = "\t", check.names = 
+FALSE)
 
-Taxa<-c("Pseudomonas_aeruginosa", "Escherichia_coli","Salmonella_enterica",
-        "Lactobacillus_fermentum","Enterococcus_faecalis","Staphylococcus_aureus",
-        "Listeria_monocytogenes","Bacillus_subtilis")
-
-
-
-Expected<-c(4.2, 10.1, 10.4,18.4, 9.9, 15.5, 14.1, 17.4)
-
-AA<-data.frame(Taxa,Expected)
-
-
-
-# Load sequenced data and taxonomy
-
-seqtab <- readRDS(file = snakemake@params[["seqtab"]])
-taxa <- read.table(snakemake@params[["taxonomy"]])
-
-# Prepare data
+# Prepare the sample data
 data <- data.frame(samples = rownames(seqtab))
 rownames(data) <- data$samples
 
 
-
-# Create phyloseq object (note: taxa are columns)
+# Create a phyloseq object
 ps <- phyloseq(otu_table(as.matrix(seqtab), taxa_are_rows = FALSE),
                sample_data(data),
                tax_table(as.matrix(taxa)))
 
 
 
-
+# Prepare color palette
 n <- 74
 qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
 col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
 
 
-samples<-snakemake@params[["pos"]]
+# List of positive control samples
+samples <- unlist(strsplit(snakemake@params[["pos"]], split = "\\|"))
 
 
-
-if (!is.null(samples) && samples != "" ) {
-  sample_list <- unlist(strsplit(samples, split = "\\|"))
-
-  for (i in sample_list) {
+if (length(samples) > 0 && !all(samples == "")) {
+  
+  # Define known bacterial community counts for each reference file
+  ref_files <- list.files(snakemake@params[["ref"]])
+  names(ref_files)<-stringr::str_split_fixed(ref_files, "\\.", 2)[, 1]
+  
+  #read in community composition of reference files in alphabetic order
+  source("utils/scripts/dada2/pos_ctrl_references.R")
+  
+  
+  for (i in samples) {
     mock <- prune_samples(ps@sam_data$samples == i, ps)
-    mock <- prune_taxa(colSums(mock@otu_table) > 0, x = mock)
+    mock <- prune_taxa(colSums(mock@otu_table) > 0, mock)
+    
+    # Iterate over each reference file
+    for (j in names(ref_files)) {
+      mock.ref <- getSequences(paste0(snakemake@params[["ref"]],ref_files[[j]]))
+      unqs.mock <- mock@otu_table@.Data
+      
+      # Retrieve the expected bacterial community counts for the current reference file
+      expected_counts <- community_counts[[j]]
+      
+      match.ref <- as.data.frame(sapply(colnames(unqs.mock), function(x) grepl(x, mock.ref)))
+      
+      match.ref$species <- stringr::str_split_fixed(names(mock.ref), "_16", 2)[, 1]
+      
+      maps <- gather(data = match.ref, key = "seqs", value = "present", -species) %>%
+        dplyr::filter(present == TRUE)
 
-    mock.ref <- getSequences(snakemake@params[["ref"]])
-    unqs.mock <- mock@otu_table@.Data
+        #sometimes there is overlap between positive control reference files bacterial composition so samples get matched with a reference when there is >60% similar bacterial composition
 
-    match.ref <- as.data.frame(sapply(colnames(unqs.mock), function(x) grepl(x, mock.ref)))
-    colnames(match.ref)
-
-    match.ref$species <- strsplit2(names(mock.ref), split = "_16")[, 1]
-
-    maps <- gather(data = match.ref, key = "seqs", value = "present", -species) %>%
-      filter(present == TRUE)
-
-    maps$abundance <- c(mock@otu_table[, maps$seqs])
-
-    tot_abund <- maps %>% summarise(abundance = sum(abundance))
-
-    temp = maps %>% dplyr::group_by(species) %>%
-      dplyr::summarise("Observed" = round(100 * (sum(abundance) / unlist(tot_abund)), digits = 1))
-    colnames(temp)[1] <- "Taxa"
-
-    temp <- left_join(AA, temp, by = "Taxa")
-
-    A <- ggplot(melt(temp), aes(x = variable, y = value, fill = Taxa)) +
-      geom_bar(colour = "black", position = "stack", stat = "identity", width = 0.8) +
-      xlab(NULL) +
-      ggtitle(paste0("Bacterial profile in ", i)) +
-      theme(legend.position = "right",
-            axis.text.x = element_text(angle = 90, size = 15, colour = "black", vjust = 0.9, hjust = 0.83, face = "bold"),
-            axis.title.y = element_text(size = 15, face = "bold"),
-            axis.title.x = element_text(size = 15, face = "bold"),
-            legend.title = element_text(size = 12, face = "bold"),
-            legend.text = element_text(size = 12, face = "bold", colour = "black"),
-            axis.text.y = element_text(colour = "black", size = 13, face = "bold"),
-            plot.caption = element_text(hjust = 0, vjust = 0, size = 17, face = "bold", colour = "red"),
-            plot.title = element_text(size = 15, face = "bold"),
-            strip.text.x = element_text(size = 15, colour = "black")) +
-      ylab("Counts") +
-      scale_fill_manual(values = col_vector) +
-      theme(panel.background = element_blank(),
-            panel.border = element_rect(fill = NA, color = "black"),
-            panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            axis.line = element_line(colour = "black"))
-
-    print(A)
-
-    cat("<br><br>")
-    cat("<br><br>")
-
-    B <- kable(format(as.data.frame(temp), scientific = F, digits = 3),
-               caption = "Abundance table of taxa found in the positive control sample") %>%
-      column_spec(1:ncol(temp), width = "6cm")
-
-    print(B)
-    cat("\n")
-
-    cat("<br><br>")
-    cat("<br><br>")
-    cat("<br><br>")
-    cat("<br><br>")
+        if(nrow(maps)>0 && mean(unique(match.ref$species) %in% unique(maps$species))*100 > 60){
+        maps$abundance <- c(mock@otu_table[, maps$seqs])
+        
+        tot_abund<-maps %>% summarise(abundance=sum(abundance))
+        
+        temp=maps %>% dplyr::group_by(species) %>% dplyr::summarise("Observed"=round(100*(sum(abundance)/unlist(tot_abund)),digits = 1))
+        colnames(temp)[1]<-"Taxa"
+        
+        temp<-left_join(expected_counts,temp,by="Taxa") %>%
+        mutate(Observed = replace_na(Observed, 0))
+               
+        # Plotting
+        A <- ggplot(reshape2::melt(as.data.frame(temp)), aes(x = variable, y = value, fill = Taxa)) +
+          geom_bar(colour = "black", position = "stack", stat = "identity", width = 0.8) +
+          xlab(NULL) +
+          ggtitle(paste0("Bacterial profile in ", i)) +
+          theme(legend.position = "right",
+                axis.text.x = element_text(angle = 90, size = 15, colour = "black", vjust = 0.9, hjust = 0.83, face = "bold"),
+                axis.title.y = element_text(size = 15, face = "bold"),
+                axis.title.x = element_text(size = 15, face = "bold"),
+                legend.title = element_text(size = 12, face = "bold"),
+                legend.text = element_text(size = 12, face = "bold", colour = "black"),
+                axis.text.y = element_text(colour = "black", size = 13, face = "bold"),
+                plot.caption = element_text(hjust = 0, vjust = 0, size = 17, face = "bold", colour = "red"),
+                plot.title = element_text(size = 15, face = "bold"),
+                strip.text.x = element_text(size = 15, colour = "black")) +
+          ylab("Counts") +
+          scale_fill_manual(values = col_vector) +
+          theme(panel.background = element_blank(),
+                panel.border = element_rect(fill = NA, color = "black"),
+                panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                axis.line = element_line(colour = "black"))+guides(fill=guide_legend(nrow=21,byrow=F))
+        print(A)
+        
+        cat("<br><br>")
+        
+        B <- kable(temp, format = "html", caption = "Abundance table of taxa found in the positive control sample") %>%
+          kable_styling() %>%
+          column_spec(1:ncol(temp), width = "6cm")
+        print(B)
+        
+        cat("<br><br>")
+        cat("<br><br>")
+        cat("<br><br>")
+        cat("<br><br>")
+        
+      }
+    }
   }
-
+  
 } else {
-
-  print("There was no positive control in this run")
-    cat("<br><br>")
-    cat("<br><br>")
-    cat("<br><br>")
-    cat("<br><br>")
+  cat("There was no positive control in this run")
+  cat("<br><br>")
+  cat("<br><br>")
+  cat("<br><br>")
+  cat("<br><br>")
+  
 }
+
 
 ```
 
@@ -515,13 +516,11 @@ if (!is.null(samples) && samples != "" ) {
 
 ```{r, investigating ASVs,echo=F,messages=FALSE, warning=FALSE,include=T}
 
-# Read data
-seqtab <- data.frame(readRDS(file = snakemake@params[["seqtab"]]))
-otu_df <- seqtab
 
+seqtab <- data.frame(read.csv(file = snakemake@params[["seqtab"]],row.names = 1))
 
 # Calculate prevalence for each taxa
-Prevalence <- otu_df %>%
+Prevalence <- seqtab %>%
   summarise_all(~sum(. > 0)) %>%    # Prevalence: Count of non-zero entries for each taxa
   t() %>%
   as.data.frame() %>%
@@ -530,7 +529,7 @@ Prevalence <- otu_df %>%
 colnames(Prevalence) <- c("Prevalence", "Taxa")
 
 # Calculate abundance for each taxa
-Abundance <- otu_df %>% 
+Abundance <- seqtab %>% 
   t() %>%
   rowSums() %>%  
   as.data.frame() 
@@ -551,7 +550,7 @@ ggplot(df, aes(x = Abundance, y = Prevalence)) +
   scale_color_identity() +
   ggtitle("A Glimpse at ASVs through Prevalence and Abundance")+
   labs(caption = paste0("Points in green represent ASVs with prevalence > 10 and abundance > 150.\n",
-  "Total number of ASVs is ", length(df$Taxa), " in ", nrow(otu_df) ," samples."))+
+  "Total number of ASVs is ", length(df$Taxa), " in ", nrow(seqtab) ," samples."))+
   theme(plot.caption = element_text(hjust = 0,size=12),
         axis.text.x = element_text(angle = 45, size = 12, colour = "black",  hjust = 1, face= "bold"),
         axis.title.y = element_text(size = 12, face = "bold"),
@@ -565,8 +564,6 @@ ggplot(df, aes(x = Abundance, y = Prevalence)) +
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line = element_line(colour = "black"))
-
-
 
 ```
 
