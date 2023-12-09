@@ -12,7 +12,7 @@ rule qc_report:
         quality=config["path"]+"/"+config["output_dir"]+"/figures/quality/",
         length_distribution=config["path"]+"/"+config["output_dir"]+"/figures/length_distribution/",
         taxonomy=config["path"]+"/"+config["output_dir"]+"/taxonomy/GTDB_RDP.tsv",
-        seqtab=config["path"]+"/"+config["output_dir"]+"/dada2/seqtab_nochimeras.rds",
+        seqtab=config["path"]+"/"+config["output_dir"]+"/dada2/seqtab_nochimeras.csv",
         pos=config["Positive_samples"],
         ref=config["path"]+"/utils/databases/",
         krona=config["output_dir"]+"/QC_html_report/"+"krona_Species_result"
