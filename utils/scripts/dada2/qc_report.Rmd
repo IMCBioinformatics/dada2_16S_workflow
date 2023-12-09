@@ -388,8 +388,7 @@ ggarrange(A,B)
 
 #Read sequence data and taxonomy data
 seqtab <- data.frame(read.csv(file = snakemake@params[["seqtab"]],row.names = 1))
-taxa <- read.table(snakemake@params[["taxonomy"]], header = TRUE, sep = "\t", check.names = 
-FALSE)
+taxa <- read.table(snakemake@params[["taxonomy"]], header = TRUE, sep = "\t", check.names = FALSE)
 
 # Prepare the sample data
 data <- data.frame(samples = rownames(seqtab))
