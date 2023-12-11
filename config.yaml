@@ -127,6 +127,7 @@ chimera_method: "consensus"
 #Initialize random number generator for reproducibility of taxonomy assignment
 seed: 100 
 
+URE_DB: False #True or False
 
 
 #*****************
