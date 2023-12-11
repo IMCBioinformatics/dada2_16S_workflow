@@ -8,6 +8,12 @@ sam.names= snakemake@params[["samples"]]
 filtFs = snakemake@input[['R1']]
 filtRs = snakemake@input[['R2']]
 
+
+exists <- file.exists(filtFs) & file.exists(filtRs)
+filtFs <- filtFs[exists]
+filtRs <- filtRs[exists]
+
+
 load(snakemake@input[['errR1']]) # errF
 load(snakemake@input[['errR2']]) #errR
 
