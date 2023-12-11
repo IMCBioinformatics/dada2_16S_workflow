@@ -1,8 +1,15 @@
 suppressMessages(library(dada2))
 
 
-track.filt_keep_phix <- filterAndTrim(snakemake@input[['R1']],snakemake@output[['R1']], 
-                            snakemake@input[['R2']],snakemake@output[['R2']], 
+fnFs <- snakemake@input[['R1']]
+fnRs <- snakemake@input[['R2']]
+
+filtFs <- snakemake@output[['R1']]
+filtRs <- snakemake@output[['R2']]
+
+
+track.filt_keep_phix <- filterAndTrim(fnFs,filtFs, 
+                            fnRs,filtRs, 
 #                            truncLen= snakemake@config[["truncLen"]],
                             maxN=0,
                             maxEE=snakemake@config[["maxEE"]], 
@@ -12,8 +19,8 @@ track.filt_keep_phix <- filterAndTrim(snakemake@input[['R1']],snakemake@output[[
                             multithread=snakemake@threads,
                             rm.phix=FALSE)
 
-track.filt <- filterAndTrim(snakemake@input[['R1']],snakemake@output[['R1']], 
-                            snakemake@input[['R2']],snakemake@output[['R2']], 
+track.filt <- filterAndTrim(fnFs,filtFs, 
+                            fnRs,filtRs, 
 #                            truncLen= snakemake@config[["truncLen"]],
                             maxN=0,
                             maxEE=snakemake@config[["maxEE"]], 
@@ -23,9 +30,9 @@ track.filt <- filterAndTrim(snakemake@input[['R1']],snakemake@output[['R1']],
                             multithread=snakemake@threads,
                             rm.phix=TRUE)
 
-
-
-
+exists <- file.exists(snakemake@output[['R1']]) & file.exists(snakemake@output[['R2']])
+filtFs <- filtFs[exists]
+filtRs <- filtRs[exists]
 
 row.names(track.filt) <- snakemake@params[["samples"]]
 row.names(track.filt_keep_phix) <- snakemake@params[["samples"]]
