@@ -30,7 +30,7 @@ track.filt <- filterAndTrim(fnFs,filtFs,
                             multithread=snakemake@threads,
                             rm.phix=TRUE)
 
-exists <- file.exists(snakemake@output[['R1']]) & file.exists(snakemake@output[['R2']])
+exists <- file.exists(filtFs) & file.exists(filtRs)
 filtFs <- filtFs[exists]
 filtRs <- filtRs[exists]
 
