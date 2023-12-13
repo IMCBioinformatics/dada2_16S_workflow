@@ -30,27 +30,16 @@ track.filt <- filterAndTrim(fnFs,filtFs,
                             multithread=snakemake@threads,
                             rm.phix=TRUE)
 
-exists <- file.exists(filtFs) & file.exists(filtRs)
-filtFs <- filtFs[exists]
-filtRs <- filtRs[exists]
-
 row.names(track.filt) <- snakemake@params[["samples"]]
 row.names(track.filt_keep_phix) <- snakemake@params[["samples"]]
 
 colnames(track.filt) = c('afterCutadapt','filtered')
 
+track.filt<-data.frame(track.filt)
+track.filt <- track.filt[track.filt$filtered > 0, ]
+
 write.table(track.filt,snakemake@params[['nread']],  sep='\t')
 
-print(track.filt)
-print("****")
-print(track.filt_keep_phix)
-
 percent_phix=data.frame(percent_phix=100*(track.filt_keep_phix[,2]-track.filt[,2])/track.filt[,1])
-
-print("}}}}")
-
-print(percent_phix)
-
-print(snakemake@params[['percent_phix']])
 
 write.table(percent_phix,snakemake@params[['percent_phix']],  sep='\t')
