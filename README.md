@@ -103,7 +103,7 @@ To install fastqc, multiQC, cutadapt, and seqkit tools for quality control in a 
 ```bash
 conda create --name QC
 conda activate QC
-conda install -c bioconda fastqc==0.11.9
+conda install -c bioconda fastqc==0.11.8
 conda install pip
 pip install multiqc
 pip install pandas==1.5.3
