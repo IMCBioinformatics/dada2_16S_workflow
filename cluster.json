@@ -2,7 +2,7 @@
   "__default__" :
   {
     "name": "dada2.{rule}.{wildcards}",
-    "partition": "synergy,cpu2019,cpu2021",
+    "partition": "synergy",
     "nodes": 1,
     "ntasks": 1,
     "cpus-per-task": 1,
@@ -11,6 +11,14 @@
     "output" : "logs/{rule}.{wildcards}.out",
     "error" : "logs/{rule}.{wildcards}.err"
   },
-
+  "fastqcRaw" :
+  {
+    "time" : "20:00:00",
+    "mem" : 50G,
+  },
+  "fastqcFilt" :
+  {
+    "time" : "20:00:00",
+    "mem" : 50G,
+  }
 }
-
