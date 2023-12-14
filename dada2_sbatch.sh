@@ -11,13 +11,13 @@
 
 log_dir="$(pwd)"
 log_file="logs/dada2-analysis.log.txt"
-num_jobs=100
+num_jobs=60
 
 echo "started at: `date`"
 
 snakemake --unlock
 
-snakemake --rerun-triggers mtime --latency-wait 25 --rerun-incomplete  --cluster-config cluster.json --cluster 'sbatch --partition={cluster.partition} --cpus-per-task={cluster.cpus-per-task} --nodes={cluster.nodes} --ntasks={cluster.ntasks} --time={cluster.time} --mem={cluster.mem} --output={cluster.output} --error={cluster.error}' --jobs $num_jobs --use-conda &>> $log_dir/$log_file
+snakemake --rerun-triggers mtime --latency-wait 60 --rerun-incomplete  --cluster-config cluster.json --cluster 'sbatch --partition={cluster.partition} --cpus-per-task={cluster.cpus-per-task} --nodes={cluster.nodes} --ntasks={cluster.ntasks} --time={cluster.time} --mem={cluster.mem} --output={cluster.output} --error={cluster.error}' --jobs $num_jobs --use-conda &>> $log_dir/$log_file
 
 output_dir=$(grep "output_dir" < config.yaml | cut -d ' ' -f2 | sed 's/"//g')
 list_files=$(grep "sampletable" < config.yaml | cut -d ' ' -f2 | sed 's/"//g')
