@@ -69,10 +69,3 @@ if (snakemake@config[["URE_DB"]] == FALSE){
     write.csv(df5,snakemake@output[["table"]],row.names = F)
 }
 
-
-
-
-colnames(df5) <- gsub("^X", "", colnames(df5))
-
-write.csv(df5,snakemake@output[["table"]],row.names = F)
-
