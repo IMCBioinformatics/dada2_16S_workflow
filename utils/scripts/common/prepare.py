@@ -1,56 +1,48 @@
 import os
-import logging
-import pandas as pd
-from collections import defaultdict
+import gzip
+import subprocess
 
-#make a directory
-os.makedirs("samples")
+def count_reads(file_path):
+    """Count the number of reads in a FASTQ file."""
+    with gzip.open(file_path, 'rt') as f:
+        return sum(1 for line in f) // 4
 
-def get_sample_files(path,outfile='samples/samples.tsv'):
-    samples = defaultdict(dict)
-    seen = set()
-    for dir_name, sub_dirs, files in os.walk(os.path.abspath(path)):
-        for fname in files:
+def main(path):
+    if not os.path.exists('samples'):
+        os.makedirs('samples')
 
-            if ".fastq" in fname or ".fq" in fname:
+    read_files = []
 
-                sample_id = fname.split(".fastq")[0].split(".fq")[0]
-
-                sample_id = sample_id.split("_R1")[0].split("_r1")[0].split("_R2")[0].split("_r2")[0]
-#                sample_id = sample_id.replace("_R1", "").replace("_r1", "").replace("_R2", "").replace("_r2", "")
-                #sample_id = sample_id.replace("_", "_").replace(" ", "_")
-
-                fq_path = os.path.join(dir_name, fname)
-
-                if fq_path in seen: continue
-
-                if "_R2" in fname or "_r2" in fname:
-
-                    if 'R2' in samples[sample_id]:
-                        logging.error(f"Duplicate sample {sample_id} was found after renaming; skipping... \n Samples: \n{samples}")
-
-                    samples[sample_id]['R2'] = fq_path
-                else:
-                    if 'R1' in samples[sample_id]:
-                        logging.error(f"Duplicate sample {sample_id} was found after renaming; skipping... \n Samples: \n{samples}")
-
-                    samples[sample_id]['R1'] = fq_path
+    for file in os.listdir(path):
+        if file.endswith('.fastq.gz'):
+            file_path = os.path.join(path, file)
+            reads = count_reads(file_path)
+            if reads > 0:
+                read_files.append(file_path)
+#                print(f"Passed files in terms of number of reads are {file_path}")
+            else:
+                print(f"No reads in {file_path}")
 
 
-    samples= pd.DataFrame(samples).T
+    # Extracting unique sample IDs
+    unique_sample_ids = set()
+    for file in read_files:
+        base_name = os.path.basename(file)
+        sample_id = base_name.split('_R')[0]
+        unique_sample_ids.add(sample_id)
 
-    if samples.isna().any().any():
-        logging.error(f"Missing files:\n {samples}")
+    # Separating files into R1 and R2
+    R1_files = [file for file in read_files if '_R1_' in file]
+    R2_files = [file for file in read_files if '_R2_' in file]
 
-    if os.path.exists(outfile):
-        logging.error(f"Output file {outfile} already exists I don't date to overwrite it.")
-    else:
-        samples.to_csv(outfile,sep='\t')
+    # Creating the final tab-delimited file
+    with open('samples/samples.tsv', 'w') as output_file:
+        output_file.write("Sample_ID\tR1\tR2\n")
+        for id in unique_sample_ids:
+            R1_file = next((file for file in R1_files if id in file), None)
+            R2_file = next((file for file in R2_files if id in file), None)
+            output_file.write(f"{id}\t{R1_file}\t{R2_file}\n")
 
-
-    return samples
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
-    get_sample_files(sys.argv[1])
+    main(sys.argv[1])
