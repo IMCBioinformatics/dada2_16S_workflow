@@ -217,6 +217,7 @@ reads1<-reads
 
 colnames(reads1)[1:7]<-c("Sample", "Raw", "Quality_Trimmed", "Filtered", "Denoised", "Merged", "Cleaned")
 
+reads1 <- reads1 %>% mutate_all(~ifelse(is.na(.), 0, .))
 
 read_loss<-data.frame(step=names(colSums(reads1[,-c(1, 8)])),count=colSums(reads1[,-c(1, 8)]))
 read_loss<-read_loss[-6,]
