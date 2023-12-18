@@ -13,6 +13,7 @@ rule qc_report:
         length_distribution=config["path"]+"/"+config["output_dir"]+"/figures/length_distribution/",
         taxonomy=config["path"]+"/"+config["output_dir"]+"/taxonomy/GTDB_RDP.tsv",
         seqtab=config["path"]+"/"+config["output_dir"]+"/dada2/seqtab_nochimeras.csv",
+        source=config["path"]+"/utils/scripts/dada2/pos_ctrl_references.R",
         pos=config["Positive_samples"],
         ref=config["path"]+"/utils/databases/",
         krona=config["output_dir"]+"/QC_html_report/"+"krona_Species_result"
