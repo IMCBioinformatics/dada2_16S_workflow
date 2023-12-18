@@ -410,7 +410,7 @@ col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_co
 
 
 # List of positive control samples
-samples <- unlist(strsplit(snakemake@params[["pos"]], split = "\\|"))
+samples <- unlist(base::strsplit(snakemake@params[["pos"]], split = "\\|"))
 
 
 if (length(samples) > 0 && !all(samples == "")) {
