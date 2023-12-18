@@ -420,7 +420,7 @@ if (length(samples) > 0 && !all(samples == "")) {
   names(ref_files)<-stringr::str_split_fixed(ref_files, "\\.", 2)[, 1]
   
   #read in community composition of reference files in alphabetic order
-  source("utils/scripts/dada2/pos_ctrl_references.R")
+  source(snakemake@params[["source"]])
   
   
   for (i in samples) {
