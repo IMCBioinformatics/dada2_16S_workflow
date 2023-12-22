@@ -54,8 +54,9 @@ if (snakemake@config[["URE_DB"]] == FALSE){
     taxa_URE<-read.table(paste0(snakemake@config[["output_dir"]],"/taxonomy/URE_RDP.tsv"))
     taxa_URE<-cbind(taxa_URE,rownames(taxa_URE))
     colnames(taxa_URE)[8]<-"asv_seq"
+    df4<-left_join(df3,taxa_URE,by="asv_seq")
+    df5<-left_join(df4,seqtab4,by="asv_seq")
   
-    df5<-left_join(df4,taxa_URE,by="asv_seq")
     colnames(df5)[1:31]<-c("asv_num", "asv_seq",	"asv_len",	
                          "kingdom_gtdb",	"phylum_gtdb",	"class_gtdb",	"order_gtdb",	
                          "family_gtdb",	"genus_gtdb",	"species_gtdb",	"kingdom_rdp",	
