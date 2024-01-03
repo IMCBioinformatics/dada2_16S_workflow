@@ -37,6 +37,27 @@ Output:
 
 <img src="dag.svg" width= auto height= auto >
 
+<br> 
+
+## Steps:
+
+1-	**Cutadapt**: primer removal and quality trimming of the reads.
+<br>
+<br> 
+
+2-	**DADA2**: Filtering and Trimming reads for quality, dereplicating for reducing computational complexity, estimating error rate to distinguish true biological variants, sample Inference identifying true sequences and fixing errors, merging paired-end reads, removing chimera and finally assigning taxonomy (using naive Bayesian classifier method with a 100% nucleotide identity match between the reference sequences and the query) and constructing a phylogenetic tree.
+<br> 
+<br> 
+
+3-	**VSEARCH**: performing optimal global sequence alignments for the query against potential target sequences with an adjustable identity threshold (pipeline default: 99.3%).
+<br> 
+<br> 
+
+Note: Results from different tools such as fastqc, multiQC, seqkit, and dada2 were employed for quality control assessment at different points of the pipeline.
+
+<br> 
+
+
 ## Workflow
 
 <details>
