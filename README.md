@@ -214,13 +214,17 @@ python utils/scripts/common/prepare.py <DIR>
   - name and path of the output directory
   - Forward and reverse reads format
 
-##### 3.4.2 modifying QC parameters:
-  - primer sequences (if they are sequenced)
+##### 3.4.2 modifying QC step and QC report parameters:
   - primer removal (Optional: Set to "False" when primers are not sequenced)
+  - primer sequences (if they are sequenced)
+  - primer detection parameters
   - quality trimming values
+  - number of random samples to look into their reads length distribution
+  - positive samples names
+  - path to where pandoc is installed
   
 ##### 3.4.3 modifying dada2 parameters:
-  - DADA2 filter and trim thresholds
+  - DADA2 filter and trim thresholds (truncLen, maxEE, truncQ)
   - chimera removal method
   - number of reads for error rate learning
 
@@ -270,7 +274,8 @@ A copy of all snakemake files and logs will be copied to the output directory (o
    - RDP_RDP.tsv
    - Silva_RDP.tsv
    - URE_RDP.tsv
-   - Vsearch_output.tsv
+   - annotation_combined_dada2.txt (results from all 4 databases side by side)
+   - vsearch_dada2_merged.tsv (adding vsearch results and merging vsearch and dada2 GTDB taxonomy assignmnets as final annotations)
 
 <br>
 
