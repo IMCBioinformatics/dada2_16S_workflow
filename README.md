@@ -88,7 +88,7 @@ BiocManager::install("Biostrings")
 BiocManager::install("limma")
 ```
 
-to quit R type q(), (dada2) [username@hostname ~]$ q()
+to quit R type q(), (dada2) [username@hostname ~]$ q() and deactivate the environment:
 
 ```bash
 conda deactivate
@@ -160,7 +160,7 @@ install.packages("ggpubr")
 install.packages("waterfalls")
 ```
 
-to quit R type q(), (rmd) [username@hostname ~]$ q()
+to quit R type q(), (rmd) [username@hostname ~]$ q() and deactivate the environment:
 
 ```bash
 conda deactivate
