@@ -9,21 +9,15 @@
 # List of fastq files
 list_files: "samples/samples.tsv"
 
-
-#******* CHECK BEFORE RUNNING ON A NEW DATASET******#
 #A path to where the raw fastq files are stored
 input_dir: "/home/data"   #With no slash at the end
-
 
 #The name of the output directory. This is for not overwriting the output folder in case of rerunning the pipeline after changing some parameters.
 output_dir: "output"
 
-#******* CHECK BEFORE RUNNING ON A NEW DATASET******#
 #path of the main snakemake directory
 path: "/home/analysis/dada2_snakemake_workflow"
 
-
-#******* CHECK BEFORE RUNNING ON A NEW DATASET******#
 # Reads format
 forward_read_suffix: "_R1"
 reverse_read_suffix: "_R2"
@@ -35,10 +29,9 @@ reverse_read_suffix: "_R2"
 #**************
 
 ## Cutadapt
-### Removing primers if they were sequenced. 
+## Removing primers if they were sequenced. 
 ##***If primers need to be removed set this to True and add the primer sequences***
 
-#******* CHECK BEFORE RUNNING ON ANY REGION******#
 primer_removal: False  #True or False
 
 primers:
@@ -47,24 +40,19 @@ rev_primer: ""
 fwd_primer_rc: ""
 rev_primer_rc: ""
 
-
-## CutAdapt parameters for quality trimming
-
-# minimum length of reads
-
-min_len: 50
-
-#******* CHECK BEFORE RUNNING ON ANY REGION******#
-# minimum overlap length
+## Primer detection parameters
+# minimum overlap length for primer removal
 min_overlap: 17
 
-# maximum error rate
+# maximum error rate for primer removal
 max_e: 0.1
 
-#******* CHECK BEFORE RUNNING ON ANY REGION******#
-# quality trimming
+## CutAdapt parameters for quality trimming
 qf: 20
 qr: 20
+
+## minimum length of reads
+min_len: 50
 
 
 
@@ -76,18 +64,19 @@ qr: 20
 #here we exclude controls and undetermined samples
 #Example "Water|DNA|Undetermined
 
-excluded_samples: "Undetermined|Water|WATER|DNA|Neg|neg"
+excluded_samples: "Undetermined|Water|WATER|DNA|Neg|neg|NTC"
 
-#Number of random samples to look into
+#Number of random samples to look into their reads length distribution
 random_n: 5
 
 
-## Positive control samples to visualize for qc report, write down sample names with | delimiter
-#******* CHECK BEFORE RUNNING ON ANY REGION******#
+## Positive control samples to visualize for qc report, write down sample names with | delimiter in between
+#Example "Zymostandard_S266_L001|Zymostandard_S258_L001"
+
 Positive_samples: ""
 
+#path to where pandoc is installed, needed to create the html version of the QC report 
 pandoc: "/home/username/miniconda/envs/rmd/bin"
-
 
 
 #***************
@@ -106,7 +95,6 @@ threads: 20
 #  - 220
 
 
-#******* CHECK BEFORE RUNNING ON ANY REGION******#
 #Maximum error rate (maximum number of “expected errors” allowed in a read)
 maxEE:
   - 2
@@ -127,7 +115,6 @@ chimera_method: "consensus"
 #Initialize random number generator for reproducibility of taxonomy assignment
 seed: 100 
 
-URE_DB: False #True or False
 
 
 #*****************
