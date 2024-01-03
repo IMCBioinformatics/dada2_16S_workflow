@@ -56,7 +56,13 @@ snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installati
 
 
 <details>
+
 <summary><h3 style="font-size: 24px;">2. Setting up environments</h3></summary>
+
+Note: 
+After installation, verify the installation of each tool by executing its name followed by the flag '-h'. For example, use fastqc -h to check if FastQC is installed. This command should display the help information or usage instructions for the tool, indicating successful installation.
+
+For packages installed in R, initiate an R session within the same environment. Confirm the package installation by executing the library("package name") command, replacing "package name" with the actual name of the package. This will load the package in R, showing that it is properly installed and accessible in the current environment.
 
 Next we need to set up a few environments to use in different steps of the pipeline.
 
@@ -185,7 +191,7 @@ conda deactivate
 
 Then please follow these steps to set up and run the pipeline.
 
-#### 3.1 Make sure that all the environments are set up and required packages are installed. To do so, after installing each package, you can run the tool name and the flag -h (i.g. fastqc -h) to see if it is installed.
+#### 3.1 Make sure that all the environments are set up and required packages are installed.
 
 #### 3.2 Navigate to your project directory and clone this repository into that directory using the following command:
 
