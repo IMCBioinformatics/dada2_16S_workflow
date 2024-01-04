@@ -108,6 +108,15 @@ for (f in files) {
 <br>
 <br>
 
+
+
+```{r read length distribution plot execution, echo=F}
+nsample<- snakemake@config[["random_n"]]
+
+x = seq_along(1:nsample)
+
+```
+
 ## Read length distribution for 5 random samples in the run {.tabset .tabset-fade}
 
 <br>
@@ -116,7 +125,9 @@ for (f in files) {
 
 <br>
 
-```{r, results='asis', echo=F}
+```{r, results='asis', echo=F,eval =ifelse(1 %in% x, TRUE, FALSE)}
+
+cat("### Sample 1\n")
 
 files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S1", full.names =TRUE)
 
@@ -132,9 +143,10 @@ for (f in files) {
 <br>
 <br>
 
-### Sample 2
 
-```{r, results='asis', echo=F}
+```{r, results='asis', echo=F,eval =ifelse(2 %in% x, TRUE, FALSE)}
+
+cat("### Sample 2\n")
 
 files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S2", full.names =TRUE)
 
@@ -149,9 +161,9 @@ for (f in files) {
 <br>
 <br>
 
-### Sample 3
+```{r, results='asis', echo=F,eval =ifelse(3 %in% x, TRUE, FALSE)}
 
-```{r, results='asis', echo=F}
+cat("### Sample 3\n")
 
 files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S3", full.names =TRUE)
 
@@ -167,9 +179,9 @@ for (f in files) {
 <br>
 
 
-### Sample 4
+```{r, results='asis', echo=F,eval =ifelse(4 %in% x, TRUE, FALSE)}
 
-```{r, results='asis', echo=F}
+cat("### Sample 4\n")
 
 files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S4", full.names =TRUE)
 
@@ -185,9 +197,9 @@ for (f in files) {
 <br>
 
 
-### Sample 5
+```{r, results='asis', echo=F,eval =ifelse(5 %in% x, TRUE, FALSE)}
 
-```{r, results='asis', echo=F}
+cat("### Sample 5\n")
 
 files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S5", full.names =TRUE)
 
