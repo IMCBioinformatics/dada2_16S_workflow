@@ -263,9 +263,9 @@ python utils/scripts/common/prepare.py <DIR>
 | URE_after_GTDB | running URE after GTDB using VSEARCH taxonomy assignment | False |
 | idtaxa_dbs, RDP_dbs, vsearch_DBs | databases used for taxonomy assignment | |
 
-
-#### 3.5 Download the taxonomy databases from http://www2.decipher.codes/Downloads.html that you plan to use in utils/databases/ and consequently set the path for them in the config file.
 <br>
+
+#### 3.5 Download the taxonomy databases from http://www2.decipher.codes/Downloads.html that you plan to use in utils/databases/ and consequently set the path for them in the config file
 
 #### 3.6 Once confident with all the parameters first run the snakemake dry run command to make sure that pipeline is working.
  <br>
