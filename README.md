@@ -49,7 +49,7 @@ Output:
 <br> 
 <br> 
 
-3-	**VSEARCH**: performing optimal global sequence alignments for the query against potential target sequences with an adjustable identity threshold (pipeline default: 99.3%).
+3-	**VSEARCH**: assigning taxonomy by performing optimal global sequence alignments for the query against potential target sequences with an adjustable identity threshold (pipeline default: 99.3%).
 <br> 
 <br> 
 
@@ -213,14 +213,17 @@ conda deactivate
 Then please follow these steps to set up and run the pipeline.
 
 #### 3.1 Make sure that all the environments are set up and required packages are installed.
+<br>
 
 #### 3.2 Navigate to your project directory and clone this repository into that directory using the following command:
+<br>
 
 ```bash
 git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
 ```
 
 #### 3.3 Use prepare.py script to generate the samples.tsv file as an input for this pipeline using the following command: 
+<br>
 
 ```<DIR>``` is the location of the raw fastq files.
 
@@ -229,36 +232,44 @@ python utils/scripts/common/prepare.py <DIR>
 ```
 
 #### 3.4 Make sure to configure the config.yaml file.
+<br>
 
-##### 3.4.1 modifying pipeline parameters:
-  - path of the input directory
-  - name and path of the output directory
-  - Forward and reverse reads format
-
-##### 3.4.2 modifying QC step and QC report parameters:
-  - primer removal (Optional: Set to "False" when primers are not sequenced)
-  - primer sequences (if they are sequenced)
-  - primer detection parameters
-  - quality trimming values
-  - number of random samples to look into their reads length distribution
-  - positive samples names
-  - path to where pandoc is installed
-  
-##### 3.4.3 modifying dada2 parameters:
-  - DADA2 filter and trim thresholds (truncLen, maxEE, truncQ)
-  - chimera removal method
-  - number of reads for error rate learning
-
-##### 3.4.4 modifying vsearch parameters:
-  - identity threshold
-  - maximum number of hits to consider per query
-  - if URE should be used after using GTDB for speciation
+| Parameter | Description | Example/Default |
+| -------------- | --------------- | ------------ |
+| input_dir | path of the input directory | "/home/data" |
+| output_dir | name and path to the output directory | "output" |
+| path | path to the main snakemake directory | "/home/analysis/dada2_snakemake_workflow" |
+| forward_read_suffix, reverse_read_suffix | Forward and reverse reads format | "_R1" "_R2" |
+| primer_removal | Set to TRUE to remove primers | False |
+| fwd_primer | Forward primer sequence | "CTGTCTCTTAT..." |
+| rev_primer | Reverse primer sequence | "CTGTCTCTTAT..." |
+| fwd_primer_rc | Forward primer reverse complement sequence | "CTGTCTCTTAT..." |
+| rev_primer_rc | Reverse primer reverse complement sequence | "CTGTCTCTTAT..." |
+| min_overlap | minimum overlap length for primer detection | 3 |
+| max_e | maximum error rate allowed in primer match/detection | 0.1 |
+| qf, qr | quality trimming score | numeric e.g. 20 |
+| min_len | minimum length of reads kept | numeric e.g. 50 |
+| random_n | number of random samples to look into their reads length distribution | numeric e.g. 5 |
+| Positive_samples | Positive control samples to visualize in qc report | "pos_ctrl_1|pos_ctrl_2" |
+| pandoc | path to where pandoc is installed | "/home/username/miniconda/envs/rmd/bin" | 
+| threads | number of threads to be used | numeric e.g. 20 |
+| truncLen | trimming reads at this length | numeric e.g. 260 |
+| maxEE | maximum number of “expected errors” allowed in a read | numeric e.g. 2 |
+| truncQ | Truncating reads at the first instance of a quality score less than or equal to truncQ | 2 |
+| learn_nbases | minimum number of total bases to use for error rate learning | 1e8 |
+| chimera_method | method used for chimera detection | consensus |
+| Identity | minimum percent identity for a hit to be considered a match | percentage e.g. 0.993 |
+| Maxaccepts | maximum number of hits to consider per query | numeric e.g. 30 |
+| URE_after_GTDB | running URE after GTDB using VSEARCH taxonomy assignment | False |
+| idtaxa_dbs, RDP_dbs, vsearch_DBs | databases used for taxonomy assignment | |
 
 
 #### 3.5 Download the taxonomy databases from http://www2.decipher.codes/Downloads.html that you plan to use in utils/databases/ and consequently set the path for them in the config file.
+<br>
 
 #### 3.6 Once confident with all the parameters first run the snakemake dry run command to make sure that pipeline is working.
- 
+ <br>
+
  ```bash
  snakemake -np
  ```
