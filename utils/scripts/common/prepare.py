@@ -23,9 +23,16 @@ def process_file(file_path):
             return None
 
 def main(path):
-    if not os.path.exists('samples'):
-        os.makedirs('samples')
+    if not os.path.isdir(path):
+        print(f"Input directory '{path}' does not exist. Exiting.")
+        return
 
+def main(path):
+    if os.path.isdir(path) and not os.path.exists('samples'):
+        os.makedirs('samples')
+    else:
+        print(f"samples directory already exists.")
+        
     # Parallel processing of files
     pool = multiprocessing.Pool()
     files = [os.path.join(path, file) for file in os.listdir(path)]
