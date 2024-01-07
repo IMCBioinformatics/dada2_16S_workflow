@@ -121,7 +121,6 @@ x = seq_along(1:nsample)
 
 <br>
 
-### Sample 1
 
 <br>
 
