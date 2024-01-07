@@ -559,7 +559,7 @@ df1 <- reshape2::melt(df, id.vars = "Taxa", value.name = "count")
 ggplot(df, aes(x = Abundance, y = Prevalence)) +
   geom_point(aes(color = ifelse(Prevalence > 10 & Abundance > 150, "#77c593", "black"))) +
   scale_color_identity() +
-  ggtitle("A Glimpse at ASVs through Prevalence and Abundance")+
+  ggtitle("Overview of ASVs focusing on their prevalence and abundance")+
   labs(caption = paste0("Points in green represent ASVs with prevalence > 10 and abundance > 150.\n",
   "Total number of ASVs is ", length(df$Taxa), " in ", nrow(seqtab) ," samples."))+
   theme(plot.caption = element_text(hjust = 0,size=12),
