@@ -46,9 +46,10 @@ def main(path):
         unique_sample_ids.add(sample_id)
 
     # Separating files into R1 and R2
-    R1_files = [file for file in read_files if '_R1_' in file]
-    R2_files = [file for file in read_files if '_R2_' in file]
+    R1_files = [file for file in read_files if '_R1_' in file or '_R1' in file]
+    R2_files = [file for file in read_files if '_R2_' in file or '_R2' in file]
 
+    
     # Creating the final tab-delimited file
     with open('samples/samples.tsv', 'w') as output_file:
         output_file.write("Sample_ID\tR1\tR2\n")
