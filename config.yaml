@@ -75,9 +75,6 @@ random_n: 5
 
 Positive_samples: ""
 
-#path to where pandoc is installed, needed to create the html version of the QC report 
-pandoc: "/home/username/miniconda/envs/rmd/bin"
-
 
 #***************
 #**** DADA2 ****
