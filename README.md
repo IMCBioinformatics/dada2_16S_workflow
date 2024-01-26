@@ -25,7 +25,7 @@ Input:
 
 Output:
 
-* Taxonomic assignment tables using RDP classifier (by GTDB, RDP, SILVA, and URE databases), in addition to VSEARCH (by GTDB and URE databases).
+* Taxonomic assignment tables using RDP classifier (by GTDB, RDP, and SILVA databases), in addition to VSEARCH (by GTDB database).
 * ASV abundance table (seqtab_nochimera.rds).
 * ASV sequences in a fasta file from seqtab_nochimera.rds (ASV_seq.fasta).
 * Summary of reads filtered at each step (Nreads.tsv).
@@ -251,7 +251,6 @@ python utils/scripts/common/prepare.py <DIR>
 | min_len | minimum length of reads kept | numeric e.g. 50 |
 | random_n | number of random samples to look into their reads length distribution | numeric e.g. 5 |
 | Positive_samples | Positive control samples to visualize in qc report | "pos_ctrl_1|pos_ctrl_2" |
-| pandoc | path to where pandoc is installed | "/home/username/miniconda/envs/rmd/bin" | 
 | threads | number of threads to be used | numeric e.g. 20 |
 | truncLen | trimming reads at this length | numeric e.g. 260 |
 | maxEE | maximum number of “expected errors” allowed in a read | numeric e.g. 2 |
@@ -260,8 +259,7 @@ python utils/scripts/common/prepare.py <DIR>
 | chimera_method | method used for chimera detection | consensus |
 | Identity | minimum percent identity for a hit to be considered a match | percentage e.g. 0.993 |
 | Maxaccepts | maximum number of hits to consider per query | numeric e.g. 30 |
-| URE_after_GTDB | running URE after GTDB using VSEARCH taxonomy assignment | False |
-| idtaxa_dbs, RDP_dbs, vsearch_DBs | databases used for taxonomy assignment | |
+| RDP_dbs, vsearch_DBs | databases used for taxonomy assignment | |
 
 <br>
 
@@ -305,7 +303,6 @@ A copy of all snakemake files and logs will be copied to the output directory (o
    - GTDB_RDP.tsv
    - RDP_RDP.tsv
    - Silva_RDP.tsv
-   - URE_RDP.tsv
    - annotation_combined_dada2.txt (results from all 4 databases side by side)
    - vsearch_dada2_merged.tsv (adding vsearch results and merging vsearch and dada2 GTDB taxonomy assignmnets as final annotations)
 
