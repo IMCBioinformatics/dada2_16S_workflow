@@ -19,7 +19,6 @@ rule all:
         config["output_dir"]+"/figures/quality/rawFilterQualityPlots_R2.png",
         config["output_dir"]+"/figures/quality/afterdada2FilterQualityPlots_R1.png",
         config["output_dir"]+"/figures/quality/afterdada2FilterQualityPlots_R2.png",
-        expand(config["output_dir"]+"/taxonomy/{ref}_IDtaxa.tsv",ref= config['idtaxa_dbs'].keys()),
         expand(config["output_dir"]+"/taxonomy/{ref}_RDP.tsv",ref= config['RDP_dbs'].keys()),
         config["output_dir"]+"/phylogeny/ASV_seq.fasta",
 	config["output_dir"]+"/phylogeny/ASV_aligned.fasta",
