@@ -1,6 +1,5 @@
 rule combining_annotations:
     input:
-        config["output_dir"]+"/taxonomy/URE_RDP.tsv",
         config["output_dir"]+"/taxonomy/GTDB_RDP.tsv",
         config["output_dir"]+"/taxonomy/RDP_RDP.tsv",
         config["output_dir"]+"/taxonomy/Silva_RDP.tsv",
