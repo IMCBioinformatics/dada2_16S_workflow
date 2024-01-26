@@ -11,6 +11,7 @@ rule plotQualityProfileRaw:
         "../scripts/dada2/plotQualityProfile.R"
 
 
+
 rule plotQualityProfileAfterQC:
     input:
         R1= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
@@ -46,6 +47,7 @@ rule dada2Filter:
         "../scripts/dada2/dada2_filter.R"
 
 
+
 rule plotQualityProfileAfterdada2:
     input:
         R1= rules.dada2Filter.output.R1, 
@@ -77,6 +79,7 @@ rule learnErrorRates:
         "../scripts/dada2/learnErrorRates.R"
 
 
+
 rule generateSeqtab:
     input:
         R1= rules.dada2Filter.output.R1,
@@ -95,6 +98,8 @@ rule generateSeqtab:
     script:
         "../scripts/dada2/generateSeqtab.R"
 
+
+
 rule removeChimeras:
     input:
         seqtab= rules.generateSeqtab.output.seqtab
@@ -108,8 +113,6 @@ rule removeChimeras:
         "dada2"
     script:
         "../scripts/dada2/removeChimeras.R"
-
-
 
 
 
@@ -128,19 +131,6 @@ rule plotASVLength:
         "../scripts/dada2/asv_length_distribution_plotting.R"
 
 
-rule IDtaxa:
-    input:
-        seqtab=rules.removeChimeras.output.rds,
-        ref= lambda wc: config['idtaxa_dbs'][wc.ref],
-        species= lambda wc: config['idtaxa_species'][wc.ref]
-    output:
-        taxonomy= config["output_dir"]+"/taxonomy/{ref}_IDtaxa.tsv",
-    threads:
-        config['threads']
-    conda:
-        "dada2"
-    script:
-        "../scripts/dada2/IDtaxa.R"
 
 rule RDPtaxa:
     input:
