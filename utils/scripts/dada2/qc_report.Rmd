@@ -211,7 +211,7 @@ for (f in files) {
 
 ```{r,echo=F,messages=FALSE, warning=FALSE}
 
-reads<-read.csv(snakemake@params[["Nread"]],sep="\t") %>% filter(!grepl('Undetermined|undetermined', file))
+reads<-read.csv(snakemake@params[["Nread"]],sep="\t")
 
 ```
 
@@ -293,7 +293,8 @@ datatable(reads1,
                          htmltools::em('Filtered: Reads left after eliminating sequences with ambiguous bases, high error rates, and short length.'), htmltools::br(),
                          htmltools::em('Denoised: Reads left with high quality and error-corrected sequences.'), htmltools::br(),
                          htmltools::em('Merged: Reads left after removal of singletons and unmerged forward and reverse read pairs.'), htmltools::br(),
-                         htmltools::em('Cleaned: Reads left after eliminating chimeric sequences,artifact sequences created during PCR due to partially extended strands binding to similar but different sequences.')))
+                         htmltools::em('Cleaned: Reads left after eliminating chimeric sequences,artifact sequences created during PCR due to partially extended strands binding to similar but different sequences.'), htmltools::br(),
+                         htmltools::em('If there is a sample called undetermined, it contains the reads that could not be assigned to any samples.')))
 
 
 reads2<-data.frame(rep("Starting number of reads",times=nrow(reads1)),reads1$Raw)
