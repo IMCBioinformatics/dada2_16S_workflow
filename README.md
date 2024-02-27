@@ -81,6 +81,9 @@ snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installati
 <summary><h3 style="font-size: 24px;">2. Setting up environments</h3></summary>
 
 Note: 
+
+**You can replace conda with mambe in the following commands. Mamba is a drop-in replacement and uses the same commands and configuration options as conda. You can swap almost all commands between conda & mamba. Mamba is faster than conda in resolving package dependencies and creating or updating environments.**
+
 After installation, verify the installation of each tool by executing its name followed by the flag '-h'. For example, use fastqc -h to check if FastQC is installed. This command should display the help information or usage instructions for the tool, indicating successful installation.
 
 For packages installed in R, initiate an R session within the same environment. Confirm the package installation by executing the library("package name") command, replacing "package name" with the actual name of the package. This will load the package in R, showing that it is properly installed and accessible in the current environment.
