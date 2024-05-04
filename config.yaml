@@ -102,7 +102,7 @@ truncQ: 2
 
 
 #Default 1e8. The minimum number of total bases to use for error rate learning.
-learn_nbases: 100e6
+learn_nbases: 100000000
 
 
 #If "consensus": The samples in a sequence table are independently checked for bimeras, and a consensus decision on each sequence variant is made.
