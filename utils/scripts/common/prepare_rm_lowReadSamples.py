@@ -5,13 +5,10 @@ import multiprocessing
 import sys
 
 def count_reads(file_path):
-    """Check if a FASTQ file contains any reads."""
+    """Count the number of reads in a FASTQ file."""
     with gzip.open(file_path, 'rt') as f:
-        try:
-            next(f)
-            return True
-        except StopIteration:
-            return False
+        return sum(1 for _ in f) // 4  # Divide by 4 because there are 4 lines per read entry in a FASTQ file
+
 
 def process_file(file_path):
     """Process each single file to determine if it has reads."""
