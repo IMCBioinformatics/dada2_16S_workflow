@@ -168,6 +168,7 @@ conda install -c conda-forge r-tidyverse
 wget https://github.com/marbl/Krona/releases/download/v2.8.1/KronaTools-2.8.1.tar 
 tar xf KronaTools-2.8.1.tar 
 cd KronaTools-2.8.1
+#prefix destination path is relative to where KronaTools-2.8.1 is downloaded
 ./install.pl --prefix=/softwares/miniconda/envs/rmd/
 ```
 
