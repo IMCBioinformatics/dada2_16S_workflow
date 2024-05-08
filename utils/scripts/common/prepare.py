@@ -4,7 +4,7 @@ import gzip
 import multiprocessing
 import sys
 
-def count_reads(file_path):
+def check_reads(file_path):
     """Check if a FASTQ file contains any reads."""
     with gzip.open(file_path, 'rt') as f:
         try:
@@ -14,9 +14,9 @@ def count_reads(file_path):
             return False
 
 def process_file(file_path):
-    """Process a single file to determine if it has reads."""
+    """Process each single file to determine if it has reads."""
     if file_path.endswith('.fastq.gz'):
-        if count_reads(file_path):
+        if check_reads(file_path):
             return file_path
         else:
             print(f"No reads in {file_path}")
