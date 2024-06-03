@@ -172,7 +172,7 @@ cd KronaTools-2.8.1
 ./install.pl --prefix=/softwares/miniconda/envs/rmd/
 ```
 
-to open an R session within the dada2 environment type R, (rmd) [username@hostname ~]$ R
+to open an R session within the rmd environment type R, (rmd) [username@hostname ~]$ R
 
 ```bash
 install.packages('DT')
