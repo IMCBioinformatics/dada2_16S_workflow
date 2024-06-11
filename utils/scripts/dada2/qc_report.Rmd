@@ -222,17 +222,18 @@ reads<-read.csv(snakemake@params[["Nread"]],sep="\t")
 ```{r table merge,echo=F,messages=FALSE, warning=FALSE,include=T,fig.width=9,fig.height=7}
 reads1<-reads
 
-colnames(reads1)[1:7]<-c("Sample", "Raw", "Quality_Trimmed", "Filtered", "Denoised", "Merged", "Cleaned")
+colnames(reads1)[1:7]<-c("Sample", "Raw", "not-Quality_Trimmed", "not-Filtered", "Denoised", "Merged","Cleaned")
 
 reads1 <- reads1 %>% mutate_all(~ifelse(is.na(.), 0, .))
 
 read_loss<-data.frame(step=names(colSums(reads1[,-c(1, 8)])),count=colSums(reads1[,-c(1, 8)]))
-read_loss<-read_loss[-6,]
+
+read_loss$step<- c("Raw", "Quality_Trimmed", "Filtered", "not-Denoised", "not-Merged","Chimeric")
 
 # Create a color palette for the bars (you can customize these colors)
 colors <- c("Raw" = "#f5f0e1", "Quality_Trimmed" = "#ff6e40",
-            "Filtered" = "#ff6e40", "Denoised" = "#ff6e40",
-            "Merged" = "#ff6e40")
+            "Filtered" = "#ff6e40", "not-Denoised" = "#ff6e40",
+            "not-Merged" = "#ff6e40","Chimeric" = "#ff6e40")
 
 
 
@@ -240,7 +241,7 @@ colors <- c("Raw" = "#f5f0e1", "Quality_Trimmed" = "#ff6e40",
 new_data <- data.frame(
   step = read_loss$step,
   loss = c(read_loss$count[1],
-           diff(read_loss$count)[1:4])) %>%
+           diff(read_loss$count)[1:5])) %>%
 mutate(label = paste(step, "\n(n=", loss, ")"))
 
 waterfall(new_data, calc_total = TRUE,
@@ -289,8 +290,8 @@ datatable(reads1,
                          caption = htmltools::tags$caption(style = 'caption-side: bottom; text-align: left;',
                          htmltools::em('Tracking Read Counts Across the DADA2 Pipeline:'), htmltools::br(), 
                          htmltools::em('Raw: Initial number of reads in each sample.'), htmltools::br(),
-                         htmltools::em('Quality_Trimmed: Reads left after primer removal (if applicable) and quality trimming prior to DADA2 processing.'), htmltools::br(),
-                         htmltools::em('Filtered: Reads left after eliminating sequences with ambiguous bases, high error rates, and short length.'), htmltools::br(),
+                         htmltools::em('not-Quality_Trimmed: Reads left after primer removal (if applicable) and quality trimming prior to DADA2 processing.'), htmltools::br(),
+                         htmltools::em('not-Filtered: Reads left after eliminating sequences with ambiguous bases, high error rates, and short length.'), htmltools::br(),
                          htmltools::em('Denoised: Reads left with high quality and error-corrected sequences.'), htmltools::br(),
                          htmltools::em('Merged: Reads left after removal of singletons and unmerged forward and reverse read pairs.'), htmltools::br(),
                          htmltools::em('Cleaned: Reads left after eliminating chimeric sequences,artifact sequences created during PCR due to partially extended strands binding to similar but different sequences.'), htmltools::br(),
@@ -303,7 +304,6 @@ colnames(reads2)<-c("Var","value")
 
 reads3<-data.frame(rep("Finishing number of reads",times=nrow(reads1)),reads1$Cleaned)
 colnames(reads3)<-c("Var","value")
-
 
 ```
 
