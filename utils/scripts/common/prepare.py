@@ -3,6 +3,7 @@ import os
 import gzip
 import multiprocessing
 import sys
+import re
 
 def check_reads(file_path):
     """Check if a FASTQ file contains any reads."""
@@ -42,7 +43,7 @@ def main(path):
     unique_sample_ids = set()
     for file in read_files:
         base_name = os.path.basename(file)
-        sample_id = base_name.split('_R')[0]
+        sample_id = re.split(r"_R|_[1-2]", base_name)[0]
         unique_sample_ids.add(sample_id)
 
     # Separating files into R1 and R2
