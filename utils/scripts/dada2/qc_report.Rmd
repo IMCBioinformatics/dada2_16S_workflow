@@ -219,7 +219,7 @@ reads<-read.csv(snakemake@params[["Nread"]],sep="\t")
 
 <br>
 
-```{r table merge,echo=F,messages=FALSE, warning=FALSE,include=T,fig.width=9,fig.height=7}
+```{r table merge,echo=F,messages=FALSE, warning=FALSE,include=T,fig.width=11,fig.height=7}
 reads1<-reads
 
 colnames(reads1)[1:7]<-c("Sample", "Raw", "not-Quality_Trimmed", "not-Filtered", "Denoised", "Merged","Cleaned")
