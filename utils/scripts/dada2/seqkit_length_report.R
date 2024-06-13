@@ -1,11 +1,16 @@
 #!/usr/bin/env Rscript	
+suppressMessages(library(ggplot2))
+suppressMessages(library(limma))
+
+
 args = commandArgs(trailingOnly=TRUE)
 
-library(ggplot2)
-library(limma)
+forward_read_suffix <- args[3]
+reverse_read_suffix <- args[4]
+
 
 ##reading files in and save them as objects
-object_names <- list.files(args[1], pattern = "R1|R2",full.names = T)
+object_names <- list.files(args[1], pattern = paste0(forward_read_suffix,"|",reverse_read_suffix),full.names = T)
 
 
 for (i in 1:length(object_names)) {
@@ -34,7 +39,8 @@ for (i in raw_objects){
 
 
 
-object_names <- ls(pattern = "R1|R2")
+object_names <- ls(pattern = paste0(forward_read_suffix,"|",reverse_read_suffix))
+
 
 #### Loop over each file and change the column names and save them as a new object each
 for (i in object_names) {
@@ -74,7 +80,8 @@ for (i in names){
 }
 
 
-reads <- c("_R1","_R2")
+reads <- c(forward_read_suffix,reverse_read_suffix)
+
 
 # loop over the selected objects and add columns to them
 for (i in reads){
@@ -89,7 +96,7 @@ for (i in reads){
 
 
 
-names<-unique(strsplit2(object_names,split="_R[1-2]")[,1])
+names<-unique(sapply(strsplit(object_names,split=paste0(forward_read_suffix,"|",reverse_read_suffix)),`[`,1))
 
 # Loop through the list of object names and combine them using rbind
 for (i in names){
@@ -130,22 +137,3 @@ for (i in 1:length(files)){
     theme(legend.position = "none")
   ggsave(filename = paste0(args[2],"/","S",i,"_ASVLength.png"),temp)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
