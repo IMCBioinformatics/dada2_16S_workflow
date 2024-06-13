@@ -81,11 +81,13 @@ rule reads_Length_Distribution:
         temp=config["output_dir"]+"/figures/length_distribution/"+"temp_read_length.txt"
     params:
         files=config["output_dir"]+"/random_samples",
-        outdir=config["output_dir"]+"/figures/length_distribution/"
+        outdir=config["output_dir"]+"/figures/length_distribution/",
+        fwd_suffix=config['forward_read_suffix'],
+        rev_suffix=config['reverse_read_suffix']
     conda:
         "dada2"
     shell:
         """
-        Rscript utils/scripts/dada2/seqkit_length_report.R {params.files} {params.outdir}
+        Rscript utils/scripts/dada2/seqkit_length_report.R {params.files} {params.outdir} {params.fwd_suffix} {params.rev_suffix}
         touch {output.temp}
         """
