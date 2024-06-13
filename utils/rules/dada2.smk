@@ -3,8 +3,8 @@ rule plotQualityProfileRaw:
         R1= expand(config["input_dir"]+"/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
         R2= expand(config["input_dir"]+"/{sample}" + config["reverse_read_suffix"] + ".fastq.gz",sample=SAMPLES)
     output:
-        R1=config["output_dir"]+"/figures/quality/rawFilterQualityPlots_R1.png",
-        R2=config["output_dir"]+"/figures/quality/rawFilterQualityPlots_R2.png"
+        R1=config["output_dir"]+"/figures/quality/rawFilterQualityPlots"+ config["forward_read_suffix"]+".png",
+        R2=config["output_dir"]+"/figures/quality/rawFilterQualityPlots"+ config["reverse_read_suffix"]+".png"
     conda:
         "dada2"
     script:
@@ -17,8 +17,8 @@ rule plotQualityProfileAfterQC:
         R1= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["forward_read_suffix"] + ".fastq.gz",sample=SAMPLES),
         R2= expand(config["output_dir"]+"/cutadapt_qc/{sample}" + config["reverse_read_suffix"] + ".fastq.gz",sample=SAMPLES)
     output:
-        R1=config["output_dir"]+"/figures/quality/afterQCQualityPlots_R1.png",
-        R2=config["output_dir"]+"/figures/quality/afterQCQualityPlots_R2.png"
+        R1=config["output_dir"]+"/figures/quality/afterQCQualityPlots"+ config["forward_read_suffix"]+".png",
+        R2=config["output_dir"]+"/figures/quality/afterQCQualityPlots"+ config["reverse_read_suffix"]+".png"
     conda:
         "dada2"
     script:
@@ -53,8 +53,8 @@ rule plotQualityProfileAfterdada2:
         R1= rules.dada2Filter.output.R1, 
         R2= rules.dada2Filter.output.R2
     output:
-        R1=config["output_dir"]+"/figures/quality/afterdada2FilterQualityPlots_R1.png",
-        R2=config["output_dir"]+"/figures/quality/afterdada2FilterQualityPlots_R2.png"
+        R1=config["output_dir"]+"/figures/quality/afterdada2FilterQualityPlots"+ config["forward_read_suffix"]+".png",
+        R2=config["output_dir"]+"/figures/quality/afterdada2FilterQualityPlots"+ config["reverse_read_suffix"]+".png"
     conda:
         "dada2"
     script:
@@ -67,10 +67,10 @@ rule learnErrorRates:
         R1= rules.dada2Filter.output.R1,
         R2= rules.dada2Filter.output.R2
     output:
-        errR1= config["output_dir"]+"/dada2/learnErrorRates/ErrorRates_R1.rds",
-        errR2 = config["output_dir"]+"/dada2/learnErrorRates/ErrorRates_R2.rds",
-        plotErr1=config["output_dir"]+"/figures/errorRates/ErrorRates_R1.pdf",
-        plotErr2=config["output_dir"]+"/figures/errorRates/ErrorRates_R2.pdf"
+        errR1= config["output_dir"]+"/dada2/learnErrorRates/ErrorRates" + config["forward_read_suffix"]+ ".rds",
+        errR2 = config["output_dir"]+"/dada2/learnErrorRates/ErrorRates" + config["reverse_read_suffix"]+ ".rds",
+        plotErr1=config["output_dir"]+"/figures/errorRates/ErrorRates" + config["forward_read_suffix"]+ ".pdf",
+        plotErr2=config["output_dir"]+"/figures/errorRates/ErrorRates" + config["reverse_read_suffix"]+ ".pdf"
     threads:
         config['threads']
     conda:
