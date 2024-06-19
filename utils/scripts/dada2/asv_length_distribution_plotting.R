@@ -46,7 +46,7 @@ p <- ggplot(final, aes(x = LENGTH)) +
   in the dataset. The orange line illustrates the abundance of ASVs, which
   reflects the total number of sequences for ASVs of each length.") +
   theme(plot.caption = element_text(hjust = 0,size=12),
-        axis.text.x = element_text(angle = 45, size = 12, colour = "black",  hjust = 1, face= "bold"),
+        axis.text.x = element_text(angle = 90, size = 10, colour = "black",  hjust = 1, face= "bold"),
         axis.title.y = element_text(size = 12, face = "bold"),
         legend.title = element_text(size = 16, face = "bold"),
         axis.title.x = element_text(size = 12, face = "bold"),
@@ -70,7 +70,8 @@ if (!is.null(p)) {
 }
 
 
-ggsave(snakemake@output[['plot_seqlength']],plot=p)
+ggsave(snakemake@output[['plot_seqlength']],plot=p,width = 22, height = 16, dpi = 300, units = "cm")
+
 
 
 
