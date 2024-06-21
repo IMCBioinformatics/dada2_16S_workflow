@@ -44,7 +44,7 @@ def main(path):
     unique_sample_ids = set()
     for file in read_files:
         base_name = os.path.basename(file)
-        sample_id = re.split(r"_R|_[1-2]", base_name)[0]
+        sample_id = re.split(r"_R[1-2]|_[1-2]", base_name)[0]
         unique_sample_ids.add(sample_id)
 
     # Separating files into R1 and R2
