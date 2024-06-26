@@ -12,7 +12,7 @@ community_counts <- list(
                              "Enterococcus_faecalis", "Staphylococcus_aureus",
                              "Listeria_monocytogenes", "Bacillus_subtilis",
                              "Saccharomyces_cerevisiae","Cryptococcus_neoformans"),
-                    Expected = c(12, 12, 12, 12, 12, 12, 12, 12,2,2)),
+                    Expected = c(4.2, 10.1, 10.4, 18.4, 9.9, 15.5, 14.1, 17.4,0,0)),
   zymo_gut = data.frame(Taxa = c("Faecalibacterium_prausnitzii", "Veillonella_rogosae",
                                  "Roseburia_hominis", "Bacteroides_fragilis",
                                  "Prevotella_corporis", "Bifidobacterium_adolescentis",
