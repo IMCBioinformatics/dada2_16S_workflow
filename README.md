@@ -69,9 +69,24 @@ Please install the following tools before running this workflow. Please request 
     salloc --mem=20G --time=05:00:00
 ```
 
-conda (miniconda): https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
+conda (miniconda): 
+https://conda.io/projects/conda/en/stable/user-guide/install/linux.html
 
-snakemake: https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+snakemake: 
+```bash
+conda activate base
+
+conda install -c conda-forge mamba
+
+mamba create --name snakemake
+
+mamba activate snakemake
+
+mamba install -c conda-forge -c bioconda snakemake==7.32.0
+
+pip install pyyaml
+```
+
 
 </details>
 
