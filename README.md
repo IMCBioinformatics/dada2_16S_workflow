@@ -82,7 +82,7 @@ mamba create --name snakemake
 
 mamba activate snakemake
 
-mamba install -c conda-forge -c bioconda snakemake==7.32.0
+mamba install -c conda-forge -c bioconda snakemake==7.32.4
 
 pip install pyyaml
 ```
