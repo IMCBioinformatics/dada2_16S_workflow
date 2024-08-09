@@ -616,11 +616,11 @@ options(browser = "echo") #plot_krona is set to open the krona plot as a separat
 # Plot Krona chart
 a <- plot_krona(physeq=ps, output=snakemake@params[['krona']], variable="samples", trim = TRUE)
 
-file=snakemake@config[['path']]
+file=paste0(snakemake@config[['path']],snakemake@config[['output_dir']])
 
 ```
 
-<iframe src="`r paste0(file, "/output/QC_html_report/krona_Species_result.html")`" width="1100" height="700" scrolling="yes"></iframe>
+<iframe src="`r paste0(file, "/QC_html_report/krona_Species_result.html")`" width="1100" height="700" scrolling="yes"></iframe>
 
 
 <div Class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
