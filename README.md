@@ -239,7 +239,7 @@ Then please follow these steps to set up and run the pipeline.
 <br>
 
 ```bash
-git clone https://github.com/IMCBioinformatics/dada2_snakemake_workflow.git
+git clone https://github.com/IMCBioinformatics/dada2_16S_workflow.git
 ```
 
 #### 3.3 Use prepare.py script to generate the samples.tsv file as an input for this pipeline using the following command: 
