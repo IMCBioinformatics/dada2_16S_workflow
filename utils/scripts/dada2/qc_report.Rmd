@@ -616,7 +616,8 @@ options(browser = "echo") #plot_krona is set to open the krona plot as a separat
 # Plot Krona chart
 a <- plot_krona(physeq=ps, output=snakemake@params[['krona']], variable="samples", trim = TRUE)
 
-file=paste0(snakemake@config[['path']],snakemake@config[['output_dir']])
+
+file=paste(snakemake@config[['path']],snakemake@config[['output_dir']], sep = "/")
 
 ```
 
