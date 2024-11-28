@@ -5,6 +5,7 @@ rule qc_report:
         rules.plotQualityProfileAfterdada2.output,
         rules.plotQualityProfileRaw.output,
         rules.plotQualityProfileAfterQC.output,
+        rules.separate_vsearch_hits.output,
         rules.vsearchParse.output,
         rules.combining_annotations.output
     conda:
