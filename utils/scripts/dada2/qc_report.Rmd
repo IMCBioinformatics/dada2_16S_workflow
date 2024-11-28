@@ -34,6 +34,9 @@ suppressMessages(library(reshape2))
 suppressMessages(library(kableExtra))
 suppressMessages(library(waterfalls))
 suppressMessages(library(ggpubr))
+suppressMessages(library(plotly))
+suppressMessages(library(htmlwidgets))
+
 
 ```
 
@@ -42,6 +45,17 @@ suppressMessages(library(ggpubr))
 <br>
 
 ## Overall read quality plots {.tabset .tabset-fade}
+
+<br>
+
+The overall read quality plots offer a comprehensive assessment of the sequencing run's data integrity, highlighting raw and proce
+ssed read quality. The plots display quality scores (Y-axis) against read positions (X-axis), showing a
+typical trend where quality decreases towards the end of the reads. The left panel represents forward reads quality and The right 
+panel illustrates reverse reads quality aggregated for all samples. In gray-scale is a heat map of the frequency of each quality
+score at each base position is shown. The mean quality score at each position is shown by the green line, and the quartiles of the
+ quality score distribution by the orange lines. The red line shows the scaled proportion of reads that extend to at least that
+position (this is more useful for other sequencing technologies, as Illumina reads are typically all the same length, hence a flat
+ red line will be expected).
 
 <br>
 
@@ -66,7 +80,7 @@ for (f in files) {
 <br>
 
 
-### Read Quality after read trimming
+### Read Quality after read quality trimming
 
 <br>
 
@@ -85,7 +99,7 @@ for (f in files) {
 <br>
 <br>
 
-### Read Quality after read filtering
+### Read Quality after read error rate filtering
 
 <br>
 
@@ -104,103 +118,287 @@ for (f in files) {
 <br>
 <br>
 
-
-
-```{r read length distribution plot execution, echo=F}
-nsample<- snakemake@config[["random_n"]]
-
-x = seq_along(1:nsample)
-
-```
-
-## Read length distribution for 5 random samples in the run {.tabset .tabset-fade}
+## Read length distribution for all samples in the run {.tabset .tabset-fade}
 
 <br>
 
+Read length distribution is shown in this plot for all reads in all samples after each step. This shows how removing primer (if ap
+plicable), quality trimming, and error rate filtering affects the length 
+of reads during the process. The Y-axis represents the abundance of reads stacked per sample, while the X-axis shows the read leng
+ths in base pairs (bp).
 
 <br>
 
-```{r, results='asis', echo=F,eval =ifelse(1 %in% x, TRUE, FALSE)}
-
-cat("### Sample 1\n")
-
-files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S1", full.names =TRUE)
-
-for (f in files) {
-  cat(paste0("![](", f, ")\n"))
- }
-
-```
+**You can use the range slider at the bottom of plot to zoom in or zoom out, hover over bars to know more about the reads length a
+nd count. Samples listed on the right panel can be excluded and included by clicking on them. Reads with counts less than 200 are 
+removed for improving the visualization.**
 
 <br>
 <br>
-<br>
-<br>
-<br>
+
+```{r plotly, echo=F,fig.width=10,fig.height=5}
+
+in_dir<-paste0(snakemake@config[['output_dir']],"/seqkit_samples")
 
 
-```{r, results='asis', echo=F,eval =ifelse(2 %in% x, TRUE, FALSE)}
 
-cat("### Sample 2\n")
-
-files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S2", full.names =TRUE)
-
-for (f in files) {
-  cat(paste0("![](", f, ")\n"))
- }
-```
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
-```{r, results='asis', echo=F,eval =ifelse(3 %in% x, TRUE, FALSE)}
-
-cat("### Sample 3\n")
-
-files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S3", full.names =TRUE)
-
-for (f in files) {
-  cat(paste0("![](", f, ")\n"))
- }
-```
-
-<br>
-<br>
-<br>
-<br>
-<br>
+forward_read_suffix <- snakemake@config[['forward_read_suffix']]
+reverse_read_suffix <- snakemake@config[['reverse_read_suffix']]
+primer_removal <- snakemake@config[['primer_removal']]
 
 
-```{r, results='asis', echo=F,eval =ifelse(4 %in% x, TRUE, FALSE)}
-
-cat("### Sample 4\n")
-
-files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S4", full.names =TRUE)
-
-for (f in files) {
-  cat(paste0("![](", f, ")\n"))
- }
-```
-
-<br>
-<br>
-<br>
-<br>
-<br>
+# Convert the value to logical if necessary
+if (is.character(primer_removal)) {
+  if (tolower(primer_removal) == "true") {
+    primer_removal <- TRUE
+  } else if (tolower(primer_removal) == "false") {
+    primer_removal <- FALSE
+  }
+}
 
 
-```{r, results='asis', echo=F,eval =ifelse(5 %in% x, TRUE, FALSE)}
 
-cat("### Sample 5\n")
+##reading files in and save them as objects
+object_names <- list.files(in_dir, pattern = paste0(forward_read_suffix,"|",reverse_read_suffix),full.names = T)
 
-files <- list.files(path = snakemake@params[["length_distribution"]], pattern = "S5", full.names =TRUE)
 
-for (f in files) {
-  cat(paste0("![](", f, ")\n"))
- }
+for (i in 1:length(object_names)) {
+  # Read in the object
+  my_data <- read.table(object_names[i],header = F)
+  # Save the updated object
+  assign(x=gsub(".txt","",basename(object_names[i])),value = my_data)
+  
+}
+
+
+## fixing raw files
+raw_objects <- ls(pattern = "raw")
+
+for (i in raw_objects){
+  # Read in the object
+  my_data <- get(i)
+  if (nrow(my_data) == 1){ #this for times that primers are already removed from raw reads and they are not the same length anymore
+    my_data <- data.frame(
+      V1 = seq_along(1:my_data$V1),
+      V2 = c(rep(x = 0, times = my_data$V1-1), rep(my_data$V2, times = 1))) # Add missing closing parentheses
+    #Save the updated object
+    assign(i, value = my_data)
+  }
+}
+
+
+
+object_names <- ls(pattern = paste0(forward_read_suffix,"|",reverse_read_suffix))
+
+
+#### Loop over each file and change the column names and save them as a new object each
+for (i in object_names) {
+  # Read in the object
+  my_data <- get(i)
+  
+  # Print the current column names
+  #print(colnames(my_data))
+  
+  # Change the column names
+  colnames(my_data) <- c("read_length", "num_reads")
+  
+  # Print the new column names
+  #print(colnames(my_data))
+  
+  # Save the updated object
+  assign(i,value = my_data)
+}
+
+
+
+#add two columns of readtype and filetype to all object files based on a name
+
+# Conditional logic
+if (primer_removal == TRUE) {
+  names <- c("raw", "dada2", "primerRMV", "cutadapt")
+} else {
+  names <- c("raw", "dada2", "cutadapt")
+}
+
+
+# loop over the selected objects and add columns to them
+for (i in names){
+  objs <- ls(pattern = i)
+  for (j in objs){
+    x <- get(j)
+    x <- cbind(x, filetype = i)
+    colnames(x)
+    assign(j, x)
+  }
+}
+
+
+reads <- c(forward_read_suffix,reverse_read_suffix)
+
+
+# loop over the selected objects and add columns to them
+for (i in reads){
+  objs <- ls(pattern = i)
+  for (j in objs){
+    x <- get(j)
+    x <- cbind(x, readtype = i)
+    colnames(x)
+    assign(j, x)
+  }
+}
+
+
+
+names<-unique(sapply(strsplit(object_names,split=paste0(forward_read_suffix,"|",reverse_read_suffix)),`[`,1))
+
+# Loop through the list of object names and combine them using rbind
+for (i in names){
+  obj_list=ls(pattern = i)
+  combined_data <- data.frame() # Create an empty data frame to store the combined data
+  for (j in obj_list) {
+    obj <- get(j)
+    if (is.data.frame(obj)) {
+      combined_data <- rbind(combined_data, obj)
+      assign(x = paste0("combined_",i), combined_data)
+    }
+  }
+}
+
+
+rm(combined_data)
+
+# Loop through each file and make column filetype a factor and add a column as sample_name
+for (file in ls(pattern = "combined_")) {
+  # Read in the file
+  data <- get(file)
+  
+  if (primer_removal == TRUE) {
+    # Convert the desired column to a factor
+    data$filetype <- factor(data$filetype,levels = c("raw","primerRMV","cutadapt","dada2"))
+  } else {
+    # Convert the desired column to a factor
+    data$filetype <- factor(data$filetype,levels = c("raw","cutadapt","dada2"))
+  }
+  
+  # Add a new column
+  name <- strsplit2(file,split = "combined_")[2]
+  data$sample_name <- name
+  
+  # Save the modified file back to disk
+  assign(value = data, x = file)
+}
+
+
+
+final_data <- data.frame() # Create an empty data frame to store the combined data
+
+
+files=ls(pattern = "combined_")
+
+# Loop through the list of combined sample object names and combine them using rbind
+for (i in files){
+  obj <- get(i)
+  if (is.data.frame(obj)) {
+    final_data <- rbind(final_data, obj)
+  }
+}
+
+
+final_data <- final_data %>%
+  mutate(readtype = gsub(forward_read_suffix, "R1", readtype),
+         readtype = gsub(reverse_read_suffix, "R2", readtype),
+         filetype = gsub("raw","Raw reads",filetype),
+         filetype = gsub("primerRMV","After Primer Removal",filetype),
+         filetype = gsub("cutadapt","After Quality Trimming",filetype),
+         filetype = gsub("dada2","After DADA2",filetype)) %>%
+         filter(., num_reads > 200)
+
+
+
+final_data$filetype <- factor(final_data$filetype,levels = c("Raw reads","After Primer Removal","After Quality Trimming","After DADA2"))
+
+###Forward
+
+p <- ggplot(final_data %>% filter(num_reads > 0 & readtype=="R1"), aes(x = read_length, y = num_reads, fill = sample_name)) +
+  geom_col(width = 1) +
+  theme_bw() +
+  labs(title = "All the forward reads in all samples length distribution") +
+  xlab(NULL) +
+  ylab(NULL) +
+  theme(legend.position = "right")
+
+
+
+
+
+if (primer_removal == TRUE) {
+  # Convert to plotly and enable zooming
+  plotly_p <- p +
+    facet_wrap(~filetype, ncol = 4)
+  plotly_p <- plotly_p %>% plotly::ggplotly() %>%  
+    layout(xaxis = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           xaxis2 = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           xaxis3 = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           xaxis4 = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           yaxis = list(fixedrange = FALSE))
+  } else {
+  # Convert to plotly and enable zooming
+  plotly_p <- p +
+    facet_wrap(~filetype, ncol = 3) 
+  plotly_p <- plotly_p %>% plotly::ggplotly() %>%
+    layout(xaxis = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           xaxis2 = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           xaxis3 = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           yaxis = list(fixedrange = FALSE))
+  }
+
+
+
+# Show the plot
+plotly_p
+
+
+
+###Reverse
+
+p <- ggplot(final_data %>% filter(num_reads > 0 & readtype=="R2"), aes(x = read_length, y = num_reads, fill = sample_name)) +
+  geom_col(width = 1) +
+  theme_bw() +
+  labs(title = "All the reverse reads in all samples length distribution") +
+  xlab(NULL) +
+  ylab(NULL) +
+  theme(legend.position = "right")
+
+
+
+
+
+if (primer_removal == TRUE) {
+  # Convert to plotly and enable zooming
+  plotly_p <- p +
+    facet_wrap(~filetype, ncol = 4)
+  plotly_p <- plotly_p %>% plotly::ggplotly() %>%
+    layout(xaxis = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           xaxis2 = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           xaxis3 = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           xaxis4 = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           yaxis = list(fixedrange = FALSE))
+  } else {
+  # Convert to plotly and enable zooming
+  plotly_p <- p +
+    facet_wrap(~filetype, ncol = 3)
+  plotly_p <- plotly_p %>% plotly::ggplotly() %>%
+    layout(xaxis = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           xaxis2 = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           xaxis3 = list(rangeslider = list(visible = TRUE), rangemode = "normal"),
+           yaxis = list(fixedrange = FALSE))
+  }
+
+
+
+# Show the plot
+plotly_p
+
 ```
 
 <br>
@@ -218,6 +416,15 @@ reads<-read.csv(snakemake@params[["Nread"]],sep="\t")
 ## Reads count change throughout the dada2 pipeline in all samples
 
 <br>
+
+This plot provides a step-by-step overview of the changes in read counts throughout the DADA2 pipeline for all samples. It illustr
+ates how many sequencing reads are discarded at each stage of the processing workflow, from the initial raw data to the
+final remained cleaned data. Each step, including quality trimming, filtering, denoising, merging, and chimera removal, is shown w
+ith the corresponding number of reads lost. The final bar indicates the total number of high-quality reads remaining after all
+processing steps.
+
+<br>
+
 
 ```{r table merge,echo=F,messages=FALSE, warning=FALSE,include=T,fig.width=11,fig.height=7}
 reads1<-reads
@@ -298,13 +505,6 @@ datatable(reads1,
                          htmltools::em('If there is a sample called undetermined, it contains the reads that could not be assigned to any samples.')))
 
 
-reads2<-data.frame(rep("Starting number of reads",times=nrow(reads1)),reads1$Raw)
-colnames(reads2)<-c("Var","value")
-
-
-reads3<-data.frame(rep("Finishing number of reads",times=nrow(reads1)),reads1$Cleaned)
-colnames(reads3)<-c("Var","value")
-
 ```
 
 <br>
@@ -317,7 +517,22 @@ colnames(reads3)<-c("Var","value")
 
 <br>
 
+This plot compares the distribution of read counts at the beginning and end of the data processing pipeline for all samples. The l
+eft panel shows the initial distribution of raw reads and the right panel illustrates the final distribution of clean reads
+after all the steps of trimming, filtering, denoising, merging, and chimera removal have been applied. Each bar represents the num
+ber of samples falling within specific read count ranges.
+
+<br>
+
 ```{r boxplot,echo=F,messages=FALSE, warning=FALSE,results = FALSE,fig.width=11,fig.height=7}
+
+reads2<-data.frame(rep("Starting number of reads",times=nrow(reads1)),reads1$Raw)
+colnames(reads2)<-c("Var","value")
+
+
+reads3<-data.frame(rep("Finishing number of reads",times=nrow(reads1)),reads1$Cleaned)
+colnames(reads3)<-c("Var","value")
+
 
 n=max(reads2$value)/10
 
@@ -489,7 +704,7 @@ if (length(samples) > 0 && !all(samples == "")) {
         
         cat("<br><br>")
         
-        B <- kable(temp, format = "html", caption = "Abundance table of taxa found in the positive control sample") %>%
+        B <- kable(temp, format = "html", caption = "Relative abundance table of taxa found in the positive control sample") %>%
           kable_styling() %>%
           column_spec(1:ncol(temp), width = "6cm")
         print(B)
@@ -518,6 +733,13 @@ if (length(samples) > 0 && !all(samples == "")) {
 
 
 ## ASVs prevalence and Abudnance
+
+<br>
+This graph depicts the prevalence and abundance of Amplicon Sequence Variants (ASVs) across multiple samples. The X-axis represent
+s the abundance of each ASV, which is the total count of sequences assigned to that ASV. The Y-axis represents the prevalence of
+each ASV, indicating the number of samples in which the ASV is found. Each point on the graph represents a single ASV, with its po
+sition determined by its abundance and prevalence. Points higher on the Y-axis are found in more samples, indicating higher
+prevalence, while points further to the right on the X-axis have higher sequence counts, indicating higher abundance.
 
 <br>
 
@@ -609,13 +831,22 @@ for (f in files) {
 
 <br>
 
+
+If no sample profile is displayed, try selecting different samples from the list. To view specific sample profiles in the Krona pl
+ot, you need to click on the samples listed on the left. You can also use 
+the search box at the top to find specific taxa. Additionally, the Krona plot provides options to adjust the taxonomy depth, font 
+size, and chart size to customize your view. Use the '+' and '-' buttons 
+next to each option to make these adjustments. If needed, you can also take a snapshot of your current view for reference or shari
+ng.
+
+<br>
+
 ```{r krona-plot, echo=FALSE,message=F, warning=F}
 
 options(browser = "echo") #plot_krona is set to open the krona plot as a separate html file, this stops it
 
 # Plot Krona chart
 a <- plot_krona(physeq=ps, output=snakemake@params[['krona']], variable="samples", trim = TRUE)
-
 
 file=paste(snakemake@config[['path']],snakemake@config[['output_dir']], sep = "/")
 
