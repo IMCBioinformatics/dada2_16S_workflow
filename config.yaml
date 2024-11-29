@@ -42,7 +42,7 @@ rev_primer_rc: ""
 
 ## Primer detection parameters
 # minimum overlap length for primer removal
-min_overlap: 17
+min_overlap: 15
 
 # maximum error rate for primer removal
 max_e: 0.1
@@ -65,9 +65,6 @@ min_len: 50
 #Example "Water|DNA|Undetermined"
 
 excluded_samples: "Undetermined|Water|WATER|DNA|Neg|neg|NTC"
-
-#Number of random samples to look into their reads length distribution
-random_n: 5
 
 
 ## Positive control samples to visualize for qc report, write down sample names with | delimiter in between
