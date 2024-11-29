@@ -270,13 +270,11 @@ python utils/scripts/common/prepare.py <DIR>
 | max_e | maximum error rate allowed in primer match/detection | 0.1 |
 | qf, qr | quality trimming score | numeric e.g. 20 |
 | min_len | minimum length of reads kept | numeric e.g. 50 |
-| Positive_samples | Positive control samples to visualize in qc report | "pos_ctrl_1|pos_ctrl_2" |
+| Positive_samples | Positive control samples to visualize in qc report | "pos_ctrl_1\\|pos_ctrl_2" |
 | threads | number of threads to be used | numeric e.g. 20 |
 | truncLen | trimming reads at this length | numeric e.g. 260 |
 | maxEE | maximum number of “expected errors” allowed in a read | numeric e.g. 2 |
 | truncQ | Truncating reads at the first instance of a quality score less than or equal to truncQ | 2 |
-| subsample | Subsampling reads for learning error rates using reads from more samples | False |
-| subsample2LearnErrorRate | By subsampling less reads more samples are used for learning errors | 0.25 |
 | learn_nbases | minimum number of total bases to use for error rate learning | 100000000 |
 | chimera_method | method used for chimera detection | consensus |
 | Identity | minimum percent identity for a hit to be considered a match | percentage e.g. 0.993 |
