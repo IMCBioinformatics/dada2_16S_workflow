@@ -266,7 +266,7 @@ python utils/scripts/common/prepare.py <DIR>
 | rev_primer | Reverse primer sequence | "CTGTCTCTTAT..." |
 | fwd_primer_rc | Forward primer reverse complement sequence | "CTGTCTCTTAT..." |
 | rev_primer_rc | Reverse primer reverse complement sequence | "CTGTCTCTTAT..." |
-| min_overlap | minimum overlap length for primer detection | 3 |
+| min_overlap | minimum overlap length for primer detection | 15 |
 | max_e | maximum error rate allowed in primer match/detection | 0.1 |
 | qf, qr | quality trimming score | numeric e.g. 20 |
 | min_len | minimum length of reads kept | numeric e.g. 50 |
