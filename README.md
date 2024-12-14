@@ -205,6 +205,7 @@ BiocManager::install("kableExtra")
 install.packages("RColorBrewer")
 install.packages("ggpubr")
 install.packages("waterfalls")
+install.packages("plotly")
 ```
 
 to quit R type q(), (rmd) [username@hostname ~]$ q() and deactivate the environment:
