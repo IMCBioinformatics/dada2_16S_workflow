@@ -56,7 +56,7 @@ def main(path):
     # Creating the final tab-delimited file
     with open('samples/samples.tsv', 'w') as output_file:
         output_file.write("Sample_ID\tR1\tR2\n")
-        for id in unique_sample_ids:
+        for id in sorted(unique_sample_ids):
             R1_file = next((file for file in R1_files if id in file), None)
             R2_file = next((file for file in R2_files if id in file), None)
             output_file.write(f"{id}\t{R1_file}\t{R2_file}\n")
