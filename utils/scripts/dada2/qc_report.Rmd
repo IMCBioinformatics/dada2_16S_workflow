@@ -427,6 +427,9 @@ reads1<-reads
 
 colnames(reads1)[1:7]<-c("Sample", "Raw", "not-Quality_Trimmed", "not-Filtered", "Denoised", "Merged","Cleaned")
 
+reads1 <- reads1 %>%
+  filter(!grepl("Undetermined", Sample))
+
 reads1 <- reads1 %>% mutate_all(~ifelse(is.na(.), 0, .))
 
 read_loss<-data.frame(step=names(colSums(reads1[,-c(1, 8)])),count=colSums(reads1[,-c(1, 8)]))
@@ -498,7 +501,8 @@ datatable(reads1,
                          htmltools::em('Denoised: Reads left with high quality and error-corrected sequences.'), htmltools::br(),
                          htmltools::em('Merged: Reads left after removal of singletons and unmerged forward and reverse read pairs.'), htmltools::br(),
                          htmltools::em('Cleaned: Reads left after eliminating chimeric sequences,artifact sequences created during PCR due to partially extended strands binding to similar but different sequences.'), htmltools::br(),
-                         htmltools::em('If there is a sample called undetermined, it contains the reads that could not be assigned to any samples.')))
+                         htmltools::em('The sample called undetermined, containing the reads that could not be assigned to any samples, was excluded.')))
+
 
 
 ```
