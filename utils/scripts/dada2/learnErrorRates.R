@@ -7,6 +7,9 @@ errR <- learnErrors(snakemake@input[['R2']], nbases=snakemake@config[["learn_nba
 save(errF,file=snakemake@output[['errR1']])
 save(errR,file=snakemake@output[['errR2']])
 
+print("Order of samples read in before learning error rates")
+print(snakemake@input[['R1']])
+print(snakemake@input[['R2']])
 
 
 ## ---- plot-rates ----
