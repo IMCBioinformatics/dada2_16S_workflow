@@ -127,7 +127,7 @@ Maxaccepts: 30       # Maximum number of hits to consider per query
 RDP_dbs:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_train_set_18.fa.gz"
  Silva: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/silva_nr99_v138.1_train_set.fa.gz"
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r214_fullTaxo.fa.gz"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r214_genus.fa.gz"
 
 RDP_species:
  RDP: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/rdp_species_assignment_18.fa.gz"
@@ -137,4 +137,4 @@ RDP_species:
 
 ## Taxonomy using vsearch
 vsearch_DBs: 
- GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r214_fullTaxo.fa.gz"
+ GTDB: "/bulk/IMCshared_bulk/shared/dbs/16s_dbs/GTDB_bac120_arc53_ssu_r214_genus.fa.gz"
