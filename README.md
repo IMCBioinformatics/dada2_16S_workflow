@@ -268,11 +268,11 @@ python utils/scripts/common/prepare.py <DIR>
 | path | path to the main snakemake directory | "/home/analysis/dada2_snakemake_workflow" |
 | forward_read_suffix, reverse_read_suffix | Forward and reverse reads format | "_R1" "_R2" |
 | compression_suffix | Reads compressed/decompressed | .fastq.gz or .fastq |
-| primer_removal | Set to TRUE to remove primers | False |
-| fwd_primer | Forward primer sequence | "CTGTCTCTTAT..." |
-| rev_primer | Reverse primer sequence | "CTGTCTCTTAT..." |
-| fwd_primer_rc | Forward primer reverse complement sequence | "CTGTCTCTTAT..." |
-| rev_primer_rc | Reverse primer reverse complement sequence | "CTGTCTCTTAT..." |
+| primer_removal | Set to TRUE to remove primers | True |
+| fwd_primer | Forward primer sequence | "CTGTCTCTTAT..." default as empty |
+| rev_primer | Reverse primer sequence | "CTGTCTCTTAT..." default as empty |
+| fwd_primer_rc | Forward primer reverse complement sequence | "CTGTCTCTTAT..." default as empty |
+| rev_primer_rc | Reverse primer reverse complement sequence | "CTGTCTCTTAT..." default as empty |
 | min_overlap | minimum overlap length for primer detection | 15 |
 | max_e | maximum error rate allowed in primer match/detection | 0.1 |
 | qf, qr | quality trimming score | numeric e.g. 20 |
