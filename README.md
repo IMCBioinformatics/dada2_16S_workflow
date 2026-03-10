@@ -265,7 +265,7 @@ python utils/scripts/common/prepare.py <DIR>
 | -------------- | --------------- | ------------ |
 | input_dir | path of the input directory | "/home/data" |
 | output_dir | name and path to the output directory | "output" |
-| path | path to the main snakemake directory | "/home/analysis/dada2_snakemake_workflow" |
+| path | path to the main snakemake directory | "/home/analysis/dada2_16S_workflow" |
 | forward_read_suffix, reverse_read_suffix | Forward and reverse reads format | "_R1" "_R2" |
 | compression_suffix | Reads compressed/decompressed | .fastq.gz or .fastq |
 | primer_removal | Set to TRUE to remove primers | True |
