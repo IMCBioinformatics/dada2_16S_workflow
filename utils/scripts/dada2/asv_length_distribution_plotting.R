@@ -26,7 +26,7 @@ final <- left_join(l_hist, table2, by = "LENGTH")
 coef <- max(final$FREQUENCY, na.rm = TRUE) / max(final$ABUNDANCE, na.rm = TRUE)
 
 # Convert LENGTH to factor
-final$LENGTH <- as.factor(final$LENGTH)
+final$LENGTH <- as.numeric(final$LENGTH)
 
 
 # Create the plot
