@@ -171,7 +171,7 @@ colnames(vsearch)[4:12] <- paste0(colnames(vsearch)[4:13], "_vsearch")
 df<- vsearch %>% left_join(.,dd2,by=c("asv_id","asv_seq","asv_len"))
 
 
-# create a dataframe to colapse the taxonomy from vsearch + dada2_gtdb + dada2_URE
+# create a dataframe to colapse the taxonomy from vsearch_gtdb + dada2_gtdb
 colapsed <- df[1:3] 
 colapsed[c("kingdom_final","phylum_final","class_final","order_final","family_final","genus_final","species_final")]<-df[5:11]
 
@@ -182,7 +182,7 @@ colapsed$package<-"Vsearch"
 gtdb_dd2 <- df[c("kingdom_gtdb","phylum_gtdb","class_gtdb","order_gtdb","family_gtdb","genus_gtdb","species_gtdb")]
 
 
-# This loop checks if there is a Vsearch assignment to each ASV, if not it checks dada2_gtdb for assignment to any level, if not it tries dada2_URE when URE=TRUE
+# This loop checks if there is a Vsearch assignment to each ASV, if not it checks dada2_gtdb for assignment to any level
 
 for(i in 1:nrow(df)){
   if(df$identity_vsearch[i]==0 & all(is.na(gtdb_dd2[i,]))==F){
