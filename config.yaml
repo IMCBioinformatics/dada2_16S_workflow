@@ -32,7 +32,7 @@ reverse_read_suffix: "_R2"
 ## Removing primers if they were sequenced. 
 ##***If primers need to be removed set this to True and add the primer sequences***
 
-primer_removal: False  #True or False
+primer_removal: True  #True or False
 
 primers:
 fwd_primer: ""
