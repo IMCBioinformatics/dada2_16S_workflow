@@ -16,7 +16,7 @@ input_dir: "/home/data"   #With no slash at the end
 output_dir: "output"
 
 #path of the main snakemake directory
-path: "/home/analysis/dada2_snakemake_workflow"
+path: "/home/analysis/dada2_16S_workflow"
 
 # Reads format
 forward_read_suffix: "_R1"
