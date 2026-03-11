@@ -44,6 +44,7 @@ conda deactivate
 
 
 #Tools and packages in QC env
+conda activate QC
 echo "fastqc version from QC environment:" && conda activate QC && fastqc --version && echo -e "\n"
 echo "multiqc version from QC environment:" && conda activate QC && multiqc --version && echo -e "\n"
 echo "cutadapt version from QC environment:" && conda activate QC && cutadapt --version && echo -e "\n"
