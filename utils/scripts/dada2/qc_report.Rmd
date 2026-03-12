@@ -134,7 +134,7 @@ removed for improving the visualization.**
 
 ```{r plotly, echo=F,fig.width=10,fig.height=5}
 
-in_dir<-paste0(snakemake@config[['output_dir']],"/seqkit_samples")
+in_dir<-paste0(snakemake@config[['output_dir']],"/random_samples")
 
 
 
