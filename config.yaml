@@ -61,6 +61,8 @@ min_len: 50
 #*********************
 
 #For QC reports, we randomly choose samples to check their reads length distribution.
+random_n: 5
+
 #here we exclude controls and undetermined samples
 #Example "Water|DNA|Undetermined"
 
