@@ -44,14 +44,31 @@ for (file_path in filtRs) {
 }
 
 
-p_F<- plotQualityProfile(valid_filtFs,n=1e5,aggregate=T) + theme_classic(base_size=6)
+p_F<- plotQualityProfile(valid_filtFs,n=1e5,aggregate=T) + 
+theme_classic(base_size=6)+  # Increase base size for classic theme
+  theme(
+    axis.title = element_text(size = 14),  # Increase size of axis titles
+    axis.text = element_text(size = 12),   # Increase size of axis text
+    legend.title = element_text(size = 14),# Increase size of legend title
+    legend.text = element_text(size = 12), # Increase size of legend text
+    strip.text = element_text(size = 16)   # Increase size of strip text (facet labels)
+  )
+
 print("Out of plotQualityProfile R1")
 
 
 ggsave(snakemake@output$R1,p_F)
 
 
-p_R<- plotQualityProfile(valid_filtRs,n=1e5,aggregate=T) + theme_classic(base_size=6)
+p_R<- plotQualityProfile(valid_filtRs,n=1e5,aggregate=T) + 
+theme_classic(base_size=6) +  # Increase base size for classic theme
+  theme(
+    axis.title = element_text(size = 14),  # Increase size of axis titles
+    axis.text = element_text(size = 12),   # Increase size of axis text
+    legend.title = element_text(size = 14),# Increase size of legend title
+    legend.text = element_text(size = 12), # Increase size of legend text
+    strip.text = element_text(size = 16)   # Increase size of strip text (facet labels)
+  )
 
 print("Out of plotQualityProfile R2")
 
