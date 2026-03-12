@@ -6,6 +6,10 @@ suppressMessages(library(ShortRead))
 filtFs = snakemake@input[['R1']]
 filtRs = snakemake@input[['R2']]
 
+#Removing the undetermined sample
+filtFs <- filtFs[!grepl("Undetermined", filtFs)]
+filtRs <- filtRs[!grepl("Undetermined", filtRs)]
+
 
 exists <- file.exists(filtFs) & file.exists(filtRs)
 filtFs <- filtFs[exists]
